@@ -5,6 +5,7 @@ import Navigation from './shared/Navigation/Navigation'
 import Login from './auth/Login.Form'
 import Signup from './auth/Signup.Form'
 import UsersContainer from './users/Container'
+import * as auth from '../api/auth'
 
 class App extends React.Component {
   constructor () {
@@ -16,11 +17,24 @@ class App extends React.Component {
     this.loginUser = this.loginUser.bind(this)
     this.signupUser = this.signupUser.bind(this)
   }
+ async loginUser (user){
+   const response = await auth.login(user)
+   const userInfo = await auth.profile()
+  console.log(response, userInfo)
+  console.log('Hey!')
+}
+  // loginUser (user) {
+  //   console.log('Logging In User:', user)
+  //     fetch('http://localhost:5000/api/login', {
+  //   body: JSON.stringify(user),
+  //   headers: {
+  //     'Content-Type': 'application/json'
+  //   },
+  //   method: 'POST',
+  // }).then(res => res.json()).then(console.log)
+  // }
 
-  loginUser (user) {
-    console.log('Logging In User:', user)
-  }
-
+  
   signupUser (user) {
     console.log('Signing Up User:', user)
   }

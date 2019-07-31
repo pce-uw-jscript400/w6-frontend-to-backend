@@ -37,7 +37,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 * **Question:** What error do you get? Why?
 
 * **Your Answer:** 
-
+fetch has been blocked by CORS - request has been blocked to keep bad actors from bypassing app setups
 ---
 
 - [ ] To get around this issue, we need to explicitly allow for requests to come from `localhost:3000`. To do so, we will use the [cors](https://www.npmjs.com/package/cors) package. Install `cors` on the _backend server_ and whitelist `localhost:5000`.
@@ -45,7 +45,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 * **Question:** Try your request again. What error do you get? Why?
 
 * **Your Answer:**
-
+401 not logged in - backend is accepting the request but no user token is being sent
 ---
 
 - [ ] In `App.js`, we have created our `loginUser()` method. Try invoking that function through the frontend, inspecting what is outputted.
@@ -66,9 +66,9 @@ By the end of this lesson. You should be able to set up two separate servers tha
 * **Question:** Why do we need to include the "Content-Type" in the headers?
 
 * **Your Answer:**
-
+so the server and browser will parse the data correctly
 * **Question:** How could you convert this method to an `async` method?
-
+use async/await
 ---
 
 - [ ] Let's move our requests to a better place. Create a new file at `./src/api/auth.js`. Add the following inside of it:
@@ -105,7 +105,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 * **Question:** Why are we storing the token?
 
 * **Your Answer:**
-
+in the browser; like a cookie but not
 ---
 
 - [ ] We now have the token, but we don't have any of the user information. Add a new function to our `./src/api/auth.js` called `profile()` that sends over the token in order to retrieve the user information. Then, log that information.

@@ -5,6 +5,7 @@ import Navigation from './shared/Navigation/Navigation'
 import Login from './auth/Login.Form'
 import Signup from './auth/Signup.Form'
 import UsersContainer from './users/Container'
+import * as auth from './api/auth'
 
 class App extends React.Component {
   constructor () {
@@ -15,21 +16,43 @@ class App extends React.Component {
 
     this.loginUser = this.loginUser.bind(this)
     this.signupUser = this.signupUser.bind(this)
+    this.logoutUser = this.logoutUser.bind(this)
   }
 
-  loginUser (user) {
-    console.log('Logging In User:', user)
+  async componentDidMount () {
+    const token = window.localStorage.getItem('journal-app')
+    if (token) {
+      const profile = await auth.profile()
+      console.log(profile)
+      this.setState({ currentUserId: profile.user._id })
+    }
+  }
+
+  async loginUser (user) {
+    const response = await auth.login(user)
+    const userProfile = await auth.profile()
+    console.log({response, userProfile})
+    this.setState({ currentUserId: userProfile.user._id })
   }
 
   signupUser (user) {
     console.log('Signing Up User:', user)
   }
 
+  logoutUser = () => {
+    window.localStorage.removeItem('journal-app')
+    this.setState({ currentUserId: null })
+    //history.push('/login')
+  }
+
   render () {
     return (
       <Router>
         <Header />
-        <Navigation currentUserId={this.state.currentUserId} />
+        <Navigation 
+          currentUserId={this.state.currentUserId} 
+          logoutUser={this.logoutUser}
+        />
         <Switch>
           <Route path='/login' exact component={() => {
             return <Login onSubmit={this.loginUser} />

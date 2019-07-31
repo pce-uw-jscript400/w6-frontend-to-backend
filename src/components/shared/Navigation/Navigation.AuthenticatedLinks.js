@@ -1,11 +1,11 @@
 import React from 'react'
 import { withRouter } from 'react-router'
 import { Link } from 'react-router-dom'
+import { logout } from '../../api/auth';
 
-const AuthenticatedLinks = ({ currentUserId, history }) => {
+const AuthenticatedLinks = ({ currentUserId, logoutUser, history }) => {
   const logout = () => {
-    window.localStorage.clear('journal-app')
-    history.push('/login')
+    logoutUser()
   }
   return (
     <ul className='nav justify-content-end'>
@@ -20,7 +20,7 @@ const AuthenticatedLinks = ({ currentUserId, history }) => {
       <li className='nav-item'>
         <button
           className='btn btn-link'
-          onClick={logout}>
+          onClick={logoutUser}>
             Logout
         </button>
       </li>

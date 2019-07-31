@@ -17,8 +17,16 @@ class App extends React.Component {
     this.signupUser = this.signupUser.bind(this)
   }
 
-  loginUser (user) {
-    console.log('Logging In User:', user)
+  async loginUser (user) {
+    const response = await fetch('http://localhost:5000/api/login', {
+      body: JSON.stringify(user),
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      method: 'POST',
+    })
+    const json = await response.json()
+    console.log(json)
   }
 
   signupUser (user) {

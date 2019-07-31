@@ -36,7 +36,9 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** What error do you get? Why?
 
-* **Your Answer:** Getting an CORS error, or Cross-Origin-Resource-Sharing, which is a web industry standard for accessing web resources on different domains. We get this error because we are currently only configured to make requests on on port 3000. Making a request to port 5000 for the api has not been setup yet.
+* **Your Answer:** Getting an CORS error, or Cross-Origin-Resource-Sharing, which is a web industry standard for accessing web resources on different domains. We get this error because we are currently only configured to make requests on on port 3000. Making a request to port 5000 for the api has not been setup yet and so CORS prevents the servers from sharing resources.
+
+We're also getting a 401 error, because are aren't authorized to make the above request. Looks like there is also an issue with the Promise being made on the `.fetch()`.
 
 ---
 
@@ -44,7 +46,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** Try your request again. What error do you get? Why?
 
-* **Your Answer:**
+* **Your Answer:** The CORS and Promises errors are gone. The only one that remains is the 401, which makes sense because I haven't logged in yet.
 
 ---
 
@@ -67,9 +69,11 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** Why do we need to include the "Content-Type" in the headers?
 
-* **Your Answer:**
+* **Your Answer:** I think it's because we have to identify the web resource type or data type for the client, in this case, JSON.
 
 * **Question:** How could you convert this method to an `async` method?
+
+* **Your Answer:** We could do a async/await and place the aysnc before the method name.
 
 ---
 

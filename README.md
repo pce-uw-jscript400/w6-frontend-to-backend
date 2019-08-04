@@ -36,17 +36,13 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** What error do you get? Why?
 
-* **Your Answer:** 
-
----
+* **Your Answer:** Unauthorized errors: - Failed to fetch and CORS policy - no header present. Access to fetch at 5000 from origin 3000.
 
 - [ ] To get around this issue, we need to explicitly allow for requests to come from `localhost:3000`. To do so, we will use the [cors](https://www.npmjs.com/package/cors) package. Install `cors` on the _backend server_ and whitelist `localhost:5000`.
 
 * **Question:** Try your request again. What error do you get? Why?
 
-* **Your Answer:**
-
----
+* **Your Answer:** 401 error with message "you are not loggen in." It's coming from backend middleware/auth.js because of the missing token (!req.token).
 
 - [ ] In `App.js`, we have created our `loginUser()` method. Try invoking that function through the frontend, inspecting what is outputted.
 
@@ -65,11 +61,11 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** Why do we need to include the "Content-Type" in the headers?
 
-* **Your Answer:**
+* **Your Answer:** We want to change Content-Type to json, otherwise it will be plain text.
 
 * **Question:** How could you convert this method to an `async` method?
 
----
+--- Add 'await' to fetch and response.
 
 - [ ] Let's move our requests to a better place. Create a new file at `./src/api/auth.js`. Add the following inside of it:
   ```js
@@ -96,17 +92,13 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** What is happening on the first couple of lines of the new file you've created?
 
-* **Your Answer:** 
-
----
+* **Your Answer:** We assigning localhost to 'development', once we deploy we will update 'tbd' to actual url.
 
 - [ ] Let's store the token in LocalStorage with a key of `journal-app`.
 
 * **Question:** Why are we storing the token?
 
-* **Your Answer:**
-
----
+* **Your Answer:** 
 
 - [ ] We now have the token, but we don't have any of the user information. Add a new function to our `./src/api/auth.js` called `profile()` that sends over the token in order to retrieve the user information. Then, log that information.
 

@@ -6,6 +6,8 @@ import Login from './auth/Login.Form'
 import Signup from './auth/Signup.Form'
 import UsersContainer from './users/Container'
 
+import * as auth from '../api/auth.js'
+
 class App extends React.Component {
   constructor () {
     super()
@@ -17,8 +19,10 @@ class App extends React.Component {
     this.signupUser = this.signupUser.bind(this)
   }
 
-  loginUser (user) {
-    console.log('Logging In User:', user)
+ async loginUser (user) {
+    const response = await auth.login(user)
+    const userInfo = await profile()
+    console.log(response)
   }
 
   signupUser (user) {

@@ -38,7 +38,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Your Answer:** 
 
----
+* Receive a 401 error.  No token is being used to connect to the back end.
 
 - [ ] To get around this issue, we need to explicitly allow for requests to come from `localhost:3000`. To do so, we will use the [cors](https://www.npmjs.com/package/cors) package. Install `cors` on the _backend server_ and whitelist `localhost:5000`.
 

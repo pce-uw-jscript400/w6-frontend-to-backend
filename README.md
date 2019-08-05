@@ -101,7 +101,7 @@ We're also getting a 401 error, because are aren't authorized to make the above 
 
 * **Question:** What is happening on the first couple of lines of the new file you've created?
 
-* **Your Answer:**
+* **Your Answer:** We are using the global `process.env` variable and setting it to `NODE_ENV`. We then use this to help the app determine the correct environment URL to use. If it is "development" then we will use "http://localhost:5000", otherwise we will use a production URL later for when we are ready to deploy the app.
 
 ---
 
@@ -109,7 +109,7 @@ We're also getting a 401 error, because are aren't authorized to make the above 
 
 * **Question:** Why are we storing the token?
 
-* **Your Answer:**
+* **Your Answer:** We are storing the token so that if the user refreshes the page, they will still be logged into the app.
 
 ---
 

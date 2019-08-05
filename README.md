@@ -117,7 +117,7 @@ We're also getting a 401 error, because are aren't authorized to make the above 
 
 * **Question:** Where did you write your code to manipulate LocalStorage? Why?
 
-* **Your Answer:**
+* **Your Answer:** We assigned the current user's token available in `localStorage` to a constant variable. This is then used in the fetch response headers authorization.
 
 ---
 
@@ -125,11 +125,11 @@ We're also getting a 401 error, because are aren't authorized to make the above 
 
 * **Question:** What changes on the page after you successfully login? Why?
 
-* **Your Answer:**
+* **Your Answer:** After the user has successfully logged in, the navigation links update with the authenticated content. This is the because the user has successfully logged in and has the right permissions to view the new UI content.
 
 * **Question:** What happens if you enter in the incorrect information? What _should_ happen?
 
-* **Your Answer:**
+* **Your Answer:** We get an unhandled rejection error. What should happen is that we gracefully handle authentication errors and provide the user some sort of feedback via the UI that something went wrong.
 
 ---
 
@@ -146,7 +146,7 @@ We're also getting a 401 error, because are aren't authorized to make the above 
 
 * **Question:** Describe what is happening in the code above.
 
-* **Your Answer:**
+* **Your Answer:** We are getting the value of `journal-app` that is currently available in `localStorage` and assigning it to a constant variable. We then have some conditional logic to handle whether or not the toke is avaialble. If there is a token, then we have React `this.setState()` for the current user's profile via `currentUserId: profile.user._id`.
 
 ---
 
@@ -154,7 +154,7 @@ We're also getting a 401 error, because are aren't authorized to make the above 
 
 * **Question:** When you click "Logout", nothing happens unless you refresh the page. Why not?
 
-* **Your Answer:**
+* **Your Answer:** Because we are not currently `this.setState()` to `null` for the `currentUserID`.
 
 ---
 
@@ -162,7 +162,15 @@ We're also getting a 401 error, because are aren't authorized to make the above 
 
 * **Question:** What did you have to do to get the `logout()` function to work? Why?
 
-* **Your Answer:**
+* **Your Answer:** I did the following solution. This grabs the current token and removes it when the `logoutUser()` function is called and then used `this.setState()` to set the currentUserId to be `null`.
+
+```js
+logoutUser = () => {
+  window.localStorage.removeItem("journal-app");
+  this.setState({ currentUserId: null });
+  // history.push("/login");
+};
+```
 
 ---
 

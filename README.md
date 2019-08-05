@@ -154,7 +154,7 @@ We're also getting a 401 error, because are aren't authorized to make the above 
 
 * **Question:** When you click "Logout", nothing happens unless you refresh the page. Why not?
 
-* **Your Answer:** Because we are not currently `this.setState()` to `null` for the `currentUserID`.
+* **Your Answer:** Because we are not currently using `this.setState()` to set `null` for the `currentUserID` and also we are not removing the token from `localStorage()`.
 
 ---
 
@@ -168,7 +168,6 @@ We're also getting a 401 error, because are aren't authorized to make the above 
 logoutUser = () => {
   window.localStorage.removeItem("journal-app");
   this.setState({ currentUserId: null });
-  // history.push("/login");
 };
 ```
 
@@ -186,7 +185,7 @@ logoutUser = () => {
 
 * **Question:** What happens? What _should_ happen?
 
-* **Answer:**
+* **Answer:** I'm able to access the `/users` route when I shouldn't because I've logged out of the app.
 
 ---
 
@@ -206,7 +205,7 @@ logoutUser = () => {
 
 * **Question:** Describe what is happening in the code above.
 
-* **Your Answer:**
+* **Your Answer:** It's checking `state` via a ternary to make sure there is a valid `currentUserId`. If there is, then it will redirect the user to the `<UsersContainer />`, otherwise, it will redirect the user to the `/login` route.
 
 ---
 
@@ -214,7 +213,7 @@ logoutUser = () => {
 
 * **Question:** What happens and why?
 
-* **Your Answer:**
+* **Your Answer:** It is redirecting the user to the `/login` route. I think this is happening because we need to setup something to handle a page refresh in `componentDidMount`.
 
 ---
 

@@ -28,6 +28,7 @@ class App extends React.Component {
   // If there's a token the user will remain logged in if
   // refresh the page. This is also where we want to be making
   // api calls.
+  // TO-DO: Need to gracefully handle login errors
   async componentDidMount() {
     const token = window.localStorage.getItem("journal-app");
     if (token) {
@@ -53,7 +54,7 @@ class App extends React.Component {
     const response = await auth.login(user);
     const profile = await auth.profile();
     this.setState({ currentUserId: profile.user._id });
-    console.log("### log out user login:", response, profile);
+    console.log("### user login:", response, profile);
   }
 
   signupUser(user) {
@@ -63,7 +64,6 @@ class App extends React.Component {
   logoutUser = () => {
     window.localStorage.removeItem("journal-app");
     this.setState({ currentUserId: null });
-    // history.push("/login");
   };
 
   render() {
@@ -78,8 +78,12 @@ class App extends React.Component {
           <Route
             path="/login"
             exact
-            component={() => {
-              return <Login onSubmit={this.loginUser} />;
+            render={() => {
+              return this.state.currentUserId ? (
+                <Redirect to="/users" />
+              ) : (
+                <Login onSubmit={this.loginUser} />
+              );
             }}
           />
           <Route
@@ -89,8 +93,16 @@ class App extends React.Component {
               return <Signup onSubmit={this.signupUser} />;
             }}
           />
-
-          <Route path="/users" component={UsersContainer} />
+          <Route
+            path="/users"
+            render={() => {
+              return this.state.currentUserId ? (
+                <UsersContainer />
+              ) : (
+                <Redirect to="/login" />
+              );
+            }}
+          />
 
           <Redirect to="/login" />
         </Switch>

@@ -36,7 +36,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** What error do you get? Why?
 
-* **Your Answer:** 
+* **Your Answer:** CORS error because the frontend server does not yet have permission to the backend server.
 
 ---
 
@@ -44,7 +44,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** Try your request again. What error do you get? Why?
 
-* **Your Answer:**
+* **Your Answer:** 401 error because we are not logged in.
 
 ---
 
@@ -65,9 +65,11 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** Why do we need to include the "Content-Type" in the headers?
 
-* **Your Answer:**
+* **Your Answer:** We need it to be json, not plain text.
 
 * **Question:** How could you convert this method to an `async` method?
+
+Add await keyword in the fetch and response.
 
 ---
 
@@ -98,13 +100,15 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Your Answer:** 
 
+It is checking what environment we are using (development).
+
 ---
 
 - [ ] Let's store the token in LocalStorage with a key of `journal-app`.
 
 * **Question:** Why are we storing the token?
 
-* **Your Answer:**
+* **Your Answer:** So the token will persist with each page of the site we are on.
 
 ---
 
@@ -112,7 +116,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** Where did you write your code to manipulate LocalStorage? Why?
 
-* **Your Answer:** 
+* **Your Answer:** The code is in auth.js 
 
 ---
 

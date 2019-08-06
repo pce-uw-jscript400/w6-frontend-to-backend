@@ -27,32 +27,34 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 ## Instructions & Guiding Questions
 
-- [ ] Start both your frontend server and your backend server. Then try copying the code below into the web console.
+- [X] Start both your frontend server and your backend server. Then try copying the code below into the web console.
   ```js
   fetch('http://localhost:5000/api/users')
     .then(res => res.json())
     .then(console.log)
   ```
 
-* **Question:** What error do you get? Why?
+* **Question:** What error do you get? Why?'
 
-* **Your Answer:** 
+* **Your Answer:**
+CORs error. It's a security check because we don't want to openly allow servers to ask separate browsers for information or send requests. Because we have a separate server for the backend than the frontend, need to mark our backend server as an allowed actor to request info.
 
 ---
 
-- [ ] To get around this issue, we need to explicitly allow for requests to come from `localhost:3000`. To do so, we will use the [cors](https://www.npmjs.com/package/cors) package. Install `cors` on the _backend server_ and whitelist `localhost:5000`.
+- [x] To get around this issue, we need to explicitly allow for requests to come from `localhost:3000`. To do so, we will use the [cors](https://www.npmjs.com/package/cors) package. Install `cors` on the _backend server_ and whitelist `localhost:5000`.
 
 * **Question:** Try your request again. What error do you get? Why?
 
 * **Your Answer:**
+Now getting a 401 because not logged in. This is coming from the middleware which checks to see if the user isLoggedIn, which checks for their token. If there is not a token in the request, a 401 error is returned
 
 ---
 
-- [ ] In `App.js`, we have created our `loginUser()` method. Try invoking that function through the frontend, inspecting what is outputted.
+- [x] In `App.js`, we have created our `loginUser()` method. Try invoking that function through the frontend, inspecting what is outputted.
 
 ---
 
-- [ ] We now want to try and login the user when they hit submit. Add the following to your `loginUser()` method:
+- [x] We now want to try and login the user when they hit submit. Add the following to your `loginUser()` method:
   ```js
   fetch('http://localhost:5000/api/login', {
     body: JSON.stringify(user),
@@ -66,12 +68,13 @@ By the end of this lesson. You should be able to set up two separate servers tha
 * **Question:** Why do we need to include the "Content-Type" in the headers?
 
 * **Your Answer:**
+That is what tells server what kind of content is being sent. Without it, it will be transmitted as just text
 
 * **Question:** How could you convert this method to an `async` method?
-
+Add async and await. Add async before loginUser(). Adds await before the fetch and before returning the response
 ---
 
-- [ ] Let's move our requests to a better place. Create a new file at `./src/api/auth.js`. Add the following inside of it:
+- [X] Let's move our requests to a better place. Create a new file at `./src/api/auth.js`. Add the following inside of it:
   ```js
   const { NODE_ENV } = process.env
   const BASE_URL = NODE_ENV === 'development'
@@ -96,23 +99,26 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** What is happening on the first couple of lines of the new file you've created?
 
-* **Your Answer:** 
+* **Your Answer:**
+The code is checking to see if we are in the development server or production.
 
 ---
 
-- [ ] Let's store the token in LocalStorage with a key of `journal-app`.
+- [x] Let's store the token in LocalStorage with a key of `journal-app`.
 
 * **Question:** Why are we storing the token?
 
 * **Your Answer:**
+Because we only want the user to have to login once. We don't want them to have to login on every page. Local storage allows us to persist that information across the site. Also local storage remains after refreshing the page.
 
 ---
 
-- [ ] We now have the token, but we don't have any of the user information. Add a new function to our `./src/api/auth.js` called `profile()` that sends over the token in order to retrieve the user information. Then, log that information.
+- [X] We now have the token, but we don't have any of the user information. Add a new function to our `./src/api/auth.js` called `profile()` that sends over the token in order to retrieve the user information. Then, log that information.
 
 * **Question:** Where did you write your code to manipulate LocalStorage? Why?
 
-* **Your Answer:** 
+* **Your Answer:**
+auth.js. Because it doesn't affect the view, so doesn't need to involve React components, so makes sense to keep it separate.
 
 ---
 

@@ -5,6 +5,7 @@ import Navigation from './shared/Navigation/Navigation'
 import Login from './auth/Login.Form'
 import Signup from './auth/Signup.Form'
 import UsersContainer from './users/Container'
+import { login, profile } from '../api/auth'
 
 class App extends React.Component {
   constructor () {
@@ -17,8 +18,13 @@ class App extends React.Component {
     this.signupUser = this.signupUser.bind(this)
   }
 
-  loginUser (user) {
-    console.log('Logging In User:', user)
+   async loginUser (user) {
+
+   const response = await login(user)
+   const userInfo = await profile()
+
+
+    console.log(response, userInfo);
   }
 
   signupUser (user) {

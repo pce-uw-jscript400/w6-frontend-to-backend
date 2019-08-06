@@ -68,7 +68,13 @@ fetch has been blocked by CORS - request has been blocked to keep bad actors fro
 * **Your Answer:**
 so the server and browser will parse the data correctly
 * **Question:** How could you convert this method to an `async` method?
-use async/await
+use async/await; 
+const loginUser async(user) {
+const response = await fetch('http:localhost:5000/api/login'),{
+  .. same as sample code...
+    }
+  const json =  await response.json()
+}
 ---
 
 - [ ] Let's move our requests to a better place. Create a new file at `./src/api/auth.js`. Add the following inside of it:
@@ -97,15 +103,16 @@ use async/await
 * **Question:** What is happening on the first couple of lines of the new file you've created?
 
 * **Your Answer:** 
-
+Creating the local environment variable
 ---
 
 - [ ] Let's store the token in LocalStorage with a key of `journal-app`.
 
 * **Question:** Why are we storing the token?
+So we can ask for it to protect access to logged-in only features
 
 * **Your Answer:**
-in the browser; like a cookie but not
+in the browser; like a cookie but less complicated to use
 ---
 
 - [ ] We now have the token, but we don't have any of the user information. Add a new function to our `./src/api/auth.js` called `profile()` that sends over the token in order to retrieve the user information. Then, log that information.
@@ -113,7 +120,7 @@ in the browser; like a cookie but not
 * **Question:** Where did you write your code to manipulate LocalStorage? Why?
 
 * **Your Answer:** 
-
+At the end of the login code; this is the only time when the user's info needs to be changed, so breaking it out for re-use doesn't make sense.
 ---
 
 - [ ] Now that we have the user's information, let's store the user's ID in state. Set `currentUserId` to the user ID you've retrieved.
@@ -121,11 +128,11 @@ in the browser; like a cookie but not
 * **Question:** What changes on the page after you successfully login? Why?
 
 * **Your Answer:**
-
+The top bar options become relevant to a logged in user rather than just login/create.
 * **Question:** What happens if you enter in the incorrect information? What _should_ happen?
-
+Unhandled Rejection (TypeError): Cannot read property '_id' of undefined
 * **Your Answer:**
-
+A user-friendly error ('Incorrect Login Info' etc), or at least not crashing horribly
 ---
 
 - [ ] Try refreshing the page. You'll notice it _looks_ like you've been logged out, although your token is still stored in LocalStorage. To solve this, we will need to plug in to the component life cycle with `componentDidMount()`. Try adding the following code to `App.js`:
@@ -142,7 +149,7 @@ in the browser; like a cookie but not
 * **Question:** Describe what is happening in the code above.
 
 * **Your Answer:**
-
+Waiting for the page to render then set the profile.user._id from local storage
 ---
 
 - [ ] Now when you refresh the page, it looks as though you are logged in. Next, try clicking the logout button.
@@ -150,18 +157,18 @@ in the browser; like a cookie but not
 * **Question:** When you click "Logout", nothing happens unless you refresh the page. Why not?
 
 * **Your Answer:**
-
+Local storage is not being cleared and the state is not being modified, so React is not re-rendering
 ---
 
 - [ ] Update the `logout()` method to appropriately logout the user.
 
 * **Question:** What did you have to do to get the `logout()` function to work? Why?
-
+Move the logout() function to app.js so it could modify state.
 * **Your Answer:**
 
 ---
 
-- [ ] Following the patterns we used above, build the Signup feature.
+- [X] Following the patterns we used above, build the Signup feature.
 
 ---
 

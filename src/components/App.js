@@ -17,7 +17,8 @@ class App extends React.Component {
   constructor() {
     super();
     this.state = {
-      currentUserId: null
+      currentUserId: null,
+      loading: true
     };
 
     this.loginUser = this.loginUser.bind(this);
@@ -34,6 +35,7 @@ class App extends React.Component {
     if (token) {
       const profile = await auth.profile();
       this.setState({ currentUserId: profile.user._id });
+      // this.setState({ loading: false });
     }
   }
 
@@ -93,9 +95,6 @@ class App extends React.Component {
           <Route
             path="/signup"
             exact
-            // component={() => {
-            //   return <Signup onSubmit={this.signupUser} />;
-            // }}
             render={() => {
               return this.state.currentUserId ? (
                 <Redirect to="/users" />

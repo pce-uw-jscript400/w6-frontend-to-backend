@@ -213,7 +213,7 @@ logoutUser = () => {
 
 * **Question:** What happens and why?
 
-* **Your Answer:** It is redirecting the user to the `/login` route. I think this is happening because we need to setup something to handle a page refresh in `componentDidMount`.
+* **Your Answer:** It is redirecting the user to the `/login` route. I think this is happening because we need to setup something to handle a page refresh in `componentDidMount`. Might be able to solve this also by adding some conditional check in react router, but not sure if that's best practice or not.
 
 ---
 
@@ -221,7 +221,7 @@ logoutUser = () => {
 
 * **Question:** What did you do to solve this problem?
 
-* **Your Answer:**
+* **Your Answer:** I was able to solve this by adding some conditional logic to the React Router setup. This probably isn't the best way to handle the fix because it would mean applying that to each route.
 
 ---
 

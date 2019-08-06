@@ -57,7 +57,11 @@ class App extends React.Component {
     console.log("### user login:", response, profile);
   }
 
-  signupUser(user) {
+  async signupUser(user) {
+    const response = await auth.signup(user);
+    const profile = await auth.profile();
+    this.setState({ currentUserId: profile.user._id });
+    console.log("### user sign up:", response, profile);
     console.log("Signing Up User:", user);
   }
 
@@ -89,8 +93,15 @@ class App extends React.Component {
           <Route
             path="/signup"
             exact
-            component={() => {
-              return <Signup onSubmit={this.signupUser} />;
+            // component={() => {
+            //   return <Signup onSubmit={this.signupUser} />;
+            // }}
+            render={() => {
+              return this.state.currentUserId ? (
+                <Redirect to="/users" />
+              ) : (
+                <Signup onSubmit={this.signupUser} />
+              );
             }}
           />
           <Route

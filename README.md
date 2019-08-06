@@ -122,19 +122,21 @@ auth.js. Because it doesn't affect the view, so doesn't need to involve React co
 
 ---
 
-- [ ] Now that we have the user's information, let's store the user's ID in state. Set `currentUserId` to the user ID you've retrieved.
+- [X] Now that we have the user's information, let's store the user's ID in state. Set `currentUserId` to the user ID you've retrieved.
 
 * **Question:** What changes on the page after you successfully login? Why?
 
 * **Your Answer:**
+There are more menu items such as All Users and Create a New Post. This is because the Navigation Component is a ternary that shows one menu bar when not logged in and another when logged it. By passing down a logged in state, it renders the logged in Menu Bar that we see.
 
 * **Question:** What happens if you enter in the incorrect information? What _should_ happen?
 
 * **Your Answer:**
+Now there is an error that the page cannot setState and read the _id property of undefined. This should instead be handled with an error that does not expose so much about our code and also is helpful for users to fix the error.
 
 ---
 
-- [ ] Try refreshing the page. You'll notice it _looks_ like you've been logged out, although your token is still stored in LocalStorage. To solve this, we will need to plug in to the component life cycle with `componentDidMount()`. Try adding the following code to `App.js`:
+- [X] Try refreshing the page. You'll notice it _looks_ like you've been logged out, although your token is still stored in LocalStorage. To solve this, we will need to plug in to the component life cycle with `componentDidMount()`. Try adding the following code to `App.js`:
   ```js
   async componentDidMount () {
     const token = window.localStorage.getItem('journal-app')
@@ -148,22 +150,25 @@ auth.js. Because it doesn't affect the view, so doesn't need to involve React co
 * **Question:** Describe what is happening in the code above.
 
 * **Your Answer:**
+componentDidMount happens whenever our app loads and then it will run the code in the block. This function looks for the token, if there is one, then uses that token to get the user from the profile() method and uses that returned information to update the state
 
 ---
 
-- [ ] Now when you refresh the page, it looks as though you are logged in. Next, try clicking the logout button.
+- [x] Now when you refresh the page, it looks as though you are logged in. Next, try clicking the logout button.
 
 * **Question:** When you click "Logout", nothing happens unless you refresh the page. Why not?
 
 * **Your Answer:**
+logout() removes the token from localStorage, so on refresh the page does not see a token and thus renders the Unauthenticated Menu. If we wanted the page to refresh on its own, we could setState on logout.
 
 ---
 
-- [ ] Update the `logout()` method to appropriately logout the user.
+- [X] Update the `logout()` method to appropriately logout the user.
 
 * **Question:** What did you have to do to get the `logout()` function to work? Why?
 
 * **Your Answer:**
+move it to the App.js and pass down the function as a prop so that we have access to the state
 
 ---
 

@@ -52,8 +52,11 @@ class App extends React.Component {
       //get the profile object back from the profile function
       const profile = await auth.profile()
       //set our application state equal to that userId
-      this.setState({ currentUserId: profile.user._id,loading: false})
+      this.setState({ currentUserId: profile.user._id})
     }
+    this.setState({
+      loading: false
+    })
     //at this point we'll re-render our application with that state and the correct navigation will be drawn
   }
 
@@ -65,10 +68,10 @@ class App extends React.Component {
         <Navigation currentUserId={this.state.currentUserId} logoutUser={this.logoutUser}/>
         <Switch>
           <Route path='/login' exact component={() => {
-            return <Login onSubmit={this.loginUser} />
+            return this.state.currentUserId ? <Redirect to='/users' /> : <Login onSubmit={this.loginUser} />
           }} />
           <Route path='/signup' exact component={() => {
-            return <Signup onSubmit={this.signupUser} />
+            return this.state.currentUserId ? <Redirect to='/users' /> : <Signup onSubmit={this.signupUser} />
           }} />
 
           <Route path='/users' render={() => {

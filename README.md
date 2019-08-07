@@ -205,7 +205,7 @@ logoutUser = () => {
 
 * **Question:** Describe what is happening in the code above.
 
-* **Your Answer:** It's checking `state` via a ternary to make sure there is a valid `currentUserId`. If there is, then it will redirect the user to the `<UsersContainer />`, otherwise, it will redirect the user to the `/login` route.
+* **Your Answer:** It's checking `state` via a ternary to make sure there is a valid `currentUserId`. If there is, then it will direct the user to the `/users` route and display the `<UsersContainer />`, otherwise, it will redirect the user to the `/login` route.
 
 ---
 

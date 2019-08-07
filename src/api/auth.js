@@ -30,12 +30,17 @@ export const profile = async () => {
     return json
 }
 
-export const signup = async () => {
+export const signup = async (user) => {
     const response = await fetch(`${BASE_URL}/api/signup`, {
-    
+        body: JSON.stringify(user),
         headers:{
             'Content-Type': 'application/json'
         },
         method: 'POST'
     })
+    const json = await response.json()
+    const token = json.token
+
+    window.localStorage.setItem('journal-app', token);
+    return json
 }

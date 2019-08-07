@@ -187,7 +187,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** What happens? What _should_ happen?
 
-* **Answer:**
+* **Answer:** We are still allowed to go to the `/users` route, but in theory we shouldn't be allowed to do that because we logged out!
 
 ---
 
@@ -200,7 +200,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** Describe what is happening in the code above.
 
-* **Your Answer:**
+* **Your Answer:** For the `/users` route, if our existing state has a `currentUserId`, show the users container, otherwise redirect the user to the `/login` route.
 
 ---
 
@@ -208,7 +208,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** What happens and why?
 
-* **Your Answer:**
+* **Your Answer:** We get redirected to the login route because our currentUserId is in componentDidMount and it doesn't exist.
 
 ---
 
@@ -216,7 +216,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** What did you do to solve this problem?
 
-* **Your Answer:**
+* **Your Answer:** Added a variable `loading: true`  to our state, then when applicable, set that variable equal to false. In our render function, account for state variable and render accordingly.
 
 ---
 

@@ -11,7 +11,8 @@ class App extends React.Component {
   constructor () {
     super()
     this.state = {
-      currentUserId: null
+      currentUserId: null,
+      loading: true
     }
 
     this.loginUser = this.loginUser.bind(this)
@@ -19,7 +20,7 @@ class App extends React.Component {
     this.logoutUser = this.logoutUser.bind(this)
   }
 
-  async loginUser (user) {
+  async loginUser (user, history) {
     await auth.login(user)
     const profile = await auth.profile()
     this.setState({
@@ -27,8 +28,12 @@ class App extends React.Component {
     })
   }
 
-  signupUser (user) {
-    console.log('Signing Up User:', user)
+  async signupUser (user, history) {
+    await auth.signup(user)
+    const profile = await auth.profile()
+    this.setState({
+      currentUserId: profile.user._id
+    })
   }
 
   logoutUser = () => {
@@ -47,12 +52,13 @@ class App extends React.Component {
       //get the profile object back from the profile function
       const profile = await auth.profile()
       //set our application state equal to that userId
-      this.setState({ currentUserId: profile.user._id })
+      this.setState({ currentUserId: profile.user._id,loading: false})
     }
     //at this point we'll re-render our application with that state and the correct navigation will be drawn
   }
 
   render () {
+    if(this.state.loading) return <p>Loading...</p>
     return (
       <Router>
         <Header />
@@ -65,7 +71,9 @@ class App extends React.Component {
             return <Signup onSubmit={this.signupUser} />
           }} />
 
-          <Route path='/users' component={UsersContainer} />
+          <Route path='/users' render={() => {
+            return this.state.currentUserId ? <UsersContainer /> : <Redirect to='/login' />
+          }} />
 
           <Redirect to='/login' />
         </Switch>

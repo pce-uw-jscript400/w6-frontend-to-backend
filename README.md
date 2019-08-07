@@ -188,7 +188,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** What happens? What _should_ happen?
 
-* **Answer:**
+* **Answer:** We still see the users page. It should not show the users page when we are not logged in.
 
 ---
 
@@ -217,7 +217,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** What did you do to solve this problem?
 
-* **Your Answer:**
+* **Your Answer:** Show a loading page while the page is loading the currentUserId, then update the state to trigger a render.
 
 ---
 

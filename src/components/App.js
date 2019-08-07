@@ -45,17 +45,17 @@ class App extends React.Component {
 
   render () {
     if(this.state.loading) return <p>loading...</p>
-    
+
     return (
       <Router>
         <Header />
         <Navigation currentUserId={this.state.currentUserId} logoutUser={this.logoutUser} />
         <Switch>
           <Route path='/login' exact component={() => {
-            return <Login onSubmit={this.loginUser} />
+            return this.state.currentUserId ? <Redirect to='/users' /> : <Login onSubmit={this.loginUser} />
           }} />
           <Route path='/signup' exact component={() => {
-            return <Signup onSubmit={this.signupUser} />
+            return this.state.currentUserId ? <Redirect to='/users' /> : <Signup onSubmit={this.signupUser} />
           }} />
 
           <Route path='/users' render={() => {
@@ -71,8 +71,9 @@ class App extends React.Component {
     const token = window.localStorage.getItem('journal-app')
     if (token) {
       const profile = await auth.profile()
-      this.setState({ currentUserId: profile.user._id, loading: false })
+      this.setState({ currentUserId: profile.user._id})
     }
+    this.setState({ loading: false })
   }
 }
 

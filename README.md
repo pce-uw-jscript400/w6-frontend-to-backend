@@ -201,7 +201,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** Describe what is happening in the code above.
 
-* **Your Answer:**
+* **Your Answer:** If `this.state.currentUserId` is falsy, redirect to the login page.
 
 ---
 
@@ -209,7 +209,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** What happens and why?
 
-* **Your Answer:**
+* **Your Answer:** I am redirected back to the login page because currentUserId isn't set yet.
 
 ---
 

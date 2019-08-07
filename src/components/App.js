@@ -13,7 +13,8 @@ class App extends React.Component {
   constructor () {
     super()
     this.state = {
-      currentUserId: null
+      currentUserId: null,
+      loading: true
     }
 
     this.loginUser = this.loginUser.bind(this)
@@ -25,7 +26,7 @@ class App extends React.Component {
     const token = window.localStorage.getItem('journal-app')
     if (token) {
       const profile = await auth.profile()
-      this.setState({ currentUserId: profile.user._id })
+      this.setState({ currentUserId: profile.user._id, loading: false })
     }
   }
 
@@ -49,6 +50,8 @@ class App extends React.Component {
   }
 
   render () {
+    if (this.state.loading) return <p>Loading...</p>
+    
     return (
       <Router>
         <Header />
@@ -64,7 +67,9 @@ class App extends React.Component {
             return <Signup onSubmit={this.signupUser} />
           }} />
 
-          <Route path='/users' component={UsersContainer} />
+          <Route path='/users' render={() => {
+            return this.state.currentUserId ? <UsersContainer /> : <Redirect to='/login' />
+          }} />
 
           <Redirect to='/login' />
         </Switch>

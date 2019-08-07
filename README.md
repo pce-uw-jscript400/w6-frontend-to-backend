@@ -172,19 +172,19 @@ Move the logout() function to app.js so it could modify state.
 
 ---
 
-- [ ] When a user logs in or signs up, we should bring them to the `/users` route. Update both features so that the user is moved to that route after a successful login/signup.
+- [X] When a user logs in or signs up, we should bring them to the `/users` route. Update both features so that the user is moved to that route after a successful login/signup.
 
 ---
 
-- [ ] Try logging out and then go directly to the `/users` route.
+- [X] Try logging out and then go directly to the `/users` route.
 
 * **Question:** What happens? What _should_ happen?
 
 * **Answer:**
-
+The journals are displayed. Unlogged in users should not have access
 ---
 
-- [ ] Try _replacing_ the `/users` Route in `App.js` with the following:
+- [X] Try _replacing_ the `/users` Route in `App.js` with the following:
   ```jsx
   <Route path='/users' render={() => {
     return this.state.currentUserId ? <UsersContainer /> : <Redirect to='/login' />
@@ -194,7 +194,7 @@ Move the logout() function to app.js so it could modify state.
 * **Question:** Describe what is happening in the code above.
 
 * **Your Answer:**
-
+The code is choosing to render one or the other based on if there is a currentUserId present
 ---
 
 - [ ] Now try logging in. Then, when you're on the `/users` page, refresh the page.
@@ -202,18 +202,18 @@ Move the logout() function to app.js so it could modify state.
 * **Question:** What happens and why?
 
 * **Your Answer:**
-
+You get sent back to /login, because the localstorage isn't avaialble until the page has loaded.
 ---
 
-- [ ] To solve this problem, let's add a `loading` key to our App's state, with the default value set to `true`. When `componentDidMount()` finishes, set the `loading` key to equal `false`. Using this key, solve the issue of refreshing on the `/users` page. Make sure everyting continues to work whether you are logged in or out.
+- [X] To solve this problem, let's add a `loading` key to our App's state, with the default value set to `true`. When `componentDidMount()` finishes, set the `loading` key to equal `false`. Using this key, solve the issue of refreshing on the `/users` page. Make sure everyting continues to work whether you are logged in or out.
 
 * **Question:** What did you do to solve this problem?
 
 * **Your Answer:**
-
+Delayed the page from rendering until it had fully loaded.
 ---
 
-- [ ] We will have the same problem on the `/users/<userId>/posts` page. Use the same strategy to have this page load correctly on refresh.
+- [X] We will have the same problem on the `/users/<userId>/posts` page. Use the same strategy to have this page load correctly on refresh.
 
 * **Question:** In what component did you add the `loading` property and why?
 
@@ -221,11 +221,11 @@ Move the logout() function to app.js so it could modify state.
 
 ---
 
-- [ ] Using the same principals as above, make it so that if the user is logged in, they cannot go to the `/login` or `/signup` routes. Instead, forward them to `/users`.
+- [X] Using the same principals as above, make it so that if the user is logged in, they cannot go to the `/login` or `/signup` routes. Instead, forward them to `/users`.
 
 ---
 
-- [ ] Right now, the data inside of `users/Container.js` is static. Using `componentDidMount()`, update this code so that we pull our data from our API.
+- [X] Right now, the data inside of `users/Container.js` is static. Using `componentDidMount()`, update this code so that we pull our data from our API.
 
   _NOTE: You may want to create a new file in `./src/api/` to organize these requests.
 

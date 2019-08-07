@@ -11,7 +11,8 @@ class App extends React.Component {
   constructor () {
     super()
     this.state = {
-      currentUserId: null
+      currentUserId: null,
+      loading: true
     }
 
     this.loginUser = this.loginUser.bind(this)
@@ -21,22 +22,26 @@ class App extends React.Component {
 
   async componentDidMount () {
     const token = window.localStorage.getItem('journal-app')
+    console.log(token)
     if (token) {
       const profile = await auth.profile()
       console.log(profile)
       this.setState({ currentUserId: profile.user._id })
     }
+    this.setState({loading: false})
   }
 
   async loginUser (user) {
     const response = await auth.login(user)
     const userProfile = await auth.profile()
     console.log({response, userProfile})
-    this.setState({ currentUserId: userProfile.user._id })
+    this.setState({ currentUserId: userProfile.user._id})
   }
 
-  signupUser (user) {
-    console.log('Signing Up User:', user)
+  async signupUser (user) {
+    await auth.signup(user)
+    const profile = await auth.profile()
+    this.setState({ currentUserId: profile.user._id})
   }
 
   logoutUser = () => {
@@ -46,6 +51,7 @@ class App extends React.Component {
   }
 
   render () {
+    if (this.state.loading) return "Loading..."
     return (
       <Router>
         <Header />
@@ -55,13 +61,19 @@ class App extends React.Component {
         />
         <Switch>
           <Route path='/login' exact component={() => {
-            return <Login onSubmit={this.loginUser} />
+            return this.state.currentUserId ? (
+                <Redirect to="/users" />
+              ) : (
+                <Login onSubmit={this.loginUser} />
+              )
           }} />
           <Route path='/signup' exact component={() => {
             return <Signup onSubmit={this.signupUser} />
           }} />
 
-          <Route path='/users' component={UsersContainer} />
+          <Route path='/users' render={() => {
+            return this.state.currentUserId ? <UsersContainer /> : <Redirect to='/login' />
+          }} />
 
           <Redirect to='/login' />
         </Switch>

@@ -4,6 +4,7 @@ import { Route } from 'react-router-dom'
 import List from './List/List'
 import EditForm from './Form/Edit.Form'
 import NewForm from './Form/New.Form'
+import {deletePost} from '../api/posts'
 
 export default class Container extends React.Component {
   constructor (props) {
@@ -17,7 +18,8 @@ export default class Container extends React.Component {
     console.log('Submitting Post:', post)
   }
 
-  destroyPost (post) {
+  destroyPost (user, post) {
+    deletePost(user,post)
     console.log('Destroying Post:', post)
   }
 

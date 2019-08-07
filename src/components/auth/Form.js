@@ -1,6 +1,7 @@
 import React from 'react'
+import {withRouter} from 'react-router'
 
-export default class Form extends React.Component {
+class Form extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
@@ -49,3 +50,5 @@ export default class Form extends React.Component {
     )
   }
 }
+
+export default withRouter(Form)

@@ -36,7 +36,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** What error do you get? Why?
 
-* **Your Answer:** 
+* **Your Answer:** it is a 401 (unauthorized) error. "_Access to fetch at 'http://localhost:5000/api/users' from origin 'http://localhost:3000' has been blocked by CORS policy_"
 
 ---
 
@@ -44,7 +44,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** Try your request again. What error do you get? Why?
 
-* **Your Answer:**
+* **Your Answer:** 401 again, but this is the unauthorized error warning let us know that we are not logged in. The fetch actually completes successfully. We get this error because the middleware to check for the request token finds no token.
 
 ---
 
@@ -65,10 +65,11 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** Why do we need to include the "Content-Type" in the headers?
 
-* **Your Answer:**
+* **Your Answer:** We have body parser set to parse json data from requests. If not explicitly set, it would be sent as plain text. 
 
 * **Question:** How could you convert this method to an `async` method?
 
+* Add async in front of the function declaration and change the response to 
 ---
 
 - [ ] Let's move our requests to a better place. Create a new file at `./src/api/auth.js`. Add the following inside of it:
@@ -96,7 +97,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** What is happening on the first couple of lines of the new file you've created?
 
-* **Your Answer:** 
+* **Your Answer:** We are using the nodemon `env` variable for node environment to determine what base url the request should hit for the route (as they will most likely differ between local and production)
 
 ---
 
@@ -104,7 +105,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** Why are we storing the token?
 
-* **Your Answer:**
+* **Your Answer:** It contains information that can use for accessing additional routes without the need to get the token each time. It makes for easier access and not reliance on explicitly passing the token in every request we make. 
 
 ---
 
@@ -112,7 +113,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** Where did you write your code to manipulate LocalStorage? Why?
 
-* **Your Answer:** 
+* **Your Answer:** In the auth.js since this is more route based functionality. Separation of concerns would see App.js deal primarily with the React portion of the UI, not necessarily the routing and login functions. 
 
 ---
 
@@ -120,11 +121,11 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** What changes on the page after you successfully login? Why?
 
-* **Your Answer:**
+* **Your Answer:** The nav bar changed from `Login | Signup` to `All Users | Create a New Post | Logout`
 
 * **Question:** What happens if you enter in the incorrect information? What _should_ happen?
 
-* **Your Answer:**
+* **Your Answer:** We get a React error when trying to set state that it cannot read an undefined property. We should handle this error as part of the login route where if no user info returned, this code does not run. Perhaps we should show visual feedback that the signin was unsuccessful as well. 
 
 ---
 

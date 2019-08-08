@@ -17,8 +17,8 @@ class App extends React.Component {
   constructor() {
     super();
     this.state = {
-      currentUserId: null
-      // loading: true
+      currentUserId: null,
+      loading: true
     };
 
     this.loginUser = this.loginUser.bind(this);
@@ -32,10 +32,16 @@ class App extends React.Component {
   // TO-DO: Need to gracefully handle login errors
   async componentDidMount() {
     const token = window.localStorage.getItem("journal-app");
+    // if (token) {
+    //   const profile = await auth.profile();
+    //   this.setState({ currentUserId: profile.user._id });
+    // }
+    // this.setState({ loading: false });
     if (token) {
       const profile = await auth.profile();
-      this.setState({ currentUserId: profile.user._id });
-      // this.setState({ currentUserId: profile.user._id, loading: false });
+      this.setState({ currentUserId: profile._id, loading: false });
+    } else {
+      this.setState({ loading: false });
     }
   }
 
@@ -73,7 +79,7 @@ class App extends React.Component {
   };
 
   render() {
-    // if (this.state.loading) return <p>Loading...</p>;
+    if (this.state.loading) return <p>Loading...</p>;
     return (
       <Router>
         <Header />

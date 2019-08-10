@@ -68,14 +68,22 @@ class App extends React.Component {
             path="/login"
             exact
             component={() => {
-              return <Login onSubmit={this.loginUser} />;
+              return this.state.currentUserId ? (
+                <Redirect to="/users" />
+              ) : (
+                <Login onSubmit={this.loginUser} />
+              );
             }}
           />
           <Route
             path="/signup"
             exact
             component={() => {
-              return <Signup onSubmit={this.signupUser} />;
+              return this.state.currentUserId ? (
+                <Redirect to="/users" />
+              ) : (
+                <Signup onSubmit={this.signupUser} />
+              );
             }}
           />
 

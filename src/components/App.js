@@ -12,12 +12,14 @@ import Signup from "./auth/Signup.Form";
 import UsersContainer from "./users/Container";
 
 import * as auth from "../api/auth";
+//import { async } from "q";
 
 class App extends React.Component {
   constructor() {
     super();
     this.state = {
-      currentUserId: null
+      currentUserId: null,
+      loading: true
     };
 
     this.loginUser = this.loginUser.bind(this);
@@ -30,7 +32,7 @@ class App extends React.Component {
     const token = window.localStorage.getItem("journal-app");
     if (token) {
       const profile = await auth.profile();
-      this.setState({ currentUserId: profile.user._id });
+      this.setState({ currentUserId: profile.user._id, loading: false });
     }
   }
 
@@ -39,44 +41,21 @@ class App extends React.Component {
     const profile = await auth.profile();
     this.setState({ currentUserId: profile.user._id });
   }
-  // async loginUser(user) {
-  //   const response = await auth.login(user);
-  //   const userInfo = await auth.profile();
-  //   console.log(response, userInfo);
-  // }
-  // async loginUser(user) {
-  //   const response = await fetch("http://localhost:5000/api/login", {
-  //     body: JSON.stringify(user),
-  //     headers: {
-  //       "Content-Type": "application/json"
-  //     },
-  //     method: "POST"
-  //   });
-  //   const json = await response.json();
-  //   console.log(json);
-  // }
-  //   fetch("http://localhost:5000/api/login", {
-  //     body: JSON.stringify(user),
-  //     headers: {
-  //       "Content-Type": "application/json"
-  //     },
-  //     method: "POST"
-  //   })
-  //     .then(res => res.json())
-  //     .then(console.log);
-  // }
 
-  signupUser(user) {
-    console.log("Signing Up User:", user);
+  async signupUser(user) {
+    await auth.signup(user);
+    const profile = await auth.profile();
+
+    this.setState({ currentUserId: profile.user._id });
   }
 
   logoutUser() {
     window.localStorage.removeItem("journal-app");
     this.setState({ currentUserId: null });
-    // history.push('/login')
   }
 
   render() {
+    if (this.state.loading) return <h1>Loading...</h1>;
     return (
       <Router>
         <Header />
@@ -100,8 +79,16 @@ class App extends React.Component {
             }}
           />
 
-          <Route path="/users" component={UsersContainer} />
-
+          <Route
+            path="/users"
+            render={() => {
+              return this.state.currentUserId ? (
+                <UsersContainer />
+              ) : (
+                <Redirect to="/login" />
+              );
+            }}
+          />
           <Redirect to="/login" />
         </Switch>
       </Router>

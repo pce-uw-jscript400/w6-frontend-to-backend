@@ -44,7 +44,6 @@ class App extends React.Component {
 logoutUser () {
     window.localStorage.removeItem('journal-app')
     this.setState({ currentUserId: null })
-    // history.push('/login')
   }
 
   render () {

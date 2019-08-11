@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom'
 const AuthenticatedLinks = ({ currentUserId, logoutUser, history }) => {
   const logout = () => {
     logoutUser()
+    history.push('/login')
   }
   return (
     <ul className='nav justify-content-end'>

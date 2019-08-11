@@ -36,7 +36,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** What error do you get? Why?
 
-* **Your Answer:** 
+* **Your Answer:** I get a 401 unauthorized error and a CORS error because we are not whitelisted.
 
 ---
 
@@ -44,7 +44,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** Try your request again. What error do you get? Why?
 
-* **Your Answer:**
+* **Your Answer:** We get a 401 error that we are not authorized. We are getting that from the isLoggedIn function returning a 401 because we are not logged in.
 
 ---
 
@@ -65,9 +65,9 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** Why do we need to include the "Content-Type" in the headers?
 
-* **Your Answer:**
+* **Your Answer:** We need to include the content type in the headers so that our server knows that the information it's getting is json. Server is expecting json.
 
-* **Question:** How could you convert this method to an `async` method?
+* **Question:** How could you convert this method to an `async` method? We can add it before the function name loginUser.
 
 ---
 
@@ -87,7 +87,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
       method: 'POST'
     })
     const json = await response.json()
-    
+
     return json
   }
   ```
@@ -96,7 +96,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** What is happening on the first couple of lines of the new file you've created?
 
-* **Your Answer:** 
+* **Your Answer:** The base url of development is being set at 'http://localhost:5000'. If it's not development then it's 'tbd'.
 
 ---
 
@@ -104,7 +104,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** Why are we storing the token?
 
-* **Your Answer:**
+* **Your Answer:** We are storing the token because now the token will be saved across browser sessions.
 
 ---
 
@@ -112,7 +112,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** Where did you write your code to manipulate LocalStorage? Why?
 
-* **Your Answer:** 
+* **Your Answer:** I wrote it in the login and signup methods so that the token can be saved as soon as the user logs in.
 
 ---
 
@@ -120,11 +120,11 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** What changes on the page after you successfully login? Why?
 
-* **Your Answer:**
+* **Your Answer:** The Navigation bar changes once successfully logged in because we defined in the component that if there is a currentUser we render the authenticated links.
 
 * **Question:** What happens if you enter in the incorrect information? What _should_ happen?
 
-* **Your Answer:**
+* **Your Answer:** The request should return with a status of a 401 and show an error.
 
 ---
 
@@ -141,7 +141,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** Describe what is happening in the code above.
 
-* **Your Answer:**
+* **Your Answer:** When the component mounts for the first time, the app searches for the token stored in localStorage and if there is one then the currentUserId is saved in the component's state.
 
 ---
 
@@ -149,7 +149,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** When you click "Logout", nothing happens unless you refresh the page. Why not?
 
-* **Your Answer:**
+* **Your Answer:** Nothing happens because the app still has the current user stored in it's state.
 
 ---
 
@@ -157,7 +157,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** What did you have to do to get the `logout()` function to work? Why?
 
-* **Your Answer:**
+* **Your Answer:** You have to remove the item journal-app from the local storage and reset the state of the variable currentUserId.
 
 ---
 
@@ -173,7 +173,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** What happens? What _should_ happen?
 
-* **Answer:**
+* **Answer:** What should happen is that since the user is not authenticated they should not be able to see the page. We updated the code to redirect them to the login page if they are not authenticated and try to access this route.
 
 ---
 
@@ -186,7 +186,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** Describe what is happening in the code above.
 
-* **Your Answer:**
+* **Your Answer:** If the state of the app has a current user then the UsersContainer component will render else the router will redirect to the login page.
 
 ---
 
@@ -194,7 +194,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** What happens and why?
 
-* **Your Answer:**
+* **Your Answer:** I can't quite remember what was happening before we changed the code.
 
 ---
 
@@ -202,7 +202,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** What did you do to solve this problem?
 
-* **Your Answer:**
+* **Your Answer:** We added a variable to our state that is a boolean indicating whether the app is loading.
 
 ---
 
@@ -210,21 +210,21 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** In what component did you add the `loading` property and why?
 
-* **Your Answer:**
+* **Your Answer:** I added it to the container for list of posts because it's the component responsible for rendering a list of posts.
 
 ---
 
-- [ ] Using the same principals as above, make it so that if the user is logged in, they cannot go to the `/login` or `/signup` routes. Instead, forward them to `/users`.
+- [x] Using the same principals as above, make it so that if the user is logged in, they cannot go to the `/login` or `/signup` routes. Instead, forward them to `/users`.
 
 ---
 
-- [ ] Right now, the data inside of `users/Container.js` is static. Using `componentDidMount()`, update this code so that we pull our data from our API.
+- [x] Right now, the data inside of `users/Container.js` is static. Using `componentDidMount()`, update this code so that we pull our data from our API.
 
   _NOTE: You may want to create a new file in `./src/api/` to organize these requests.
 
 ---
 
-- [ ] Let's get our "Delete" link working. On the backend, create a `DELETE Post` route with the path of: 
+- [x] Let's get our "Delete" link working. On the backend, create a `DELETE Post` route with the path of:
   ```
   DELETE /users/:userId/posts/:postId
   ```
@@ -232,21 +232,21 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 ---
 
-- [ ] On the frontend, create a new function in your `src/api` folder that will delete a post. Use that function inside of the `src/components/posts/Container` file. Upon successful deletion, send the user back to the `/users/<userId>/posts` route.
+- [x] On the frontend, create a new function in your `src/api` folder that will delete a post. Use that function inside of the `src/components/posts/Container` file. Upon successful deletion, send the user back to the `/users/<userId>/posts` route.
 
 ---
 
-- [ ] Try deleting a post using the link.
+- [x] Try deleting a post using the link.
 
 * **Question:** Why did the number of posts not change when you were redirected back to the `/users` route?
 
 * **Your Answer:** Whenever we modify our data with a Create, Update, or Delete, we have a few options on how to make our frontend reflect those changes. What options can you think of?
 
-* **Question:**
+* **Question:** The number of posts did not change because the app did not make another request to the server. There are two options that I can think of. The first is to have the list of posts container to make another service request. Another is to have the destroyPost change the state of the posts container to reflect that one post has been deleted.
 
 ---
 
-- [ ] Using your preferred method, update your code so that the frontend will reflect the changes made to the backend.
+- [x] Using your preferred method, update your code so that the frontend will reflect the changes made to the backend.
 
 ---
 
@@ -270,7 +270,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 ## Exercise
 
-We got a lot done but there's still a lot to do to make this app fully functional. Complete the following features on this application. 
+We got a lot done but there's still a lot to do to make this app fully functional. Complete the following features on this application.
 
 - [ ] If there are no posts for a user, show a message on their `/users/<userId>/posts` page that encourages them to create a new post.
 

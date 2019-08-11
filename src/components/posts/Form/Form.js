@@ -1,26 +1,26 @@
 import React from 'react'
 
-export default class Form extends React.Component {
+ export default class Form extends React.Component {
   constructor (props) {
     super(props)
     const { post = {} } = this.props
     const { content = '', emotion = '' } = post
     this.state = { content, emotion }
 
-    this.handleChange = this.handleChange.bind(this)
+     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
   }
 
-  handleChange ({ target: { name, value } }) {
+   handleChange ({ target: { name, value } }) {
     this.setState({ [name]: value })
   }
 
-  handleSubmit (e) {
+   handleSubmit (e) {
     e.preventDefault()
     this.props.onSubmit(this.state)
   }
 
-  render () {
+   render () {
     return (
       <form onSubmit={this.handleSubmit}>
         <div className='form-group'>

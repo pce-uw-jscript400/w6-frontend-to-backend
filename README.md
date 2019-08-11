@@ -184,9 +184,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** What did you do to solve this problem?
 
-* **Your Answer:**
-
----
+* **Your Answer:** Added to render - 'if (this.state.loading) return <p>Loading...</p>' and componentDidMount - loading - to false.
 
 - [ ] We will have the same problem on the `/users/<userId>/posts` page. Use the same strategy to have this page load correctly on refresh.
 

@@ -47,14 +47,14 @@ class App extends React.Component {
     this.setState({ currentUserId: profile.user._id })
   }
 
-logoutUser () {
+  logoutUser () {
     window.localStorage.removeItem('journal-app')
     this.setState({ currentUserId: null })
   }
 
   render () {
     if (this.state.loading) return <p>Loading...</p>
-    
+
     return (
       <Router>
         <Header />
@@ -64,10 +64,18 @@ logoutUser () {
         />
         <Switch>
           <Route path='/login' exact component={() => {
-            return <Login onSubmit={this.loginUser} />
+            return this.state.currentUserId ? (
+              <Redirect to='/users' />
+            ) : ( 
+              <Login onSubmit={this.loginUser} />
+            )
           }} />
           <Route path='/signup' exact component={() => {
-            return <Signup onSubmit={this.signupUser} />
+            return this.state.currentUserId ? (
+              <Redirect to='/users' />
+            ) : ( 
+              <Signup onSubmit={this.signupUser} />
+            )
           }} />
 
           <Route path='/users' render={() => {

@@ -35,8 +35,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
   ```
 
 * **Question:** What error do you get? Why?
-
-* **Your Answer:** it is a 401 (unauthorized) error. "_Access to fetch at 'http://localhost:5000/api/users' from origin 'http://localhost:3000' has been blocked by CORS policy_"
+* **Your Answer:** it is a 401 (unauthorized) error. "_Access to fetch at 'http://localhost:5000/api/users' from origin 'http://localhost:3000' has been blocked by CORS policy_". The reason is because these applications are technically running on seperate domains. While both are running on localhost, they are running on different ports which is the equivalent of a cross-origin request. Generally browsers will block this type of request as it could result in malicious attack. 
 
 ---
 
@@ -65,11 +64,11 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** Why do we need to include the "Content-Type" in the headers?
 
-* **Your Answer:** We have body parser set to parse json data from requests. If not explicitly set, it would be sent as plain text. 
+* **Your Answer:** This communicates to the backend server what format of data we are sending to it. 
 
 * **Question:** How could you convert this method to an `async` method?
 
-* Add async in front of the function declaration and change the response to 
+* **Your Answer:** Add async in front of the function declaration and change the response to `await fetch`
 ---
 
 - [ ] Let's move our requests to a better place. Create a new file at `./src/api/auth.js`. Add the following inside of it:
@@ -105,7 +104,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** Why are we storing the token?
 
-* **Your Answer:** It contains information that can use for accessing additional routes without the need to get the token each time. It makes for easier access and not reliance on explicitly passing the token in every request we make. 
+* **Your Answer:** It contains information that can be used for accessing additional routes without the need to get the token each time. It makes for easier access and relatively safe access by only storing this token locally and not a reliance on explicitly passing the token in every request we make. 
 
 ---
 
@@ -113,7 +112,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** Where did you write your code to manipulate LocalStorage? Why?
 
-* **Your Answer:** In the auth.js since this is more route based functionality. Separation of concerns would see App.js deal primarily with the React portion of the UI, not necessarily the routing and login functions. 
+* **Your Answer:** In the auth.js since this is route based functionality. Separation of concerns would see App.js deal primarily with the React portion of the UI, not necessarily the routing and login functions. 
 
 ---
 
@@ -121,7 +120,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** What changes on the page after you successfully login? Why?
 
-* **Your Answer:** The nav bar changed from `Login | Signup` to `All Users | Create a New Post | Logout`
+* **Your Answer:** The nav bar changed from `Login | Signup`  to  `All Users | Create a New Post | Logout`
 
 * **Question:** What happens if you enter in the incorrect information? What _should_ happen?
 
@@ -142,7 +141,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** Describe what is happening in the code above.
 
-* **Your Answer:**
+* **Your Answer:** `componentDidMount` allows us to manipulate DOM nodes once they have been added to the DOM tree. In this code we are checking if there is a local auth token stored once the component is mounted and if it exists, retrieving the profile of the signed in user and setting state and forcing a rerender with a logged in state before an unauthorized state is rendered to the screen (per the react docs, componentDidMount will trigger the render() method a second time before any intermediate state is shown). 
 
 ---
 
@@ -150,7 +149,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** When you click "Logout", nothing happens unless you refresh the page. Why not?
 
-* **Your Answer:**
+* **Your Answer:** The logout function is not altering state. We need to make the front end aware that the token has been removed and is no longer valid and the user should not be entitled to authorized privileges. That is to say, the logout function is removing the auth token from local storage but nothing more. 
 
 ---
 
@@ -158,7 +157,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** What did you have to do to get the `logout()` function to work? Why?
 
-* **Your Answer:**
+* **Your Answer:** Alter state to remove the currentlyUserId.
 
 ---
 

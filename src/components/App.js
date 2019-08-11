@@ -14,7 +14,8 @@ class App extends React.Component {
   constructor () {
     super()
     this.state = {
-      currentUserId: null
+      currentUserId: null,
+      loading: true
     }
 
     this.loginUser = this.loginUser.bind(this)
@@ -22,12 +23,14 @@ class App extends React.Component {
     this.logoutUser = this.logoutUser.bind(this)
   }
 
-  async componentDidMount () {
+  async componentDidMount() {
     const token = window.localStorage.getItem('journal-app')
+
     if (token) {
       const profile = await auth.profile()
       this.setState({ currentUserId: profile.user._id })
     }
+    this.setState({ loading: false })
   }
 
   async loginUser (user) {
@@ -37,8 +40,11 @@ class App extends React.Component {
     this.setState({ currentUserId: profile.user._id })
   }
 
-  signupUser (user) {
-    console.log('Signing Up User:', user)
+  async signupUser (user) {
+    await auth.signup(user)
+    const profile = await auth.profile()
+
+    this.setState({ currentUserId: profile.user._id })
   }
 
 logoutUser () {
@@ -47,6 +53,8 @@ logoutUser () {
   }
 
   render () {
+    if (this.state.loading) return <p>Loading...</p>
+    
     return (
       <Router>
         <Header />
@@ -62,7 +70,9 @@ logoutUser () {
             return <Signup onSubmit={this.signupUser} />
           }} />
 
-          <Route path='/users' component={UsersContainer} />
+          <Route path='/users' render={() => {
+            return this.state.currentUserId ? <UsersContainer /> : <Redirect to='/login' />
+          }} />
 
           <Redirect to='/login' />
         </Switch>

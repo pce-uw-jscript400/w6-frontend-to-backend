@@ -147,9 +147,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** What did you have to do to get the `logout()` function to work? Why?
 
-* **Your Answer:**
-
----
+* **Your Answer:** To remove item ('journal-app') from local storage and set state of currentUserId to null.
 
 - [ ] Following the patterns we used above, build the Signup feature.
 
@@ -163,9 +161,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** What happens? What _should_ happen?
 
-* **Answer:**
-
----
+* **Answer:** When go to the `/users` route after logout, All Journals title show up. This page should be available only if you logged in. We want to add some level of authorization. 
 
 - [ ] Try _replacing_ the `/users` Route in `App.js` with the following:
   ```jsx
@@ -176,17 +172,13 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** Describe what is happening in the code above.
 
-* **Your Answer:**
-
----
+* **Your Answer:** Check if the currentUserId populated in state. If user doesn't exist it redirect to login page, if exist redirect to the user route.
 
 - [ ] Now try logging in. Then, when you're on the `/users` page, refresh the page.
 
 * **Question:** What happens and why?
 
-* **Your Answer:**
-
----
+* **Your Answer:** No access to /users/ after refreshing. At this poin userId is not defined.
 
 - [ ] To solve this problem, let's add a `loading` key to our App's state, with the default value set to `true`. When `componentDidMount()` finishes, set the `loading` key to equal `false`. Using this key, solve the issue of refreshing on the `/users` page. Make sure everyting continues to work whether you are logged in or out.
 

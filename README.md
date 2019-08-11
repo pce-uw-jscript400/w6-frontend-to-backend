@@ -36,7 +36,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** What error do you get? Why?
 
-* **Your Answer:** 
+* **Your Answer:**
 
 ---
 
@@ -45,14 +45,16 @@ By the end of this lesson. You should be able to set up two separate servers tha
 * **Question:** Try your request again. What error do you get? Why?
 
 * **Your Answer:**
+Access to fetch at 'http://localhost:5000/api/users' from origin 'http://localhost:3000' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. If an opaque response serves your needs, set the request's mode to 'no-cors' to fetch the resource with CORS disabled.
+
 
 ---
 
-- [ ] In `App.js`, we have created our `loginUser()` method. Try invoking that function through the frontend, inspecting what is outputted.
+- [x] In `App.js`, we have created our `loginUser()` method. Try invoking that function through the frontend, inspecting what is outputted.
 
 ---
 
-- [ ] We now want to try and login the user when they hit submit. Add the following to your `loginUser()` method:
+- [x] We now want to try and login the user when they hit submit. Add the following to your `loginUser()` method:
   ```js
   fetch('http://localhost:5000/api/login', {
     body: JSON.stringify(user),
@@ -66,12 +68,13 @@ By the end of this lesson. You should be able to set up two separate servers tha
 * **Question:** Why do we need to include the "Content-Type" in the headers?
 
 * **Your Answer:**
+This header tells the server what type of data is being sent so it can handle it properly.
 
 * **Question:** How could you convert this method to an `async` method?
 
 ---
 
-- [ ] Let's move our requests to a better place. Create a new file at `./src/api/auth.js`. Add the following inside of it:
+- [x] Let's move our requests to a better place. Create a new file at `./src/api/auth.js`. Add the following inside of it:
   ```js
   const { NODE_ENV } = process.env
   const BASE_URL = NODE_ENV === 'development'
@@ -87,7 +90,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
       method: 'POST'
     })
     const json = await response.json()
-    
+
     return json
   }
   ```
@@ -96,39 +99,42 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** What is happening on the first couple of lines of the new file you've created?
 
-* **Your Answer:** 
-
+* **Your Answer:**
+We are designating the url at which our app will be hosted. Which will be localhost 5000 while we are developing and if we were to productionize this, we would add the final url.
 ---
 
-- [ ] Let's store the token in LocalStorage with a key of `journal-app`.
+- [x] Let's store the token in LocalStorage with a key of `journal-app`.
 
 * **Question:** Why are we storing the token?
 
 * **Your Answer:**
-
+So we stay logged in
 ---
 
 - [ ] We now have the token, but we don't have any of the user information. Add a new function to our `./src/api/auth.js` called `profile()` that sends over the token in order to retrieve the user information. Then, log that information.
 
 * **Question:** Where did you write your code to manipulate LocalStorage? Why?
 
-* **Your Answer:** 
-
+* **Your Answer:**
+in the login function in the auth file. So that when we login, we store the token and it can be retrieved from then on.
 ---
 
-- [ ] Now that we have the user's information, let's store the user's ID in state. Set `currentUserId` to the user ID you've retrieved.
+- [x] Now that we have the user's information, let's store the user's ID in state. Set `currentUserId` to the user ID you've retrieved.
 
 * **Question:** What changes on the page after you successfully login? Why?
 
 * **Your Answer:**
+I now see nav bar options for All Users and Create New Post.
 
 * **Question:** What happens if you enter in the incorrect information? What _should_ happen?
 
 * **Your Answer:**
+`Unhandled Rejection (TypeError): Cannot read property '_id' of undefined`
 
+We should probably handle this error better and return an error to the user that they entered incorrect info.
 ---
 
-- [ ] Try refreshing the page. You'll notice it _looks_ like you've been logged out, although your token is still stored in LocalStorage. To solve this, we will need to plug in to the component life cycle with `componentDidMount()`. Try adding the following code to `App.js`:
+- [x] Try refreshing the page. You'll notice it _looks_ like you've been logged out, although your token is still stored in LocalStorage. To solve this, we will need to plug in to the component life cycle with `componentDidMount()`. Try adding the following code to `App.js`:
   ```js
   async componentDidMount () {
     const token = window.localStorage.getItem('journal-app')
@@ -142,30 +148,30 @@ By the end of this lesson. You should be able to set up two separate servers tha
 * **Question:** Describe what is happening in the code above.
 
 * **Your Answer:**
-
+local storage will retain the token even if you refresh or whatnot.
 ---
 
-- [ ] Now when you refresh the page, it looks as though you are logged in. Next, try clicking the logout button.
+- [x] Now when you refresh the page, it looks as though you are logged in. Next, try clicking the logout button.
 
 * **Question:** When you click "Logout", nothing happens unless you refresh the page. Why not?
 
 * **Your Answer:**
-
+Nothing happens visually, in the console, i see that the token is cleared from local storage. I think this happens because the app doesn't know to go and check back to see if it still has the user's token. We probably need to add an event listener.
 ---
 
-- [ ] Update the `logout()` method to appropriately logout the user.
+- [x] Update the `logout()` method to appropriately logout the user.
 
 * **Question:** What did you have to do to get the `logout()` function to work? Why?
 
 * **Your Answer:**
+Need to set the state for loggin out in your top-level (stateful) component App.js, then pass that down to the lower level components
+---
+
+- [x] Following the patterns we used above, build the Signup feature.
 
 ---
 
-- [ ] Following the patterns we used above, build the Signup feature.
-
----
-
-- [ ] When a user logs in or signs up, we should bring them to the `/users` route. Update both features so that the user is moved to that route after a successful login/signup.
+- [x] When a user logs in or signs up, we should bring them to the `/users` route. Update both features so that the user is moved to that route after a successful login/signup.
 
 ---
 
@@ -177,7 +183,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 ---
 
-- [ ] Try _replacing_ the `/users` Route in `App.js` with the following:
+- [x] Try _replacing_ the `/users` Route in `App.js` with the following:
   ```jsx
   <Route path='/users' render={() => {
     return this.state.currentUserId ? <UsersContainer /> : <Redirect to='/login' />
@@ -187,44 +193,44 @@ By the end of this lesson. You should be able to set up two separate servers tha
 * **Question:** Describe what is happening in the code above.
 
 * **Your Answer:**
-
+For the users route, ff the currentUserId returns true, then display the UsersContainer component, otherwise redirect to /login
 ---
 
-- [ ] Now try logging in. Then, when you're on the `/users` page, refresh the page.
+- [x] Now try logging in. Then, when you're on the `/users` page, refresh the page.
 
 * **Question:** What happens and why?
 
 * **Your Answer:**
-
+No users! because the component displayed before the call to users to get back the users completed.
 ---
 
-- [ ] To solve this problem, let's add a `loading` key to our App's state, with the default value set to `true`. When `componentDidMount()` finishes, set the `loading` key to equal `false`. Using this key, solve the issue of refreshing on the `/users` page. Make sure everyting continues to work whether you are logged in or out.
+- [x] To solve this problem, let's add a `loading` key to our App's state, with the default value set to `true`. When `componentDidMount()` finishes, set the `loading` key to equal `false`. Using this key, solve the issue of refreshing on the `/users` page. Make sure everyting continues to work whether you are logged in or out.
 
 * **Question:** What did you do to solve this problem?
 
 * **Your Answer:**
-
+We need to wait for the call to the users API to return successfully, otherwise when `componentDidMount()` is called, it may dispaly the empty array prior to the call completing
 ---
 
-- [ ] We will have the same problem on the `/users/<userId>/posts` page. Use the same strategy to have this page load correctly on refresh.
+- [x] We will have the same problem on the `/users/<userId>/posts` page. Use the same strategy to have this page load correctly on refresh.
 
 * **Question:** In what component did you add the `loading` property and why?
 
 * **Your Answer:**
+the posts/Container component because it's the top level component for that page. This is where we need to tell it to wait until loading in complete before mounting the component.
+---
+
+- [x] Using the same principals as above, make it so that if the user is logged in, they cannot go to the `/login` or `/signup` routes. Instead, forward them to `/users`.
 
 ---
 
-- [ ] Using the same principals as above, make it so that if the user is logged in, they cannot go to the `/login` or `/signup` routes. Instead, forward them to `/users`.
+- [x] Right now, the data inside of `users/Container.js` is static. Using `componentDidMount()`, update this code so that we pull our data from our API.
+
+  NOTE: You may want to create a new file in `./src/api/` to organize these requests.
 
 ---
 
-- [ ] Right now, the data inside of `users/Container.js` is static. Using `componentDidMount()`, update this code so that we pull our data from our API.
-
-  _NOTE: You may want to create a new file in `./src/api/` to organize these requests.
-
----
-
-- [ ] Let's get our "Delete" link working. On the backend, create a `DELETE Post` route with the path of: 
+- [x] Let's get our "Delete" link working. On the backend, create a `DELETE Post` route with the path of:
   ```
   DELETE /users/:userId/posts/:postId
   ```
@@ -232,29 +238,29 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 ---
 
-- [ ] On the frontend, create a new function in your `src/api` folder that will delete a post. Use that function inside of the `src/components/posts/Container` file. Upon successful deletion, send the user back to the `/users/<userId>/posts` route.
+- [x] On the frontend, create a new function in your `src/api` folder that will delete a post. Use that function inside of the `src/components/posts/Container` file. Upon successful deletion, send the user back to the `/users/<userId>/posts` route.
 
 ---
 
-- [ ] Try deleting a post using the link.
+- [x] Try deleting a post using the link.
 
 * **Question:** Why did the number of posts not change when you were redirected back to the `/users` route?
 
-* **Your Answer:** Whenever we modify our data with a Create, Update, or Delete, we have a few options on how to make our frontend reflect those changes. What options can you think of?
+ Whenever we modify our data with a Create, Update, or Delete, we have a few options on how to make our frontend reflect those changes. What options can you think of?
 
-* **Question:**
+* **Your Answer:**
+We didn't ask the frontend to reload/re-fetch the data after we updated it.
+---
+
+- [x] Using your preferred method, update your code so that the frontend will reflect the changes made to the backend.
 
 ---
 
-- [ ] Using your preferred method, update your code so that the frontend will reflect the changes made to the backend.
+- [x] Right now it looks like we can Edit and Delete posts for other users. Hide/display those actions to only be available on a post if it's the user's post.
 
 ---
 
-- [ ] Right now it looks like we can Edit and Delete posts for other users. Hide/display those actions to only be available on a post if it's the user's post.
-
----
-
-- [ ] Let's get our "Create a New Post" form to work. On the backend, create a `CREATE Post` route with the path of:
+- [x] Let's get our "Create a New Post" form to work. On the backend, create a `CREATE Post` route with the path of:
   ```
   POST /users/:userId/posts
   ```
@@ -270,7 +276,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 ## Exercise
 
-We got a lot done but there's still a lot to do to make this app fully functional. Complete the following features on this application. 
+We got a lot done but there's still a lot to do to make this app fully functional. Complete the following features on this application.
 
 - [ ] If there are no posts for a user, show a message on their `/users/<userId>/posts` page that encourages them to create a new post.
 
@@ -291,4 +297,3 @@ We got a lot done but there's still a lot to do to make this app fully functiona
 - [ ] On the update post page, appropriately handle errors so that the user has a chance to correct their post. Display some kind of helpful message.
 
 - [ ] Create a new frontend route at `/users/<userId>/posts/<postId>` that shows a single post. Update your Create and Edit forms to redirect here instead of to the general `/posts` page.
-

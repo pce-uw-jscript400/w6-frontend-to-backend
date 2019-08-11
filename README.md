@@ -112,7 +112,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** What changes on the page after you successfully login? Why?
 
-* **Your Answer:**
+* **Your Answer:** Nav changed with 'Logout' and 'Add new post' link
 
 * **Question:** What happens if you enter in the incorrect information? What _should_ happen?
 
@@ -133,9 +133,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** Describe what is happening in the code above.
 
-* **Your Answer:**
-
----
+* **Your Answer:** 
 
 - [ ] Now when you refresh the page, it looks as though you are logged in. Next, try clicking the logout button.
 

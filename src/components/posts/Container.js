@@ -1,11 +1,14 @@
 import React from 'react'
+import { withRouter } from 'react-router'
 import { Route } from 'react-router-dom'
+
+import * as api from '../../api/posts'
 
 import List from './List/List'
 import EditForm from './Form/Edit.Form'
 import NewForm from './Form/New.Form'
 
-export default class Container extends React.Component {
+class Container extends React.Component {
   constructor (props) {
     super(props)
     this.createPost = this.createPost.bind(this)
@@ -13,16 +16,20 @@ export default class Container extends React.Component {
     this.editPost = this.editPost.bind(this)
   }
 
+  
+
   createPost (post) {
     console.log('Submitting Post:', post)
   }
 
-  destroyPost (post) {
-    console.log('Destroying Post:', post)
+  async destroyPost (userId, postId) {
+    const response = await api.deletePost(userId, postId)
+    console.log(response)
+    this.props.history.push(`/users/${userId}/posts`)
   }
 
   editPost (post) {
-    console.log('Editting Post:', post)
+    console.log('Editing Post:', post)
   }
 
   render () {
@@ -45,3 +52,5 @@ export default class Container extends React.Component {
     )
   }
 }
+
+export default withRouter(Container)

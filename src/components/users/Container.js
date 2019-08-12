@@ -10,7 +10,9 @@ export default class Container extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      users: []
+      users: [
+        { posts: [] }
+      ]
     }
   }
 
@@ -21,6 +23,10 @@ export default class Container extends React.Component {
       this.setState({ users })
     }
   }
+  
+  // removePost
+  // -- would remove a single post from the state;
+  // calling set state
 
   render () {
     const { users } = this.state

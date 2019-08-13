@@ -38,6 +38,8 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Your Answer:** 
 
+I get a 401 (unauthorized error). I am guessing because I am not currently logged in. Also CORS policy error that means the page needs to be more secure. Prevents browsers from accessing a server unless they're allowed to.
+
 ---
 
 - [ ] To get around this issue, we need to explicitly allow for requests to come from `localhost:3000`. To do so, we will use the [cors](https://www.npmjs.com/package/cors) package. Install `cors` on the _backend server_ and whitelist `localhost:5000`.
@@ -45,6 +47,8 @@ By the end of this lesson. You should be able to set up two separate servers tha
 * **Question:** Try your request again. What error do you get? Why?
 
 * **Your Answer:**
+
+Now it is just the 401 error because we are not currently logged in. Need to update the middleware in auth.js
 
 ---
 
@@ -67,7 +71,14 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Your Answer:**
 
+To tell the server the type that is being sent, in this case json, otherwise it would come through as plain text.
+
 * **Question:** How could you convert this method to an `async` method?
+
+* **Your Answer:**
+
+
+
 
 ---
 
@@ -98,6 +109,8 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Your Answer:** 
 
+
+
 ---
 
 - [ ] Let's store the token in LocalStorage with a key of `journal-app`.
@@ -105,6 +118,8 @@ By the end of this lesson. You should be able to set up two separate servers tha
 * **Question:** Why are we storing the token?
 
 * **Your Answer:**
+
+The token is being stored so that page recognizes that the user is logged in.
 
 ---
 
@@ -114,6 +129,8 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Your Answer:** 
 
+In auth.js. It could have been added in App.js but the instructor suggested that we leave mostly react components there.
+
 ---
 
 - [ ] Now that we have the user's information, let's store the user's ID in state. Set `currentUserId` to the user ID you've retrieved.
@@ -122,9 +139,13 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Your Answer:**
 
+We are now shown the routes that are available to a user who is logged in
+
 * **Question:** What happens if you enter in the incorrect information? What _should_ happen?
 
 * **Your Answer:**
+
+If the login information is incorrect, the new routes should not be shown.
 
 ---
 
@@ -143,6 +164,9 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Your Answer:**
 
+Getting token from local storage
+checking if the token exists and if it does updating the react state.
+
 ---
 
 - [ ] Now when you refresh the page, it looks as though you are logged in. Next, try clicking the logout button.
@@ -150,6 +174,8 @@ By the end of this lesson. You should be able to set up two separate servers tha
 * **Question:** When you click "Logout", nothing happens unless you refresh the page. Why not?
 
 * **Your Answer:**
+
+There's no current API route for logout, but once the page is refreshed the token is removed. 
 
 ---
 
@@ -175,6 +201,8 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Answer:**
 
+I am still able to access the user route. However, I should be blocked from the route since I am no longer logged in.
+
 ---
 
 - [ ] Try _replacing_ the `/users` Route in `App.js` with the following:
@@ -188,6 +216,8 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Your Answer:**
 
+Only allows `/users` route to be shown if the use is currently logged in otherwise it redirects to the `/login` route.
+
 ---
 
 - [ ] Now try logging in. Then, when you're on the `/users` page, refresh the page.
@@ -195,6 +225,8 @@ By the end of this lesson. You should be able to set up two separate servers tha
 * **Question:** What happens and why?
 
 * **Your Answer:**
+
+When I refresh, it sends me back to the the `/login` route. When the page is reloaded I no longer have access to currentUserId.
 
 ---
 

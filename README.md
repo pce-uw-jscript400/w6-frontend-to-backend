@@ -37,7 +37,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 * **Question:** What error do you get? Why?
 
 * **Your Answer:** 
-
+CORS error - unauthorized 401
 ---
 
 - [ ] To get around this issue, we need to explicitly allow for requests to come from `localhost:3000`. To do so, we will use the [cors](https://www.npmjs.com/package/cors) package. Install `cors` on the _backend server_ and whitelist `localhost:5000`.
@@ -45,7 +45,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 * **Question:** Try your request again. What error do you get? Why?
 
 * **Your Answer:**
-
+401 but because we're not logged in
 ---
 
 - [ ] In `App.js`, we have created our `loginUser()` method. Try invoking that function through the frontend, inspecting what is outputted.
@@ -66,6 +66,8 @@ By the end of this lesson. You should be able to set up two separate servers tha
 * **Question:** Why do we need to include the "Content-Type" in the headers?
 
 * **Your Answer:**
+  so the receiving application knows how to decode the request
+
 
 * **Question:** How could you convert this method to an `async` method?
 
@@ -97,7 +99,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 * **Question:** What is happening on the first couple of lines of the new file you've created?
 
 * **Your Answer:** 
-
+it's tokenizing the url so it's only changed in one place for changing environments
 ---
 
 - [ ] Let's store the token in LocalStorage with a key of `journal-app`.
@@ -105,7 +107,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 * **Question:** Why are we storing the token?
 
 * **Your Answer:**
-
+so we don't have to login with each request
 ---
 
 - [ ] We now have the token, but we don't have any of the user information. Add a new function to our `./src/api/auth.js` called `profile()` that sends over the token in order to retrieve the user information. Then, log that information.
@@ -113,7 +115,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 * **Question:** Where did you write your code to manipulate LocalStorage? Why?
 
 * **Your Answer:** 
-
+in the auth.js file because it's only really used when logging in
 ---
 
 - [ ] Now that we have the user's information, let's store the user's ID in state. Set `currentUserId` to the user ID you've retrieved.
@@ -121,11 +123,12 @@ By the end of this lesson. You should be able to set up two separate servers tha
 * **Question:** What changes on the page after you successfully login? Why?
 
 * **Your Answer:**
+Create a New Post, All Users and Logout appears in the navigation menu because state was updated with the userId
 
 * **Question:** What happens if you enter in the incorrect information? What _should_ happen?
 
 * **Your Answer:**
-
+app crashes.  It should give a 401 because of invalid credentials
 ---
 
 - [ ] Try refreshing the page. You'll notice it _looks_ like you've been logged out, although your token is still stored in LocalStorage. To solve this, we will need to plug in to the component life cycle with `componentDidMount()`. Try adding the following code to `App.js`:
@@ -142,7 +145,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 * **Question:** Describe what is happening in the code above.
 
 * **Your Answer:**
-
+if local storage contains the token a call is made to the api to get the uner info and update state
 ---
 
 - [ ] Now when you refresh the page, it looks as though you are logged in. Next, try clicking the logout button.
@@ -150,7 +153,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 * **Question:** When you click "Logout", nothing happens unless you refresh the page. Why not?
 
 * **Your Answer:**
-
+the local storage is cleared but the state is not updated
 ---
 
 - [ ] Update the `logout()` method to appropriately logout the user.
@@ -158,7 +161,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 * **Question:** What did you have to do to get the `logout()` function to work? Why?
 
 * **Your Answer:**
-
+copy the logout function to the App.js and pass down
 ---
 
 - [ ] Following the patterns we used above, build the Signup feature.
@@ -174,7 +177,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 * **Question:** What happens? What _should_ happen?
 
 * **Answer:**
-
+it allows it.  If the user is not logged in they should be redirected to the login page
 ---
 
 - [ ] Try _replacing_ the `/users` Route in `App.js` with the following:
@@ -187,7 +190,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 * **Question:** Describe what is happening in the code above.
 
 * **Your Answer:**
-
+if currentUserId exists in state the <UsersContainer> route is rendered.  If not the user is redirected to the login page
 ---
 
 - [ ] Now try logging in. Then, when you're on the `/users` page, refresh the page.
@@ -195,7 +198,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 * **Question:** What happens and why?
 
 * **Your Answer:**
-
+the page is sent back to the login page.  State is not set on component did mount
 ---
 
 - [ ] To solve this problem, let's add a `loading` key to our App's state, with the default value set to `true`. When `componentDidMount()` finishes, set the `loading` key to equal `false`. Using this key, solve the issue of refreshing on the `/users` page. Make sure everyting continues to work whether you are logged in or out.
@@ -203,7 +206,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 * **Question:** What did you do to solve this problem?
 
 * **Your Answer:**
-
+a Loading page is shown until the username is set in state then the users page is shown
 ---
 
 - [ ] We will have the same problem on the `/users/<userId>/posts` page. Use the same strategy to have this page load correctly on refresh.

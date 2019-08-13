@@ -4,8 +4,10 @@ import { Route } from 'react-router-dom'
 import List from './List/List'
 import EditForm from './Form/Edit.Form'
 import NewForm from './Form/New.Form'
+import * as api from '../../api/posts'
+import {withRouter} from 'react-router'
 
-export default class Container extends React.Component {
+class Container extends React.Component {
   constructor (props) {
     super(props)
     this.createPost = this.createPost.bind(this)
@@ -17,8 +19,11 @@ export default class Container extends React.Component {
     console.log('Submitting Post:', post)
   }
 
-  destroyPost (post) {
-    console.log('Destroying Post:', post)
+  async destroyPost (userId, postId) {
+    //console.log('Destroying Post:', post)
+    const response = await api.deletePost(userId, postId)
+    console.log(response)
+    this.props.history.push(`/users/${userId}/posts`)
   }
 
   editPost (post) {
@@ -45,3 +50,5 @@ export default class Container extends React.Component {
     )
   }
 }
+
+export default withRouter(Container)

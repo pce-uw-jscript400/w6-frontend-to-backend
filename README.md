@@ -236,6 +236,8 @@ When I refresh, it sends me back to the the `/login` route. When the page is rel
 
 * **Your Answer:**
 
+In the state set `loading: true` and then in render added an if statement to show a loading message if true and lastly added `loading: false` to `this.setState` in `componentDidMount()`.
+
 ---
 
 - [ ] We will have the same problem on the `/users/<userId>/posts` page. Use the same strategy to have this page load correctly on refresh.

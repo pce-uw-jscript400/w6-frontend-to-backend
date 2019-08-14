@@ -27,7 +27,9 @@ class App extends React.Component {
     
     if (token) {
       const profile = await auth.profile()
-      this.setState({ currentUserId: profile.user._id })
+      if(profile && profile.user){
+        this.setState({ currentUserId: profile.user._id })
+      }
     }
 
     this.setState({ loading: false })

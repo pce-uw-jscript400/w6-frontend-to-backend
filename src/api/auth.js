@@ -1,7 +1,10 @@
-const { NODE_ENV } = process.env
-    const BASE_URL = NODE_ENV === 'development'
-        ? 'http://localhost:5000'
-        : 'tbd' // Once we deploy, we need to change this
+// const { NODE_ENV } = process.env
+const { REACT_APP_API_DOMAIN } = process.env
+const BASE_URL = REACT_APP_API_DOMAIN
+
+// const BASE_URL = NODE_ENV === 'development'
+    //     ? 'http://localhost:5000'
+    //     : 'tbd' // Once we deploy, we need to change this
 /*
     'Content-Type': 'application/json',
     Authorization: `Bearer ${token}`

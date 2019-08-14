@@ -1,13 +1,16 @@
 import React from 'react'
-
 import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom'
+
+// Helpers
+import * as auth from '../api/auth'
+import * as token from '../helpers/local-storage'
+
+// Components
 import Header from './shared/Header'
 import Navigation from './shared/Navigation/Navigation'
 import Login from './auth/Login.Form'
 import Signup from './auth/Signup.Form'
 import UsersContainer from './users/Container'
-
-import * as auth from '../api/auth'
 
 class App extends React.Component {
   constructor () {
@@ -23,29 +26,33 @@ class App extends React.Component {
   }
 
   async componentDidMount () {
-    const token = window.localStorage.getItem('journal-app')
-    if (token) {
-      const profile = await auth.profile()
-      this.setState({ currentUserId: profile.user._id })
-    } 
-    this.setState({ loading: false })
+    if (token.getToken()) {
+      const { user } = await auth.profile();
+      this.setState({ currentUserId: user._id, loading: false });
+    } else {
+      this.setState({ loading: false })
+    }
   }
 
-  async loginUser(user) {
-    await auth.login(user)
+  async loginUser (user) {
+    const response = await auth.login(user)
+    await token.setToken(response)
+    
     const profile = await auth.profile()
-
     this.setState({ currentUserId: profile.user._id })
+  }
+
+  logoutUser () {
+    token.clearToken()
+    this.setState({ currentUserId: null })
   }
 
   async signupUser (user) {
     const response = await auth.signup(user)
-    console.log(response)
-  }
-
-  logoutUser () {
-    window.localStorage.removeItem('journal-app')
-    this.setState({ currentUserId: null })
+    await token.setToken(response)
+    
+    const profile = await auth.profile()
+    this.setState({ currentUserId: profile.user._id })
   }
 
   render () {

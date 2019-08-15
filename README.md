@@ -156,7 +156,6 @@ By the end of this lesson. You should be able to set up two separate servers tha
 - [ ] Update the `logout()` method to appropriately logout the user.
 
 * **Question:** What did you have to do to get the `logout()` function to work? Why?
-
 * **Your Answer:** Alter state to remove the currentlyUserId.
 
 ---
@@ -173,7 +172,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** What happens? What _should_ happen?
 
-* **Answer:**
+* **Answer:** You are able to access the users page. We've only solved for authentication, but not authorization. Any user, including non-authorized users have the same priveleges as a logged in user. That is to say, the route for `/users` is not protected. We aren't denying users access if they are not logged in.
 
 ---
 
@@ -186,7 +185,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** Describe what is happening in the code above.
 
-* **Your Answer:**
+* **Your Answer:** This code is implementing a function on the `/users` path that will return a different component depending on the presence or absence of a userId in state. 
 
 ---
 
@@ -194,7 +193,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** What happens and why?
 
-* **Your Answer:**
+* **Your Answer:** We are pushed back to the login page. The check for the the currentUserId doesn't run until the components have already rendered. 
 
 ---
 
@@ -202,7 +201,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** What did you do to solve this problem?
 
-* **Your Answer:**
+* **Your Answer:** Wrote a conditional in the render method that checks the state loading key and once that has been set to false, then render the page. Essentially set up an interstatial view of the components until that loading is done. 
 
 ---
 
@@ -210,7 +209,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** In what component did you add the `loading` property and why?
 
-* **Your Answer:**
+* **Your Answer:** There are certainly options, but the most logical place seems to be to add this to the posts container state object. This is where the routes for this particular component lives and we would simply apply the same logic at this level to get the same effect. Ideally though, handling this logged in / logged out state check would be better served via redux, or at the top level component and passed down as a prop. 
 
 ---
 

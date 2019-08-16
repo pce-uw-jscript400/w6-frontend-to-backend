@@ -4,8 +4,9 @@ export default class Form extends React.Component {
   constructor (props) {
     super(props)
     const { post = {} } = this.props
-    const { content = '', emotion = '' } = post
-    this.state = { content, emotion }
+    const { content = '', emotion = '', _id='', postAlert=false } = post
+    this.state = { content, emotion, _id, postAlert }
+    console.log(this.state)
 
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
@@ -17,12 +18,22 @@ export default class Form extends React.Component {
 
   handleSubmit (e) {
     e.preventDefault()
-    this.props.onSubmit(this.state)
+    console.log(this.state)
+    if(this.state.content.length < 10){
+      this.setState({postAlert:true})
+    }else{
+      this.props.onSubmit({content:this.state.content, emotion: this.state.emotion, _id: this.state._id})
+    }
+
+    // this.props.onSubmit(this.state)
   }
 
   render () {
     return (
       <form onSubmit={this.handleSubmit}>
+        {
+          this.state.postAlert ? <div className="post-alert" style={{color:'red',fontWeight:'bold'}}>Content does not meet the minimum of 10 characters.</div> : <div></div>
+        }
         <div className='form-group'>
           <label htmlFor='emotion'>Emotion</label>
           <input

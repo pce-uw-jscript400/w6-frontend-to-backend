@@ -4,18 +4,18 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 ## Core Learning Objective
 
-* Communicate with an application server using a front-end client
+- Communicate with an application server using a front-end client
 
 ## Sub-Objectives
 
-* Login a user via an external API and store a token in LocalStorage
-* Logout a user locally
-* Signup a user via an external API and store a token in LocalStorage
-* Authorize routes on the frontend
-* Populate information from an external API
-* Delete records through an external API
-* Create new records through an external API
-* Update existing records through an external API
+- Login a user via an external API and store a token in LocalStorage
+- Logout a user locally
+- Signup a user via an external API and store a token in LocalStorage
+- Authorize routes on the frontend
+- Populate information from an external API
+- Delete records through an external API
+- Create new records through an external API
+- Update existing records through an external API
 
 ## Installation
 
@@ -29,14 +29,14 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 - [ ] Start both your frontend server and your backend server. Then try copying the code below into the web console.
   ```js
-  fetch('http://localhost:5000/api/users')
+  fetch("http://localhost:5000/api/users")
     .then(res => res.json())
-    .then(console.log)
+    .then(console.log);
   ```
 
 * **Question:** What error do you get? Why?
 
-* **Your Answer:** 
+* **Your Answer:** Because we are asking for data from unauthorized url we get cross origin error. Backend is on `localhost:5000` and Frontend is on `localhost:3000`.
 
 ---
 
@@ -44,7 +44,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** Try your request again. What error do you get? Why?
 
-* **Your Answer:**
+* **Your Answer:** Because we need to log in and middleware `auth.js` checks to see if the requester is logged in or not.
 
 ---
 
@@ -54,49 +54,52 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 - [ ] We now want to try and login the user when they hit submit. Add the following to your `loginUser()` method:
   ```js
-  fetch('http://localhost:5000/api/login', {
+  fetch("http://localhost:5000/api/login", {
     body: JSON.stringify(user),
     headers: {
-      'Content-Type': 'application/json'
+      "Content-Type": "application/json"
     },
-    method: 'POST',
-  }).then(res => res.json()).then(console.log)
+    method: "POST"
+  })
+    .then(res => res.json())
+    .then(console.log);
   ```
 
 * **Question:** Why do we need to include the "Content-Type" in the headers?
 
-* **Your Answer:**
+* **Your Answer:** To let the backend know how to parse the information and access to the right data in our request.
 
 * **Question:** How could you convert this method to an `async` method?
+
+* **Your Answer:** By adding `async` at the beginning of the function and also adding `await` before `fetch`.
 
 ---
 
 - [ ] Let's move our requests to a better place. Create a new file at `./src/api/auth.js`. Add the following inside of it:
-  ```js
-  const { NODE_ENV } = process.env
-  const BASE_URL = NODE_ENV === 'development'
-    ? 'http://localhost:5000'
-    : 'tbd' // Once we deploy, we need to change this
 
-  export const login = async (user) => {
+  ```js
+  const { NODE_ENV } = process.env;
+  const BASE_URL = NODE_ENV === "development" ? "http://localhost:5000" : "tbd"; // Once we deploy, we need to change this
+
+  export const login = async user => {
     const response = await fetch(`${BASE_URL}/api/login`, {
       body: JSON.stringify(user),
       headers: {
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json"
       },
-      method: 'POST'
-    })
-    const json = await response.json()
-    
-    return json
-  }
+      method: "POST"
+    });
+    const json = await response.json();
+
+    return json;
+  };
   ```
 
   Update `App.js` to use the `login()` function, logging out the response from it.
 
 * **Question:** What is happening on the first couple of lines of the new file you've created?
 
-* **Your Answer:** 
+* **Your Answer:** This will set the `BASE_URL` to either `http://localhost:5000` (if we are in development enviroment) or to somthing else which we can later on put instead of `tbd`(which will be our real server address) without need of changing the code.
 
 ---
 
@@ -104,7 +107,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** Why are we storing the token?
 
-* **Your Answer:**
+* **Your Answer:** Because we need token's information for future requests so we don't need to identify the user every single time.
 
 ---
 
@@ -112,7 +115,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** Where did you write your code to manipulate LocalStorage? Why?
 
-* **Your Answer:** 
+* **Your Answer:** In signup,login,logout and profile. This way I can see the user data on signup and login and also I can erase the data on logout.
 
 ---
 
@@ -120,11 +123,11 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** What changes on the page after you successfully login? Why?
 
-* **Your Answer:**
+* **Your Answer:** Navigation bar changed since we have updated state's user id.
 
 * **Question:** What happens if you enter in the incorrect information? What _should_ happen?
 
-* **Your Answer:**
+* **Your Answer:** we get react error page and the right way is to prompt the user with a good massage like `wrong username or password!`.
 
 ---
 
@@ -141,7 +144,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** Describe what is happening in the code above.
 
-* **Your Answer:**
+* **Your Answer:** Code is checking to see if ther is a `journal-app` variable. If ther is a token then we aske for users profile(information). Then we set the `currentUserId` to user information.
 
 ---
 
@@ -149,7 +152,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** When you click "Logout", nothing happens unless you refresh the page. Why not?
 
-* **Your Answer:**
+* **Your Answer:** Because we need to set the state after removing the token from local storage on the browser.
 
 ---
 
@@ -157,7 +160,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** What did you have to do to get the `logout()` function to work? Why?
 
-* **Your Answer:**
+* **Your Answer:** We had to remove the `journal-app` variable from local storage and set the currentUserId to null.
 
 ---
 
@@ -173,20 +176,27 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** What happens? What _should_ happen?
 
-* **Answer:**
+* **Answer:** Will be navigated to the users route even though we already logged out. Instead we should navigate the user to the login page.
 
 ---
 
 - [ ] Try _replacing_ the `/users` Route in `App.js` with the following:
   ```jsx
-  <Route path='/users' render={() => {
-    return this.state.currentUserId ? <UsersContainer /> : <Redirect to='/login' />
-  }} />
+  <Route
+    path="/users"
+    render={() => {
+      return this.state.currentUserId ? (
+        <UsersContainer />
+      ) : (
+        <Redirect to="/login" />
+      );
+    }}
+  />
   ```
 
 * **Question:** Describe what is happening in the code above.
 
-* **Your Answer:**
+* **Your Answer:** The code is checking to see if `currentUserId` is exist. If `currentUserId` is null then user will redirected to login page.
 
 ---
 
@@ -194,7 +204,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** What happens and why?
 
-* **Your Answer:**
+* **Your Answer:** It takes us to the login page again even though we are logged in. Because `componentDidMount()` happens during the page load and after pages is loaded we have no longer access to `this.state.currentUserId` since it's too late so consequently it goes to login page.
 
 ---
 
@@ -202,7 +212,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** What did you do to solve this problem?
 
-* **Your Answer:**
+* **Your Answer:** We add new state to `app.js` with the name `loading` and we set it to `true` and in the render function we returne `loading...` as long as it's true. At the end of `componentDidMount()` we can set the `loading` to false and now we can continue routing.
 
 ---
 
@@ -220,11 +230,11 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 - [ ] Right now, the data inside of `users/Container.js` is static. Using `componentDidMount()`, update this code so that we pull our data from our API.
 
-  _NOTE: You may want to create a new file in `./src/api/` to organize these requests.
+  \_NOTE: You may want to create a new file in `./src/api/` to organize these requests.
 
 ---
 
-- [ ] Let's get our "Delete" link working. On the backend, create a `DELETE Post` route with the path of: 
+- [ ] Let's get our "Delete" link working. On the backend, create a `DELETE Post` route with the path of:
   ```
   DELETE /users/:userId/posts/:postId
   ```
@@ -270,7 +280,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 ## Exercise
 
-We got a lot done but there's still a lot to do to make this app fully functional. Complete the following features on this application. 
+We got a lot done but there's still a lot to do to make this app fully functional. Complete the following features on this application.
 
 - [ ] If there are no posts for a user, show a message on their `/users/<userId>/posts` page that encourages them to create a new post.
 
@@ -291,4 +301,3 @@ We got a lot done but there's still a lot to do to make this app fully functiona
 - [ ] On the update post page, appropriately handle errors so that the user has a chance to correct their post. Display some kind of helpful message.
 
 - [ ] Create a new frontend route at `/users/<userId>/posts/<postId>` that shows a single post. Update your Create and Edit forms to redirect here instead of to the general `/posts` page.
-

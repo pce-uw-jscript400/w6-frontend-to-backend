@@ -32,8 +32,9 @@ class App extends React.Component {
     const token = window.localStorage.getItem("journal-app");
     if (token) {
       const profile = await auth.profile();
-      this.setState({ currentUserId: profile.user._id, loading: false });
+      this.setState({ currentUserId: profile.user._id });
     }
+    this.setState({ loading: false });
   }
 
   async loginUser(user) {

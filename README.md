@@ -329,11 +329,11 @@ Because we didn't update state.
 
 ---
 
-- [ ] On the frontend, build a function that will POST to the database. Connect that function to the `onSubmit` functionality for the creation form. Finally, use your preferred method to update the state of our frontend. Upon successful creation, send the user back to the `/users/<user-id>/posts` page.
+- [X] On the frontend, build a function that will POST to the database. Connect that function to the `onSubmit` functionality for the creation form. Finally, use your preferred method to update the state of our frontend. Upon successful creation, send the user back to the `/users/<user-id>/posts` page.
 
 ---
 
-- [ ] Our final step is to get our Update form to work. Follow the steps from above to finish this final feature.
+- [X] Our final step is to get our Update form to work. Follow the steps from above to finish this final feature.
 
 ## Exercise
 
@@ -341,7 +341,7 @@ We got a lot done but there's still a lot to do to make this app fully functiona
 
 - [X] If there are no posts for a user, show a message on their `/users/<userId>/posts` page that encourages them to create a new post.
 
-- [ ] If there is no emotion for a post, hide the associated message on each post.
+- [X] If there is no emotion for a post, hide the associated message on each post.
 
 - [ ] Show the user's username on the navigation when they are logged in as a link. When clicked, go to a new page: `/users/<userId>/edit`
 
@@ -353,9 +353,9 @@ We got a lot done but there's still a lot to do to make this app fully functiona
 
 - [ ] On the signup page, appropriately handle errors so that the user has a chance to correct their username/password combination. Display some kind of helpful message.
 
-- [ ] On the create post page, appropriately handle errors so that the user has a chance to correct their post. Display some kind of helpful message.
+- [X] On the create post page, appropriately handle errors so that the user has a chance to correct their post. Display some kind of helpful message.
 
-- [ ] On the update post page, appropriately handle errors so that the user has a chance to correct their post. Display some kind of helpful message.
+- [X] On the update post page, appropriately handle errors so that the user has a chance to correct their post. Display some kind of helpful message.
 
 - [ ] Create a new frontend route at `/users/<userId>/posts/<postId>` that shows a single post. Update your Create and Edit forms to redirect here instead of to the general `/posts` page.
 

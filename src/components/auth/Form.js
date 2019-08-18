@@ -6,7 +6,8 @@ class Form extends React.Component {
     super(props)
     this.state = {
       username: '',
-      password: ''
+      password: '',
+      error: false
     }
 
     this.handleChange = this.handleChange.bind(this)
@@ -47,6 +48,17 @@ class Form extends React.Component {
             value={this.state.password} />
         </div>
         <button type='submit' className='btn btn-primary'>Submit</button>
+        {this.state.error && 
+          <div className="errorMessage" 
+            style={{ 
+              marginTop: 20,
+              padding: 10, 
+              backgroundColor: '#dc3545', 
+              color: 'white', 
+              }}>
+                Error: Please enter a valid username and password.
+          </div>
+        }
       </form>
     )
   }

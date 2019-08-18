@@ -16,17 +16,28 @@ export const signup = async (user) => {
 }
 
 export const login = async (user) => {
-  const response = await fetch(`${BASE_URL}/api/login`, {
-    body: JSON.stringify(user),
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    method: 'POST'
-  })
-  
-  const json = await response.json()
-  localStorage.setItem('journal-app', json.token)
-  return json
+  try {
+    const response = await fetch(`${BASE_URL}/api/login`, {
+      body: JSON.stringify(user),
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      method: 'POST'
+    })
+
+    const json = await response.json()
+
+    if (!response.ok) {
+      throw new Error(json.message)
+    } else {
+      localStorage.setItem('journal-app', json.token)
+      return json
+    }
+  } 
+  catch(error) {
+    console.log(error)
+    return error
+  }
 }
 
 export const profile = async (user) => {

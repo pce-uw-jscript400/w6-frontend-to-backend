@@ -7,9 +7,11 @@ export default ({ currentUserId, destroyPost, user }) => {
     <div key={post._id} className='card'>
       <div className='card-body'>
         <p className='card-text'>{ post.content }</p>
-        <blockquote className='blockquote mb-0'>
-          <footer className='blockquote-footer'>Was feeling: { post.emotion }</footer>
-        </blockquote>
+        {post.emotion &&
+          <blockquote className='blockquote mb-0'>
+            <footer className='blockquote-footer'>Was feeling: { post.emotion }</footer>
+          </blockquote>
+        }
       </div>
       <Actions
         currentUserId={currentUserId}

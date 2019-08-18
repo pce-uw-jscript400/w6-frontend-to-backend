@@ -35,7 +35,6 @@ export const login = async (user) => {
     }
   } 
   catch(error) {
-    console.log(error)
     return error
   }
 }

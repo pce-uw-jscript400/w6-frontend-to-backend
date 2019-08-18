@@ -41,24 +41,9 @@ class App extends React.Component {
   }
 
   async signupUser (user) {
-    try {
       await auth.signup(user)
-
-      if (!user.username) {
-        // const error = { status: 404, message: 'Please enter a valid username.' }
-        // throw new Error(error)
-      } else if (!user.password) {
-        // const error = { status: 404, message: 'Please enter a valid password.' }
-        // throw new Error (error)
-      } else {
-        const profile = await auth.profile()
-        this.setState({ currentUserId: profile.user._id })
-      }  
-    }
-    catch(error) {
-      // console.log(error)
-      // throw new Error (error)
-    }
+      const profile = await auth.profile()
+      this.setState({ currentUserId: profile.user._id })
   }
 
   logoutUser() {

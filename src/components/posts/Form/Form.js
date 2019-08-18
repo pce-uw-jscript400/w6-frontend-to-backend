@@ -19,9 +19,6 @@ export default class Form extends React.Component {
     e.preventDefault()
     const { post } = this.props
 
-    console.log(this.state.emotion)
-    console.log(this.state.content)
-
     if ((this.state.content === '') && (this.state.emotion === '')) {
       this.setState({ error: true })
     } else {

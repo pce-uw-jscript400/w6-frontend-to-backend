@@ -220,7 +220,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** In what component did you add the `loading` property and why?
 
-* **Your Answer:**
+* **Your Answer:** App.js to be able to set the `loading` variable in `componentDidMount`.
 
 ---
 
@@ -252,8 +252,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Your Answer:** Whenever we modify our data with a Create, Update, or Delete, we have a few options on how to make our frontend reflect those changes. What options can you think of?
 
-* **Question:**
-
+* **Question:** Because our backend did apply the changes but on frontend we need to somehow update your page to reflect the changes in backend. re-fetching is on of out options.
 ---
 
 - [ ] Using your preferred method, update your code so that the frontend will reflect the changes made to the backend.

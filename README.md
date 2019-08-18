@@ -36,7 +36,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** What error do you get? Why?
 
-* **Your Answer:** 
+* **Your Answer:** CORS, you're trying to access a server thats not yours
 
 ---
 
@@ -44,7 +44,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** Try your request again. What error do you get? Why?
 
-* **Your Answer:**
+* **Your Answer:**  Unauthorized, you're not logged in
 
 ---
 
@@ -65,10 +65,11 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** Why do we need to include the "Content-Type" in the headers?
 
-* **Your Answer:**
+* **Your Answer:** To tell the server what format the data is in
 
 * **Question:** How could you convert this method to an `async` method?
 
+* **Your Answer:** put async before it, change the thens to awaits
 ---
 
 - [ ] Let's move our requests to a better place. Create a new file at `./src/api/auth.js`. Add the following inside of it:
@@ -96,7 +97,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** What is happening on the first couple of lines of the new file you've created?
 
-* **Your Answer:** 
+* **Your Answer:** setting the environment variables 
 
 ---
 
@@ -104,7 +105,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** Why are we storing the token?
 
-* **Your Answer:**
+* **Your Answer:** so we can ask for it every time
 
 ---
 
@@ -112,7 +113,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** Where did you write your code to manipulate LocalStorage? Why?
 
-* **Your Answer:** 
+* **Your Answer:** auth.js to keep react code reacty 
 
 ---
 
@@ -120,11 +121,11 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** What changes on the page after you successfully login? Why?
 
-* **Your Answer:**
+* **Your Answer:** change the nav
 
 * **Question:** What happens if you enter in the incorrect information? What _should_ happen?
 
-* **Your Answer:**
+* **Your Answer:** app crashes, you should get an error and stay on the login
 
 ---
 
@@ -141,7 +142,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** Describe what is happening in the code above.
 
-* **Your Answer:**
+* **Your Answer:** when react is running return the token. If you get a token call auth and then set the state of the current user to the profile id 
 
 ---
 
@@ -149,7 +150,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** When you click "Logout", nothing happens unless you refresh the page. Why not?
 
-* **Your Answer:**
+* **Your Answer:** the state hasn't been updated
 
 ---
 
@@ -157,7 +158,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** What did you have to do to get the `logout()` function to work? Why?
 
-* **Your Answer:**
+* **Your Answer:** Remove the token from local storage, update the state, redirect the user
 
 ---
 
@@ -173,7 +174,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** What happens? What _should_ happen?
 
-* **Answer:**
+* **Answer:** go to the users page, you should go to the login page
 
 ---
 
@@ -186,7 +187,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** Describe what is happening in the code above.
 
-* **Your Answer:**
+* **Your Answer:** checking if the user is logging in our not and redirecting them to the login page if they are logged out.
 
 ---
 
@@ -194,15 +195,15 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** What happens and why?
 
-* **Your Answer:**
+* **Your Answer:** go back to the login page, we don't have access to the currentuserid because it's in the componentdidmount and for a split second the app hasn't loaded yet. 
 
 ---
 
-- [ ] To solve this problem, let's add a `loading` key to our App's state, with the default value set to `true`. When `componentDidMount()` finishes, set the `loading` key to equal `false`. Using this key, solve the issue of refreshing on the `/users` page. Make sure everyting continues to work whether you are logged in or out.
+- [ ] To solve this problem, let's add a `loading` key to our App's state, with the default value set to `true`. When `componentDidMount()` finishes, set the `loading` key to equal `false`. Using this key, solve the issue of refreshing on the `/users` page. Make sure everything continues to work whether you are logged in or out.
 
 * **Question:** What did you do to solve this problem?
 
-* **Your Answer:**
+* **Your Answer:** create a loading state that renders loading text until the component mounts and then once the component mounts set the loading state to false.
 
 ---
 
@@ -210,7 +211,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** In what component did you add the `loading` property and why?
 
-* **Your Answer:**
+* **Your Answer:** to the componentdidmount in app.js because that's where state is set and cdm runs after the app loads
 
 ---
 
@@ -240,9 +241,11 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** Why did the number of posts not change when you were redirected back to the `/users` route?
 
-* **Your Answer:** Whenever we modify our data with a Create, Update, or Delete, we have a few options on how to make our frontend reflect those changes. What options can you think of?
+* **Answer:** frontend did not update
 
-* **Question:**
+* **Question:** Whenever we modify our data with a Create, Update, or Delete, we have a few options on how to make our frontend reflect those changes. What options can you think of?
+
+* **Answer:** update the react version in state or refresh state from the server. 
 
 ---
 

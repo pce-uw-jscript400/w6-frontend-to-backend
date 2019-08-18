@@ -5,7 +5,7 @@ export default class Form extends React.Component {
     super(props)
     const { post = {} } = this.props
     const { content = '', emotion = '' } = post
-    this.state = { content, emotion }
+    this.state = { content, emotion, error: false }
 
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
@@ -17,7 +17,18 @@ export default class Form extends React.Component {
 
   handleSubmit (e) {
     e.preventDefault()
-    this.props.onSubmit(this.state)
+    const { post } = this.props
+
+    if ((this.state.content === '') && (this.state.emotion === '')) {
+      this.setState({ error: true })
+    } else {
+      if (post && post._id) {
+        const body = Object.assign({}, this.state, { _id: post._id })
+        this.props.onSubmit(body)
+      } else {
+        this.props.onSubmit(this.state)
+      }
+    }
   }
 
   render () {
@@ -44,6 +55,16 @@ export default class Form extends React.Component {
             value={this.state.content} />
         </div>
         <button type='submit' className='btn btn-primary'>Submit</button>
+        {this.state.error && 
+          <div className="errorMessage" 
+            style={{
+              marginTop: 20,
+              padding: 10,
+              backgroundColor: '#dc3545',
+              color: 'white',
+              }}>
+                Error: Please enter an emotion or content.
+          </div>}
       </form>
     )
   }

@@ -3,34 +3,42 @@ import { Route } from 'react-router-dom'
 
 import List from './List/List'
 import PostsContainer from '../posts/Container'
+import * as users from '../../api/users'
 
 export default class Container extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      users: [
-        {
-          _id: '5de4',
-          username: 'example.user',
-          posts: [
-            {
-              _id: '6cj2',
-              content: 'This is an example post.',
-              emotion: 'joy',
-              created_at: new Date('2019-07-01')
-            }
-          ]
-        }
-      ]
+      users: [],
+      loading: true
     }
+
+    this.refreshUsers = this.refreshUsers.bind(this)
+  }
+
+  async componentDidMount() {
+    this.refreshUsers().then(() => this.setState({ loading: false }))
+  }
+
+  async refreshUsers() {
+    const { response } = await users.getAllUsers()
+    this.setState({ users: response })
   }
 
   render () {
-    const { users } = this.state
+    const { users, loading } = this.state
+    const { currentUserId } = this.props
+
+    if (loading) return <div>Loading...</div>
+
     return (
       <main className='container'>
         <Route path='/users' exact component={() => <List users={users} />} />
-        <PostsContainer users={users} />
+        <PostsContainer 
+          currentUserId={currentUserId} 
+          refreshUsers={this.refreshUsers}
+          users={users}
+        />
       </main>
     )
   }

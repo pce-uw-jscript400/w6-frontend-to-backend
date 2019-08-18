@@ -1,11 +1,13 @@
 import React from 'react'
+import { withRouter } from 'react-router'
 
-export default class Form extends React.Component {
+class Form extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
       username: '',
-      password: ''
+      password: '',
+      error: false
     }
 
     this.handleChange = this.handleChange.bind(this)
@@ -19,6 +21,7 @@ export default class Form extends React.Component {
   handleSubmit (e) {
     e.preventDefault()
     this.props.onSubmit(this.state)
+    this.props.history.push('/users')
   }
 
   render () {
@@ -45,7 +48,20 @@ export default class Form extends React.Component {
             value={this.state.password} />
         </div>
         <button type='submit' className='btn btn-primary'>Submit</button>
+        {this.state.error && 
+          <div className="errorMessage" 
+            style={{ 
+              marginTop: 20,
+              padding: 10, 
+              backgroundColor: '#dc3545', 
+              color: 'white', 
+              }}>
+                Error: Please enter a valid username and password.
+          </div>
+        }
       </form>
     )
   }
 }
+
+export default withRouter(Form)

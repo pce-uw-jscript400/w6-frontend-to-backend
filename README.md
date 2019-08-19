@@ -276,7 +276,6 @@ POST /users/:userId/posts
 This request should only be able to be made if the user is logged in and it's from the same user as the one specified in the route.
 
 
-
 ---
 
 - [ ] On the frontend, build a function that will POST to the database. Connect that function to the `onSubmit` functionality for the creation form. Finally, use your preferred method to update the state of our frontend. Upon successful creation, send the user back to the `/users/<user-id>/posts` page.
@@ -287,25 +286,26 @@ This request should only be able to be made if the user is logged in and it's fr
 
 ## Exercise
 
+
 We got a lot done but there's still a lot to do to make this app fully functional. Complete the following features on this application.
 
-- [ ] If there are no posts for a user, show a message on their `/users/<userId>/posts` page that encourages them to create a new post.
+- [x] If there are no posts for a user, show a message on their `/users/<userId>/posts` page that encourages them to create a new post.
 
-- [ ] If there is no emotion for a post, hide the associated message on each post.
+- [x] If there is no emotion for a post, hide the associated message on each post.
 
-- [ ] Show the user's username on the navigation when they are logged in as a link. When clicked, go to a new page: `/users/<userId>/edit`
+- [x] Show the user's username on the navigation when they are logged in as a link. When clicked, go to a new page: `/users/<userId>/edit`
 
-- [ ] Create a page at `/users/<userId>/edit` that allows a user to update their `name`. On save, redirect them to their `/users/<userId>/posts` page.
+- [x] Create a page at `/users/<userId>/edit` that allows a user to update their `name`. On save, redirect them to their `/users/<userId>/posts` page.
 
-- [ ] If the user has a name, show that on the Navigation, `/users` page, and `/users/<userId>/posts` page instead.
+- [x] If the user has a name, show that on the Navigation, `/users` page, and `/users/<userId>/posts` page instead.
 
-- [ ] On the login page, appropriately handle errors so that the user has a chance to correct their username/password combination. Display some kind of helpful message.
+- [x] On the login page, appropriately handle errors so that the user has a chance to correct their username/password combination. Display some kind of helpful message.
 
-- [ ] On the signup page, appropriately handle errors so that the user has a chance to correct their username/password combination. Display some kind of helpful message.
+- [x] On the signup page, appropriately handle errors so that the user has a chance to correct their username/password combination. Display some kind of helpful message.
 
-- [ ] On the create post page, appropriately handle errors so that the user has a chance to correct their post. Display some kind of helpful message.
+- [x] On the create post page, appropriately handle errors so that the user has a chance to correct their post. Display some kind of helpful message.
 
-- [ ] On the update post page, appropriately handle errors so that the user has a chance to correct their post. Display some kind of helpful message.
+- [x] On the update post page, appropriately handle errors so that the user has a chance to correct their post. Display some kind of helpful message.
 
 - [ ] Create a new frontend route at `/users/<userId>/posts/<postId>` that shows a single post. Update your Create and Edit forms to redirect here instead of to the general `/posts` page.
 

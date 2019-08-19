@@ -1,6 +1,7 @@
 import React from 'react'
+import { withRouter } from 'react-router'
 
-export default class Form extends React.Component {
+class Form extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
@@ -16,9 +17,11 @@ export default class Form extends React.Component {
     this.setState({ [name]: value })
   }
 
+
   handleSubmit (e) {
     e.preventDefault()
     this.props.onSubmit(this.state)
+      .then(() => this.props.history.push('/users'))
   }
 
   render () {
@@ -32,7 +35,8 @@ export default class Form extends React.Component {
             onChange={this.handleChange}
             name='username'
             type='text'
-            value={this.state.username} />
+            value={this.state.username}
+            required />
         </div>
         <div className='form-group'>
           <label htmlFor='password'>Password</label>
@@ -42,10 +46,14 @@ export default class Form extends React.Component {
             onChange={this.handleChange}
             name='password'
             type='password'
-            value={this.state.password} />
+            value={this.state.password}
+            required  />
         </div>
         <button type='submit' className='btn btn-primary'>Submit</button>
       </form>
     )
   }
 }
+
+export default withRouter(Form)
+

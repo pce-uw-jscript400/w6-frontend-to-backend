@@ -171,7 +171,7 @@ const response = await fetch('http://localhost:5000/api/login', {
 
 * **Your Answer:**
 
----
+* I had to setup the logout() method to set state of currentUserId to null, pass logoutUser function to navigation and clear localStorage
 
 - [ ] Following the patterns we used above, build the Signup feature.
 
@@ -187,7 +187,7 @@ const response = await fetch('http://localhost:5000/api/login', {
 
 * **Answer:**
 
----
+* You are able to see Users container when you should direct you back to login page.
 
 - [ ] Try _replacing_ the `/users` Route in `App.js` with the following:
   ```jsx
@@ -200,7 +200,7 @@ const response = await fetch('http://localhost:5000/api/login', {
 
 * **Your Answer:**
 
----
+* It's a switch statement that states if currentUserId true show <Userscontainer> else show <Redirect to..>.
 
 - [ ] Now try logging in. Then, when you're on the `/users` page, refresh the page.
 
@@ -208,7 +208,7 @@ const response = await fetch('http://localhost:5000/api/login', {
 
 * **Your Answer:**
 
----
+* You're automatically logged out.
 
 - [ ] To solve this problem, let's add a `loading` key to our App's state, with the default value set to `true`. When `componentDidMount()` finishes, set the `loading` key to equal `false`. Using this key, solve the issue of refreshing on the `/users` page. Make sure everyting continues to work whether you are logged in or out.
 
@@ -216,7 +216,7 @@ const response = await fetch('http://localhost:5000/api/login', {
 
 * **Your Answer:**
 
----
+*
 
 - [ ] We will have the same problem on the `/users/<userId>/posts` page. Use the same strategy to have this page load correctly on refresh.
 

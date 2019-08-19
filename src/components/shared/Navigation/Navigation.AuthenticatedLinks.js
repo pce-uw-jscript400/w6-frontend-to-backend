@@ -1,4 +1,5 @@
 import React from 'react'
+// History comes from withRouter
 import { withRouter } from 'react-router'
 import { Link } from 'react-router-dom'
 
@@ -6,6 +7,7 @@ import { Link } from 'react-router-dom'
 const AuthenticatedLinks = ({ currentUserId, logoutUser, history }) => {
   const logout = () => {
     logoutUser()
+    history.push('/login')
   }
   return (
     <ul className='nav justify-content-end'>

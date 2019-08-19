@@ -34,6 +34,7 @@ class Form extends React.Component {
             onChange={this.handleChange}
             name='username'
             type='text'
+            required
             value={this.state.username} />
         </div>
         <div className='form-group'>
@@ -44,6 +45,7 @@ class Form extends React.Component {
             onChange={this.handleChange}
             name='password'
             type='password'
+            required
             value={this.state.password} />
         </div>
         <button type='submit' className='btn btn-primary'>Submit</button>

@@ -116,7 +116,7 @@ It is checking what environment we are using (development).
 
 * **Question:** Where did you write your code to manipulate LocalStorage? Why?
 
-* **Your Answer:** The code is in auth.js 
+* **Your Answer:** The code is in auth.js. It is there to save the user token. 
 
 ---
 
@@ -124,11 +124,11 @@ It is checking what environment we are using (development).
 
 * **Question:** What changes on the page after you successfully login? Why?
 
-* **Your Answer:**
+* **Your Answer:** The login page stays because we haven't redirected it to another route.
 
 * **Question:** What happens if you enter in the incorrect information? What _should_ happen?
 
-* **Your Answer:**
+* **Your Answer:** An error appears, but there should be a message telling users what info to put in correctly.
 
 ---
 
@@ -145,7 +145,7 @@ It is checking what environment we are using (development).
 
 * **Question:** Describe what is happening in the code above.
 
-* **Your Answer:**
+* **Your Answer:** It gets the token from the local storage and if it is valid it gets the user info in our state in order to see if the user is logged in correctly.
 
 ---
 
@@ -153,7 +153,7 @@ It is checking what environment we are using (development).
 
 * **Question:** When you click "Logout", nothing happens unless you refresh the page. Why not?
 
-* **Your Answer:**
+* **Your Answer:** The token is not yet cleared out of local storage.
 
 ---
 
@@ -161,7 +161,7 @@ It is checking what environment we are using (development).
 
 * **Question:** What did you have to do to get the `logout()` function to work? Why?
 
-* **Your Answer:**
+* **Your Answer:** I removed journal-app from local storage and set currentUserId to null.
 
 ---
 
@@ -177,7 +177,7 @@ It is checking what environment we are using (development).
 
 * **Question:** What happens? What _should_ happen?
 
-* **Answer:**
+* **Answer:** It takes then to the users route, but it should go to the login page.
 
 ---
 
@@ -190,7 +190,7 @@ It is checking what environment we are using (development).
 
 * **Question:** Describe what is happening in the code above.
 
-* **Your Answer:**
+* **Your Answer:** It returns the users' container if the current user id exists, and if not it redirects to the login page.
 
 ---
 
@@ -198,7 +198,7 @@ It is checking what environment we are using (development).
 
 * **Question:** What happens and why?
 
-* **Your Answer:**
+* **Your Answer:** It briefly goes to the login route before being redirected back to the users route.
 
 ---
 
@@ -206,7 +206,7 @@ It is checking what environment we are using (development).
 
 * **Question:** What did you do to solve this problem?
 
-* **Your Answer:**
+* **Your Answer:** Created a conditional "Loading..." message.
 
 ---
 
@@ -214,7 +214,7 @@ It is checking what environment we are using (development).
 
 * **Question:** In what component did you add the `loading` property and why?
 
-* **Your Answer:**
+* **Your Answer:** It is in App.js so the loading value can be changed in the componentDidMount function.
 
 ---
 
@@ -244,9 +244,11 @@ It is checking what environment we are using (development).
 
 * **Question:** Why did the number of posts not change when you were redirected back to the `/users` route?
 
+Only the backend is being changed.
+
 * **Your Answer:** Whenever we modify our data with a Create, Update, or Delete, we have a few options on how to make our frontend reflect those changes. What options can you think of?
 
-* **Question:**
+* **Question:** After a deletion is made, refetch all posts.
 
 ---
 

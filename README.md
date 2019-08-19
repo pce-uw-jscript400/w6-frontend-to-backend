@@ -209,7 +209,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** In what component did you add the `loading` property and why?
 
-* **Your Answer:** There are certainly options, but the most logical place seems to be to add this to the posts container state object. This is where the routes for this particular component lives and we would simply apply the same logic at this level to get the same effect. Ideally though, handling this logged in / logged out state check would be better served via redux, or at the top level component and passed down as a prop. 
+* **Your Answer:** I added it to the `UsersContainer` component. After tracing this route back through the component hierarchy, I was able to identify that the the issue with this reload state is a reliance on the UsersContainer to load a users array into state that the list component uses to then render the users posts. We must make sure we halt rendering of that component until the users array has been populated. 
 
 ---
 
@@ -239,9 +239,11 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** Why did the number of posts not change when you were redirected back to the `/users` route?
 
-* **Your Answer:** Whenever we modify our data with a Create, Update, or Delete, we have a few options on how to make our frontend reflect those changes. What options can you think of?
+* **Your Answer:** The change was not bubbled back up to state for the users list component. It is still operating with the assumption no change to the users array has happened.
 
-* **Question:**
+* **Question:** Whenever we modify our data with a Create, Update, or Delete, we have a few options on how to make our frontend reflect those changes. What options can you think of?
+
+* **Your Answer:** A change in state is what triggers the frontend to rerender. In this case, we need the deleted post to be reflected in state in order to force that rerender of the component.
 
 ---
 
@@ -271,15 +273,15 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 We got a lot done but there's still a lot to do to make this app fully functional. Complete the following features on this application. 
 
-- [ ] If there are no posts for a user, show a message on their `/users/<userId>/posts` page that encourages them to create a new post.
+- [X] If there are no posts for a user, show a message on their `/users/<userId>/posts` page that encourages them to create a new post.
 
-- [ ] If there is no emotion for a post, hide the associated message on each post.
+- [X] If there is no emotion for a post, hide the associated message on each post.
 
-- [ ] Show the user's username on the navigation when they are logged in as a link. When clicked, go to a new page: `/users/<userId>/edit`
+- [X] Show the user's username on the navigation when they are logged in as a link. When clicked, go to a new page: `/users/<userId>/edit`
 
-- [ ] Create a page at `/users/<userId>/edit` that allows a user to update their `name`. On save, redirect them to their `/users/<userId>/posts` page.
+- [X] Create a page at `/users/<userId>/edit` that allows a user to update their `name`. On save, redirect them to their `/users/<userId>/posts` page.
 
-- [ ] If the user has a name, show that on the Navigation, `/users` page, and `/users/<userId>/posts` page instead.
+- [X] If the user has a name, show that on the Navigation, `/users` page, and `/users/<userId>/posts` page instead.
 
 - [ ] On the login page, appropriately handle errors so that the user has a chance to correct their username/password combination. Display some kind of helpful message.
 

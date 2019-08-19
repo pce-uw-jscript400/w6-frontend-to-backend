@@ -1,10 +1,10 @@
 import React from 'react'
-import Form from './Form'
+import UserForm from './UserForm'
 
 export default ({ onSubmit, user }) => (
   <section className='container'>
-    <h1>Create a New Post</h1>
+    <h1>Edit Your User Information</h1>
     <hr />
-    <Form onSubmit={onSubmit} user={user}/>
+    <UserForm user={user} onSubmit={onSubmit} />
   </section>
 )

@@ -1,9 +1,9 @@
 import React from 'react'
 import { withRouter } from 'react-router'
 import { Link } from 'react-router-dom'
-import { logout } from '../../api/auth';
+import { logout,profile } from '../../api/auth';
 
-const AuthenticatedLinks = ({ currentUserId, logoutUser, history }) => {
+const AuthenticatedLinks = ({ currentUserId, logoutUser, userName, history }) => {
   const logout = () => {
     logoutUser()
   }
@@ -15,6 +15,11 @@ const AuthenticatedLinks = ({ currentUserId, logoutUser, history }) => {
       <li className='nav-item'>
         <Link className='nav-link' to={`/users/${currentUserId}/posts/new`}>
           Create a New Post
+        </Link>
+      </li>
+      <li className='nav-item'>
+        <Link className='nav-link' to={`/users/${currentUserId}/edit`}>
+          {`${userName}`}
         </Link>
       </li>
       <li className='nav-item'>

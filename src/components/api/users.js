@@ -14,3 +14,16 @@ export const users = async () => {
   const json = await response.json()
   return json.response
 }
+
+export const updateUser = async (user, update) => {
+  const response = await fetch(`${BASE_URL}/api/users/${user._id}`, {
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${localStorage.getItem('journal-app')}`
+    },
+    method: 'PUT',
+    body: JSON.stringify(update)
+  })
+  const json = await response.json()
+  return json.response
+}

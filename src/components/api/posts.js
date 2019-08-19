@@ -14,3 +14,16 @@ export const deletePost = async (user, post) => {
   const json = await response.json()
   return json.response
 }
+
+export const createPost = async (user, post) => {
+  const response = await fetch(`${BASE_URL}/api/users/${user._id}/posts/new`, {
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${localStorage.getItem('journal-app')}`
+    },
+    method: 'POST',
+    body: JSON.stringify(post)
+  })
+  const json = await response.json()
+  return json.response
+}

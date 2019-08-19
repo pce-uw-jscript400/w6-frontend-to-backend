@@ -9,17 +9,19 @@ export default class Container extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      users: []
+      users: [],
+      loading: true
     }
   }
 
   async componentDidMount() {
     const response = await users()
-    this.setState({users: response})
+    this.setState({users: response,loading: false})
   }
 
   render () {
     const { users } = this.state
+    if (this.state.loading) return <div>Loading...</div>
     return (
       <main className='container'>
         <Route path='/users' exact component={() => <List users={users} />} />

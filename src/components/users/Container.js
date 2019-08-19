@@ -7,6 +7,8 @@ import * as users from '../../api/users'
 // Components
 import List from './List/List'
 import PostsContainer from '../posts/Container'
+import EditForm from './Form/Edit.Form'
+
 
 export default class Container extends React.Component {
   constructor (props) {
@@ -29,6 +31,16 @@ export default class Container extends React.Component {
     this.setState({ users: response })
   }
 
+  async editUser (name) {
+    const { currentUserId, history, refreshUsers } = this.props
+
+    await users.fetchUsers({ user: { _id: currentUserId }, name })
+    await refreshUsers()
+
+    history.push(`/users/${currentUserId}/posts`)
+
+  }
+
   render () {
     const { currentUserId } = this.props
     const { users, loading } = this.state
@@ -41,6 +53,13 @@ export default class Container extends React.Component {
           currentUserId={currentUserId}
           refreshUsers={this.refreshUsers}
           users={users} />
+        <Route path='/users/:userId/edit' exact component={({ match }) => {
+          const user = users.find(user => user._id === match.params.userId)
+          return <EditForm onSubmit={this.editUser} user={user}             refreshUsers={this.refreshUsers}
+           />
+          }}
+        />
+        
       </main>
     )
   }

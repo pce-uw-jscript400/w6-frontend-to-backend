@@ -6,7 +6,7 @@ class Form extends React.Component {
     super(props)
     this.state = {
       username: '',
-      password: ''
+      password: '',
     }
 
     this.handleChange = this.handleChange.bind(this)

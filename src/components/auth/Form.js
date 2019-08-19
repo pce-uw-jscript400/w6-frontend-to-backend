@@ -1,12 +1,16 @@
 import React from 'react'
 import {withRouter} from 'react-router'
+import ErrorMessage from '../shared/ErrorMsg';
+
 
 class Form extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
       username: '',
-      password: ''
+      password: '',
+      error: false,
+      errorMsg: null
     }
 
     this.handleChange = this.handleChange.bind(this)
@@ -17,12 +21,27 @@ class Form extends React.Component {
     this.setState({ [name]: value })
   }
 
-  handleSubmit (e) {
+  async handleSubmit (e) {
     e.preventDefault()
-    this.props.onSubmit(this.state)
+    let response = await this.props.onSubmit(this.state)
+    console.log(response)
+    if (response.status != 200) {
+      this.setState({
+        error: true,
+        errorMsg: response.message
+      })
+    }
+    this.setState({
+      error: false,
+      errorMsg: null
+    })
   }
 
   render () {
+    let error;
+    if(this.state.error) {
+      error = <ErrorMessage message={this.state.errorMsg}/>
+    }
     return (
       <form onSubmit={this.handleSubmit}>
         <div className='form-group'>
@@ -45,6 +64,7 @@ class Form extends React.Component {
             type='password'
             value={this.state.password} />
         </div>
+        {error}
         <button type='submit' className='btn btn-primary'>Submit</button>
       </form>
     )

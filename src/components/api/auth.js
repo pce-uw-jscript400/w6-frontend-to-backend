@@ -11,10 +11,14 @@ export const login = async (user) => {
     },
     method: 'POST'
   })
-  const json = await response.json()
-  const token = json.token
-  window.localStorage.setItem('journal-app', token)
-  return json
+  if (response.status === 200) {
+    const json = await response.json()
+    const token = json.token
+    window.localStorage.setItem('journal-app', token)
+    return json
+  }
+  const error = await response.json()
+  return error
 }
 
 export const signup = async (user) => {

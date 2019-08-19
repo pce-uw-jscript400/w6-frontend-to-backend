@@ -8,7 +8,9 @@ export default class Container extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      users: [ ]
+      users: [ 
+        { posts: [] }
+      ]
     }
   }
 
@@ -19,18 +21,8 @@ export default class Container extends React.Component {
       this.setState({ users })
     }
   }
-  // {
-  //   _id: '5de4',
-  //   username: 'example.user',
-  //   posts: [
-  //     {
-  //       _id: '6cj2',
-  //       content: 'This is an example post.',
-  //       emotion: 'joy',
-  //       created_at: new Date('2019-07-01')
-  //     }
-  //   ]
-  // }
+ 
+
   render () {
     const { users } = this.state
     return (

@@ -216,7 +216,7 @@ const response = await fetch('http://localhost:5000/api/login', {
 
 * **Your Answer:**
 
-*
+* Added this.props.history.push('/users')
 
 - [ ] We will have the same problem on the `/users/<userId>/posts` page. Use the same strategy to have this page load correctly on refresh.
 
@@ -224,7 +224,7 @@ const response = await fetch('http://localhost:5000/api/login', {
 
 * **Your Answer:**
 
----
+* App.js since we have our router the loading will show is the during the router switch.
 
 - [ ] Using the same principals as above, make it so that if the user is logged in, they cannot go to the `/login` or `/signup` routes. Instead, forward them to `/users`.
 
@@ -252,11 +252,11 @@ const response = await fetch('http://localhost:5000/api/login', {
 
 * **Question:** Why did the number of posts not change when you were redirected back to the `/users` route?
 
-* **Your Answer:** Whenever we modify our data with a Create, Update, or Delete, we have a few options on how to make our frontend reflect those changes. What options can you think of?
+* **Question:** Whenever we modify our data with a Create, Update, or Delete, we have a few options on how to make our frontend reflect those changes. What options can you think of?
 
-* **Question:**
+* **Your Answer:**
 
----
+* I am not sure.
 
 - [ ] Using your preferred method, update your code so that the frontend will reflect the changes made to the backend.
 

@@ -22,6 +22,14 @@ export default class Container extends React.Component {
     }
   }
  
+  // removePost
+  // -- would remove a single post from the state;
+  // calling set state
+
+  // refetchState
+  // -- would refetch the entire state (a resource),
+  // and set that state, overwritting the previous
+  // state
 
   render () {
     const { users } = this.state

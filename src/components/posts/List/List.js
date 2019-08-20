@@ -14,7 +14,7 @@ export default ({ destroyPost, user }) => {
       <Actions destroyPost={destroyPost} post={post} user={user} />
     </div>
   ))
-
+   
   return (
     <>
       <h1 className='mb-4'>{ user.username }'s Posts</h1>

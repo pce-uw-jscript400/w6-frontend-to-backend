@@ -1,108 +1,116 @@
-import React from "react";
-import {
-  BrowserRouter as Router,
-  Redirect,
-  Route,
-  Switch
-} from "react-router-dom";
-import Header from "./shared/Header";
-import Navigation from "./shared/Navigation/Navigation";
-import Login from "./auth/Login.Form";
-import Signup from "./auth/Signup.Form";
-import UsersContainer from "./users/Container";
+import React from 'react'
+import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom'
 
-import * as auth from "../api/auth";
-//import { async } from "q";
+// Helpers
+import * as auth from '../api/auth'
+import * as token from '../helpers/local-storage'
+
+// Components
+import Header from './shared/Header'
+import Navigation from './shared/Navigation/Navigation'
+import Login from './auth/Login.Form'
+import Signup from './auth/Signup.Form'
+import UsersContainer from './users/Container'
 
 class App extends React.Component {
-  constructor() {
-    super();
+  constructor () {
+    super()
     this.state = {
       currentUserId: null,
-      loading: true
-    };
-
-    this.loginUser = this.loginUser.bind(this);
-    this.signupUser = this.signupUser.bind(this);
-    this.logoutUser = this.logoutUser.bind(this);
-  }
-
-  // if there is a token we can login in the case of refreshing the page or navigating to other pages
-  async componentDidMount() {
-    const token = window.localStorage.getItem("journal-app");
-    if (token) {
-      const profile = await auth.profile();
-      this.setState({ currentUserId: profile.user._id });
+      currentUsername: null,
+      loading: true,
+      displayError: false
     }
-    this.setState({ loading: false });
+
+    this.loginUser = this.loginUser.bind(this)
+    this.logoutUser = this.logoutUser.bind(this)
+    this.signupUser = this.signupUser.bind(this)
   }
 
-  async loginUser(user) {
-    await auth.login(user);
-    const profile = await auth.profile();
-    this.setState({ currentUserId: profile.user._id });
+  async componentDidMount () {
+    // window.localStorage.removeItem('journal-app')
+    if (token.getToken()) {
+      const { user } = await auth.profile();
+      this.setState({ currentUserId: user._id,
+        currentUsername: user.name,
+        loading: false });
+    } else {
+      this.setState({ loading: false })
+    }
   }
 
-  async signupUser(user) {
-    await auth.signup(user);
-    const profile = await auth.profile();
-
-    this.setState({ currentUserId: profile.user._id });
+  async loginUser (user) {
+    const response = await auth.login(user)
+    if (response.status === 401) {
+      this.setState({displayError: true})
+      return
+    } else {
+      this.setState({displayError: false})
+      await token.setToken(response)
+      
+      const profile = await auth.profile()
+      this.setState({ 
+        currentUserId: profile.user._id,
+        currentUsername: profile.name
+      })
+    }
   }
 
-  logoutUser() {
-    window.localStorage.removeItem("journal-app");
-    this.setState({ currentUserId: null });
+  logoutUser () {
+    token.clearToken()
+    this.setState({ 
+      currentUserId: null,
+      currentUsername: null
+    })
   }
 
-  render() {
-    if (this.state.loading) return <h1>Loading...</h1>;
+  async signupUser (user) {
+    const response = await auth.signup(user)
+    if (response.status === 401) {
+      this.setState({displayError: true})
+      return
+    } else {
+      this.setState({displayError: false})
+      await token.setToken(response)
+      
+      const profile = await auth.profile()
+      this.setState({ 
+        currentUserId: profile.user._id,
+        currentUsername: profile.name
+      })
+    }
+  }
+
+  render () {
+    const { currentUserId, currentUsername, loading, displayError } = this.state
+    if (loading) return <span>Loading...</span>
+
     return (
       <Router>
         <Header />
         <Navigation
-          currentUserId={this.state.currentUserId}
-          logoutUser={this.logoutUser}
-        />
+          currentUserId={currentUserId}
+          currentUsername= {currentUsername}
+          logoutUser={this.logoutUser} />
         <Switch>
-          <Route
-            path="/login"
-            exact
-            component={() => {
-              return this.state.currentUserId ? (
-                <Redirect to="/users" />
-              ) : (
-                <Login onSubmit={this.loginUser} />
-              );
-            }}
-          />
-          <Route
-            path="/signup"
-            exact
-            component={() => {
-              return this.state.currentUserId ? (
-                <Redirect to="/users" />
-              ) : (
-                <Signup onSubmit={this.signupUser} />
-              );
-            }}
-          />
+          <Route path='/login' exact component={() => {
+            return currentUserId ? <Redirect to='/users' /> : <Login onSubmit={this.loginUser} displayError={displayError} />
+          }} />
+          <Route path='/signup' exact component={() => {
+            return currentUserId ? <Redirect to='/users' /> : <Signup onSubmit={this.signupUser} displayError={displayError} />
+          }} />
 
-          <Route
-            path="/users"
-            render={() => {
-              return this.state.currentUserId ? (
-                <UsersContainer />
-              ) : (
-                <Redirect to="/login" />
-              );
-            }}
-          />
-          <Redirect to="/login" />
+          <Route path='/users' render={() => {
+            return currentUserId
+              ? <UsersContainer currentUserId={currentUserId} />
+              : <Redirect to='/login' />
+          }} />
+
+          <Redirect to='/login' />
         </Switch>
       </Router>
-    );
+    )
   }
 }
 
-export default App;
+export default App

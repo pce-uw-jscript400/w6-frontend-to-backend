@@ -1,47 +1,80 @@
-import React from 'react'
-import { Route } from 'react-router-dom'
+import React from "react";
+import { withRouter } from "react-router";
+import { Route } from "react-router-dom";
 
-import List from './List/List'
-import EditForm from './Form/Edit.Form'
-import NewForm from './Form/New.Form'
+import * as posts from "../../api/posts";
 
-export default class Container extends React.Component {
-  constructor (props) {
-    super(props)
-    this.createPost = this.createPost.bind(this)
-    this.destroyPost = this.destroyPost.bind(this)
-    this.editPost = this.editPost.bind(this)
+import List from "./List/List";
+import EditForm from "./Form/Edit.Form";
+import NewForm from "./Form/New.Form";
+
+class Container extends React.Component {
+  constructor(props) {
+    super(props);
+    this.createPost = this.createPost.bind(this);
+    this.destroyPost = this.destroyPost.bind(this);
+    this.editPost = this.editPost.bind(this);
   }
 
-  createPost (post) {
-    console.log('Submitting Post:', post)
+  async createPost(post) {
+    const { currentUserId, history, refreshUsers } = this.props;
+    await posts.createPost({ user: { _id: currentUserId }, post });
+    await refreshUsers();
+    history.push(`/users/${currentUserId}/posts`);
   }
 
-  destroyPost (post) {
-    console.log('Destroying Post:', post)
+  async destroyPost(post) {
+    const { currentUserId, history, refreshUsers } = this.props;
+    await posts.deletePost({ user: { _id: currentUserId }, post });
+    history.push(`/users/${currentUserId}/posts`);
   }
 
-  editPost (post) {
-    console.log('Editting Post:', post)
+  async editPost(post) {
+    const { currentUserId, history, refreshUsers } = this.props;
+    await posts.updatePost({ user: { _id: currentUserId }, post });
+    await refreshUsers();
+    history.push(`/users/${currentUserId}/posts`);
   }
 
-  render () {
-    const { users } = this.props
+  render() {
+    const { currentUserId, users } = this.props;
     return (
       <>
-        <Route path='/users/:userId/posts' exact component={({ match }) => {
-          const user = users.find(user => user._id === match.params.userId)
-          return <List destroyPost={this.destroyPost} user={user} />
-        }} />
-        <Route path='/users/:userId/posts/new' exact component={() => {
-          return <NewForm onSubmit={this.createPost} />
-        }} />
-        <Route path='/users/:userId/posts/:postId/edit' exact component={({ match }) => {
-          const user = users.find(user => user._id === match.params.userId)
-          const post = user.posts.find(user => user._id === match.params.postId)
-          return <EditForm onSubmit={this.editPost} post={post} />
-        }} />
+        <Route
+          path="/users/:userId/posts"
+          exact
+          component={({ match }) => {
+            const user = users.find(user => user._id === match.params.userId);
+            return (
+              <List
+                currentUserId={currentUserId}
+                destroyPost={this.destroyPost}
+                user={user}
+              />
+            );
+          }}
+        />
+        <Route
+          path="/users/:userId/posts/new"
+          exact
+          component={() => {
+            return <NewForm onSubmit={this.createPost} />;
+          }}
+        />
+        <Route
+          path="/users/:userId/posts/:postId/edit"
+          exact
+          component={({ match }) => {
+            const user = users.find(user => user._id === match.params.userId);
+            const post = user.posts.find(
+              user => user._id === match.params.postId
+            );
+            return <EditForm onSubmit={this.editPost} post={post} />;
+          }}
+        />
       </>
-    )
+    );
   }
 }
+
+export default withRouter(Container);

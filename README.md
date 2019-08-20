@@ -36,7 +36,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** What error do you get? Why?
 
-* **Your Answer:** 
+* **Your Answer:**  we get a cors error , because we havent enabled cors on our server
 
 ---
 
@@ -44,7 +44,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** Try your request again. What error do you get? Why?
 
-* **Your Answer:**
+* **Your Answer:** Not authorized 401, because we are not sending in the token
 
 ---
 
@@ -65,11 +65,11 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** Why do we need to include the "Content-Type" in the headers?
 
-* **Your Answer:**
+* **Your Answer:** It is to tell the server to desearialize the body in JSON format
 
 * **Question:** How could you convert this method to an `async` method?
 
----
+--- put async before loginUser and await on fetch and then just console log the response
 
 - [ ] Let's move our requests to a better place. Create a new file at `./src/api/auth.js`. Add the following inside of it:
   ```js
@@ -87,7 +87,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
       method: 'POST'
     })
     const json = await response.json()
-    
+
     return json
   }
   ```
@@ -96,7 +96,8 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** What is happening on the first couple of lines of the new file you've created?
 
-* **Your Answer:** 
+* **Your Answer:** In the first line we are pulling out the environment varaible and if it is a development environment we want the URL to be localhost and when we deploy it change it to an actual url,
+so that we dont have to keep changing the code when we are in dev environment vs production
 
 ---
 
@@ -104,7 +105,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** Why are we storing the token?
 
-* **Your Answer:**
+* **Your Answer:** token is something that is needed for subsequent requests to the server and we by storing it locally, we dont have to request the server for the token for every refresh or every new route that we hit
 
 ---
 
@@ -112,7 +113,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** Where did you write your code to manipulate LocalStorage? Why?
 
-* **Your Answer:** 
+* **Your Answer:** The code to manipulate local storage is in auth.js as app.js is more react/view code and the token is not necessarily related anything to do with the view
 
 ---
 
@@ -120,11 +121,12 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** What changes on the page after you successfully login? Why?
 
-* **Your Answer:**
+* **Your Answer:** Once we set the state, we show a bunch of navigation links
 
 * **Question:** What happens if you enter in the incorrect information? What _should_ happen?
 
-* **Your Answer:**
+* **Your Answer:** we throw an exception and we need to add a try catch block to handle it and give info
+to the end user that they have entered invalid creds
 
 ---
 
@@ -141,7 +143,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** Describe what is happening in the code above.
 
-* **Your Answer:**
+* **Your Answer:** We want to get the token and update the state and render the navigation links and be logged in if there is a token. This code will run once every time the react component mounts. This way when we user refreshes after loggin in the state is updated correctly and the user continues to remain in the same state as they were before logging in
 
 ---
 
@@ -149,7 +151,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** When you click "Logout", nothing happens unless you refresh the page. Why not?
 
-* **Your Answer:**
+* **Your Answer:** When we click log out at this point of time, we have removed the token, but we havent changed the state and hence we continue to render as if we have a user id
 
 ---
 
@@ -157,7 +159,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** What did you have to do to get the `logout()` function to work? Why?
 
-* **Your Answer:**
+* **Your Answer:** We had to update the state to be null and then based on the state chaneg we add appropriate routes to get the user back to sign in page
 
 ---
 
@@ -173,7 +175,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** What happens? What _should_ happen?
 
-* **Answer:**
+* **Answer:** We end up with the users page even though we havent logged in as we havent added any authorization
 
 ---
 
@@ -186,7 +188,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** Describe what is happening in the code above.
 
-* **Your Answer:**
+* **Your Answer:** Check the state and if the currentUserId is set then we render the UserContainer component and if its not set then it redirects to login page which renders the appropriate content of the login page
 
 ---
 
@@ -194,7 +196,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** What happens and why?
 
-* **Your Answer:**
+* **Your Answer:** We are logged in, but we still cant access the users page because we render before componentDidMount can run which sets the state. So we add some additional code to include one more loading state and then set it after component did mount and decide what to render based on the state
 
 ---
 
@@ -202,7 +204,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** What did you do to solve this problem?
 
-* **Your Answer:**
+* **Your Answer:** By adding another state called loading, we make sure that when the app is loaded the first time, we first return loading and at the end of which componentDidMount() will run and there by getting the token and setting the state. This change of state leads to a rerender and at this point of time, the userId is set and hence we load the appropriate page, so that when we are in /users route now and hit refresh, we will still be able to see the right content. This basically takes care of the async nature of the code, where in you need to make a request do get some data before you can render something.
 
 ---
 
@@ -224,7 +226,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 ---
 
-- [ ] Let's get our "Delete" link working. On the backend, create a `DELETE Post` route with the path of: 
+- [ ] Let's get our "Delete" link working. On the backend, create a `DELETE Post` route with the path of:
   ```
   DELETE /users/:userId/posts/:postId
   ```
@@ -242,7 +244,10 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Your Answer:** Whenever we modify our data with a Create, Update, or Delete, we have a few options on how to make our frontend reflect those changes. What options can you think of?
 
-* **Question:**
+* **Question:** The reason the number of posts did not change is that when we deleted the post, we deleted it from the database. However this does not mean that the front end state gets automated automatically. The state variable in the front end still contains stale data and hence refelcts the old number.
+To get around this issue we can follow one of the two approaches
+1. Whenever we update the database, update the state in the front end as well. This is not the most ideal one as there can be conflicts between the server and the client
+2. The better option is to repull the data from the server. If we have a lot of data then we do a lot of network I/O, hence the most optimal thing to do here is to do a GET call for whatever info is needed to be fetched as a part of update. For example, whenever we update a post, we can get all the info that is needed to render the page that we will end up with when we finish the action. So it is better to fect the data from the server, but what data and how much you fetch depends on the amount of data that is being pulled
 
 ---
 
@@ -270,7 +275,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 ## Exercise
 
-We got a lot done but there's still a lot to do to make this app fully functional. Complete the following features on this application. 
+We got a lot done but there's still a lot to do to make this app fully functional. Complete the following features on this application.
 
 - [ ] If there are no posts for a user, show a message on their `/users/<userId>/posts` page that encourages them to create a new post.
 

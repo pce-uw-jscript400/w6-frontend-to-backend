@@ -2,7 +2,7 @@ import React from 'react'
 import { withRouter } from 'react-router'
 import { Link } from 'react-router-dom'
 
-const AuthenticatedLinks = ({ currentUserId, history, logoutUser }) => {
+const AuthenticatedLinks = ({ currentUserId, currentUserName, history, logoutUser }) => {
   const logout = () => {
     logoutUser()
     history.push('/login')
@@ -13,6 +13,11 @@ const AuthenticatedLinks = ({ currentUserId, history, logoutUser }) => {
       <li className='nav-item'>
         <Link className='nav-link' to='/users'>
           All Users
+        </Link>
+      </li>
+      <li className='nav-item'>
+        <Link className='nav-link' to={`/users/${currentUserId}/edit`}>
+          {currentUserName}
         </Link>
       </li>
       <li className='nav-item'>

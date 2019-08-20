@@ -17,6 +17,7 @@ class App extends React.Component {
     super()
     this.state = {
       currentUserId: null,
+      currentUserName: null,
       loading: true
     }
 
@@ -28,7 +29,7 @@ class App extends React.Component {
   async componentDidMount () {
     if (token.getToken()) {
       const { user } = await auth.profile();
-      this.setState({ currentUserId: user._id, loading: false });
+      this.setState({ currentUserId: user._id, currentUserName: user.name, loading: false });
     } else {
       this.setState({ loading: false })
     }
@@ -56,7 +57,7 @@ class App extends React.Component {
   }
 
   render () {
-    const { currentUserId, loading } = this.state
+    const { currentUserId, currentUserName, loading } = this.state
     if (loading) return <span />
 
     return (
@@ -64,6 +65,7 @@ class App extends React.Component {
         <Header />
         <Navigation
           currentUserId={currentUserId}
+          currentUserName={currentUserName}
           logoutUser={this.logoutUser} />
         <Switch>
           <Route path='/login' exact component={() => {

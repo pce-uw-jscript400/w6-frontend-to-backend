@@ -18,5 +18,6 @@ export default async (path, { body = null, method = 'GET' } = {}) => {
   const response = await fetch(`${BASE_URL}${path}`, options)
   const json = await response.json()
 
+
   return json
 }

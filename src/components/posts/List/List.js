@@ -8,7 +8,7 @@ export default ({ currentUserId, destroyPost, user }) => {
       <div className='card-body'>
         <p className='card-text'>{ post.content }</p>
         <blockquote className='blockquote mb-0'>
-          <footer className='blockquote-footer'>Was feeling: { post.emotion }</footer>
+          if (post.emotion) <footer className='blockquote-footer'>Was feeling: { post.emotion }</footer>
         </blockquote>
       </div>
       <Actions
@@ -21,7 +21,11 @@ export default ({ currentUserId, destroyPost, user }) => {
 
   return (
     <>
-      <h1 className='mb-4'>{ user.username }'s Posts</h1>
+      <h1 className='mb-4'>
+        { 
+          (user.name) ? user.name : user.username
+        }
+        's Posts</h1>
       { posts }
     </>
   )

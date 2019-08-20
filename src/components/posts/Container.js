@@ -13,6 +13,9 @@ import NewForm from './Form/New.Form'
 class Container extends React.Component {
   constructor (props) {
     super(props)
+    this.state = {
+      postError: false
+    }
     this.createPost = this.createPost.bind(this)
     this.destroyPost = this.destroyPost.bind(this)
     this.editPost = this.editPost.bind(this)
@@ -24,33 +27,46 @@ class Container extends React.Component {
     await posts.createPost({ user: { _id: currentUserId }, post })
     await refreshUsers()
 
-    history.push(`/users/${currentUserId}/posts`)
+    history.push(`/users/${currentUserId}/posts${post._id}`)
   }
 
   async destroyPost (post) {
     const { currentUserId, history, refreshUsers } = this.props
     
-    await posts.destroyPost({ user: { _id: currentUserId }, post })
-    await refreshUsers()
+    const response = await posts.destroyPost({ user: { _id: currentUserId }, post })
+    if (response.status === 401) {
+      this.setState({postError: true})
+      return
+    } else {
+      this.setState({postError: false})
+      await refreshUsers()
     
-    history.push(`/users/${currentUserId}/posts`)
+      history.push(`/users/${currentUserId}/posts`)
+    }
   }
 
   async editPost (post) {
     const { currentUserId, history, refreshUsers } = this.props
 
-    await posts.updatePost({ user: { _id: currentUserId }, post })
-    await refreshUsers()
+    const response = await posts.updatePost({ user: { _id: currentUserId }, post })
+    if (response.status === 401) {
+      this.setState({postError: true})
+      return
+    } else {
+      this.setState({postError: false})
+      await refreshUsers()
 
-    history.push(`/users/${currentUserId}/posts`)
+      history.push(`/users/${currentUserId}/posts/${post._id}`)
+    }
   }
 
   render () {
-    const { currentUserId, users } = this.props
+    const { currentUserId, users, postError } = this.props
     return (
       <>
         <Route path='/users/:userId/posts' exact component={({ match }) => {
           const user = users.find(user => user._id === match.params.userId)
+          if (user.posts < 1) return <p>Looks like you havent posted anything yet. Feel free to submit one below!</p>
           return (
             <List
               currentUserId={currentUserId}
@@ -59,12 +75,12 @@ class Container extends React.Component {
           )
         }} />
         <Route path='/users/:userId/posts/new' exact component={() => {
-          return <NewForm onSubmit={this.createPost} />
+          return <NewForm onSubmit={this.createPost} postError={postError}/>
         }} />
         <Route path='/users/:userId/posts/:postId/edit' exact component={({ match }) => {
           const user = users.find(user => user._id === match.params.userId)
           const post = user.posts.find(user => user._id === match.params.postId)
-          return <EditForm onSubmit={this.editPost} post={post} />
+          return <EditForm onSubmit={this.editPost} post={post} postError={postError}/>
         }} />
       </>
     )

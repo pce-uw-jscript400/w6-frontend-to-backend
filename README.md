@@ -283,9 +283,9 @@ We got a lot done but there's still a lot to do to make this app fully functiona
 
 - [X] If the user has a name, show that on the Navigation, `/users` page, and `/users/<userId>/posts` page instead.
 
-- [ ] On the login page, appropriately handle errors so that the user has a chance to correct their username/password combination. Display some kind of helpful message.
+- [X] On the login page, appropriately handle errors so that the user has a chance to correct their username/password combination. Display some kind of helpful message.
 
-- [ ] On the signup page, appropriately handle errors so that the user has a chance to correct their username/password combination. Display some kind of helpful message.
+- [X] On the signup page, appropriately handle errors so that the user has a chance to correct their username/password combination. Display some kind of helpful message.
 
 - [ ] On the create post page, appropriately handle errors so that the user has a chance to correct their post. Display some kind of helpful message.
 

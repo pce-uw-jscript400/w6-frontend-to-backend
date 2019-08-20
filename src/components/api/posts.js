@@ -25,5 +25,6 @@ export const createPost = async (user, post) => {
     body: JSON.stringify(post)
   })
   const json = await response.json()
-  return json.response
+  console.log(json)
+  return json
 }

@@ -13,7 +13,7 @@ export default ({ destroyPost, user }) => {
   )
 
   const posts = user.posts.map(post => (
-    <div key={post._id} className='card'>
+    <div key={post._id} className='card' data-id={post._id}>
       <div className='card-body'>
         <p className='card-text'>{ post.content }</p>
         <blockquote className='blockquote mb-0'>

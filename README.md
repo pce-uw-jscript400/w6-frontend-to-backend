@@ -77,9 +77,7 @@ To tell the server the type that is being sent, in this case json, otherwise it 
 
 * **Your Answer:**
 
-
-
-
+Add await to fetch.
 ---
 
 - [ ] Let's move our requests to a better place. Create a new file at `./src/api/auth.js`. Add the following inside of it:
@@ -109,7 +107,7 @@ To tell the server the type that is being sent, in this case json, otherwise it 
 
 * **Your Answer:** 
 
-
+The first few lines are assigning localhost to development and it looks like they will need to be updated for deployment.
 
 ---
 
@@ -185,6 +183,8 @@ There's no current API route for logout, but once the page is refreshed the toke
 
 * **Your Answer:**
 
+Needed to remove the journal-app from local storage and update currentUserId to null.
+
 ---
 
 - [ ] Following the patterns we used above, build the Signup feature.
@@ -246,6 +246,8 @@ In the state set `loading: true` and then in render added an if statement to sho
 
 * **Your Answer:**
 
+`loading: true` was added to `App.js` and it was added to that component so the user will stay logged in regardless of the route they're on.
+
 ---
 
 - [ ] Using the same principals as above, make it so that if the user is logged in, they cannot go to the `/login` or `/signup` routes. Instead, forward them to `/users`.
@@ -274,9 +276,15 @@ In the state set `loading: true` and then in render added an if statement to sho
 
 * **Question:** Why did the number of posts not change when you were redirected back to the `/users` route?
 
-* **Your Answer:** Whenever we modify our data with a Create, Update, or Delete, we have a few options on how to make our frontend reflect those changes. What options can you think of?
+* **Your Answer:**
 
-* **Question:**
+Because state was not updated.
+
+* **Question:** Whenever we modify our data with a Create, Update, or Delete, we have a few options on how to make our frontend reflect those changes. What options can you think of?
+
+* **Your Answer:**
+
+refresh state so the app reflects the most recent changes made.
 
 ---
 

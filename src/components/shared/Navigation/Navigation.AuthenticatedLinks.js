@@ -17,7 +17,7 @@ const AuthenticatedLinks = ({ currentUserId, currentUserName, history, logoutUse
       </li>
       <li className='nav-item'>
         <Link className='nav-link' to={`/users/${currentUserId}/edit`}>
-          {currentUserName}
+          {currentUserName || 'Please update your name'}
         </Link>
       </li>
       <li className='nav-item'>

@@ -6,7 +6,6 @@ export default ({ users }) => {
     <li key={user._id}>
       <Link to={`/users/${user._id}/posts`}>
         {user.name || user.username}: {user.posts.length} Posts
-        {console.log(user)}
       </Link>
     </li>
   ))

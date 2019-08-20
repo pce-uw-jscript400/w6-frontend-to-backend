@@ -46,9 +46,12 @@ class App extends React.Component {
   }
 
   async signupUser (user) {
-    await auth.signup(user)
-    const profile = await auth.profile()
-    this.setState({ currentUserId: profile.user._id})
+    const response = await auth.signup(user)
+    if (response.status == 201){
+      const profile = await auth.profile()
+      this.setState({ currentUserId: profile.user._id})  
+    }
+    return response
   }
 
   logoutUser = () => {

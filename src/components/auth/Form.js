@@ -23,18 +23,14 @@ class Form extends React.Component {
 
   async handleSubmit (e) {
     e.preventDefault()
-    let response = await this.props.onSubmit(this.state)
+    const response = await this.props.onSubmit(this.state)
     console.log(response)
-    if (response.status != 200) {
+    if (response.status !== 200) {
       this.setState({
         error: true,
         errorMsg: response.message
       })
     }
-    this.setState({
-      error: false,
-      errorMsg: null
-    })
   }
 
   render () {

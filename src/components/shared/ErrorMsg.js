@@ -2,8 +2,8 @@ import React from 'react'
 
 const ErrorMessage = (props) => {
   return(
-    <div className="error-message">
-      <p>{props.message}</p>
+    <div className="alert alert-danger">
+      <p className="mb-0">{props.message}</p>
     </div>
   )
 }

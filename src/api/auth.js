@@ -4,7 +4,7 @@ const BASE_URL = NODE_ENV === 'development'
   : 'tbd' // Once we deploy, we need to change this
 
 export const login = async (user) => {
-  const response = await fetch(`${BASE_URL}/api/login`, {
+    const response = await fetch(`${BASE_URL}/api/login`, {
     body: JSON.stringify(user),
     headers: {
       'Content-Type': 'application/json'
@@ -19,6 +19,23 @@ export const login = async (user) => {
 
   return json
 }
+
+
+export const signup = async (user) => {
+  const response = await fetch(`${BASE_URL}/api/signup`, {
+    body: JSON.stringify(user),
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    method: 'POST'
+  })
+  const json = await response.json()
+  const token = json.token
+
+  window.localStorage.setItem('journal-app', token)
+  return json
+}
+
 
 export const profile = async () => {
 
@@ -38,3 +55,4 @@ export const profile = async () => {
   return json
 
 }
+

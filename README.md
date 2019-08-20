@@ -172,7 +172,7 @@ move it to the App.js and pass down the function as a prop so that we have acces
 
 ---
 
-- [ ] Following the patterns we used above, build the Signup feature.
+- [X] Following the patterns we used above, build the Signup feature.
 
 ---
 

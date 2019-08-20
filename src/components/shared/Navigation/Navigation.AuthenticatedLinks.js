@@ -6,6 +6,7 @@ const AuthenticatedLinks = ({ currentUserId, history, logoutUser }) => {
 
     const logout = () => {
         logoutUser()
+        history.push('/login')
     }
 
   return (

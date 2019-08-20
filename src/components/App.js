@@ -42,20 +42,24 @@ class App extends React.Component {
    async logoutUser() {
         window.localStorage.removeItem('journal-app')
         this.setState({ currentUserId: null })
-
-//      history.push('/login')
-
     }
 
-  signupUser (user) {
-    console.log('Signing Up User:', user)
-  }
+  async signupUser (user) {
+     await auth.signup(user)
+     const profile = await auth.profile()
+
+     this.setState({ currentUserId: profile.user._id })
+   }
 
   render () {
+//  console.log('current user', this.state.currentUserId);
     return (
       <Router>
         <Header />
-        <Navigation currentUserId={this.state.currentUserId} logoutUser={this.logoutUser}/>
+        <Navigation
+            currentUserId={this.state.currentUserId}
+            logoutUser={this.logoutUser}
+        />
         <Switch>
           <Route path='/login' exact component={() => {
             return <Login onSubmit={this.loginUser} />

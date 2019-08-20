@@ -2,7 +2,7 @@ import React from "react";
 import { withRouter } from "react-router";
 import { Route } from "react-router-dom";
 
-import * as api from "../../api/posts";
+import * as posts from "../../api/posts";
 
 import List from "./List/List";
 import EditForm from "./Form/Edit.Form";
@@ -16,23 +16,28 @@ class Container extends React.Component {
     this.editPost = this.editPost.bind(this);
   }
 
-  createPost(post) {
-    console.log("Submitting Post:", post);
+  async createPost(post) {
+    const { currentUserId, history, refreshUsers } = this.props;
+    await posts.createPost({ user: { _id: currentUserId }, post });
+    await refreshUsers();
+    history.push(`/users/${currentUserId}/posts`);
   }
 
-  async destroyPost(userId, postId) {
-    console.log("Destroying Post:", postId);
-    const response = await api.deletePost(userId, postId);
-    console.log(response);
-    this.props.history.push(`/users/${userId}/posts`);
+  async destroyPost(post) {
+    const { currentUserId, history, refreshUsers } = this.props;
+    await posts.deletePost({ user: { _id: currentUserId }, post });
+    history.push(`/users/${currentUserId}/posts`);
   }
 
-  editPost(post) {
-    console.log("Editting Post:", post);
+  async editPost(post) {
+    const { currentUserId, history, refreshUsers } = this.props;
+    await posts.updatePost({ user: { _id: currentUserId }, post });
+    await refreshUsers();
+    history.push(`/users/${currentUserId}/posts`);
   }
 
   render() {
-    const { users } = this.props;
+    const { currentUserId, users } = this.props;
     return (
       <>
         <Route
@@ -40,7 +45,13 @@ class Container extends React.Component {
           exact
           component={({ match }) => {
             const user = users.find(user => user._id === match.params.userId);
-            return <List destroyPost={this.destroyPost} user={user} />;
+            return (
+              <List
+                currentUserId={currentUserId}
+                destroyPost={this.destroyPost}
+                user={user}
+              />
+            );
           }}
         />
         <Route

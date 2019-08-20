@@ -12,6 +12,7 @@ import Signup from "./auth/Signup.Form";
 import UsersContainer from "./users/Container";
 
 import * as auth from "../api/auth";
+import * as token from "../helpers/local-storage";
 
 class App extends React.Component {
   constructor() {
@@ -29,7 +30,7 @@ class App extends React.Component {
     const token = window.localStorage.getItem("journal_app");
     if (token) {
       const profile = await auth.profile();
-      this.setState({ currentUserId: profile.user._id });
+      this.setState({ currentUserId: profile._id });
     }
     this.setState({ loading: false });
   }
@@ -54,14 +55,14 @@ class App extends React.Component {
   }
 
   render() {
-    if (this.state.loading) {
-      return <p>Loading...</p>;
-    }
+    const { currentUserId, loading } = this.state;
+    if (loading) return <span />;
+
     return (
       <Router>
         <Header />
         <Navigation
-          currentUserId={this.state.currentUserId}
+          currentUserId={currentUserId}
           logoutUser={this.logoutUser}
         />
         <Switch>
@@ -93,7 +94,7 @@ class App extends React.Component {
             path="/users"
             render={() => {
               return this.state.currentUserId ? (
-                <UsersContainer />
+                <UsersContainer currentUserId={currentUserId} />
               ) : (
                 <Redirect to="/login" />
               );

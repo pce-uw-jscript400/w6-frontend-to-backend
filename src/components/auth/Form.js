@@ -19,8 +19,9 @@ class Form extends React.Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    this.props.onSubmit(this.state);
-    this.props.history.push("/users");
+    this.props
+      .onSubmit(this.state)
+      .then(() => this.props.history.push("/users"));
   }
 
   render() {
@@ -34,6 +35,7 @@ class Form extends React.Component {
             onChange={this.handleChange}
             name="username"
             type="text"
+            required
             value={this.state.username}
           />
         </div>
@@ -45,6 +47,7 @@ class Form extends React.Component {
             onChange={this.handleChange}
             name="password"
             type="password"
+            required
             value={this.state.password}
           />
         </div>

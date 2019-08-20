@@ -10,6 +10,15 @@ const AuthenticatedLinks = ({ currentUserId, logoutUser, history }) => {
 
   return (
     <ul className="nav justify-content-end">
+      {currentUserId ? (
+        <li className="nav-item">
+          <Link className="nav-link" to={`/users/${currentUserId}/edit`}>
+            Username
+          </Link>
+        </li>
+      ) : (
+        <li />
+      )}
       <li className="nav-item">
         <Link className="nav-link" to="/users">
           All Users

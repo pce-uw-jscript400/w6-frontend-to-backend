@@ -12,8 +12,11 @@ const { NODE_ENV } = process.env
       method: 'POST'
     })
     const json = await response.json()
-    const token = json.token;
-    window.localStorage.setItem('journal-app', token)
+    if(json.status === 200)
+    {
+      const token = json.token;
+      window.localStorage.setItem('journal-app', token)
+    }
     return json
   }
 
@@ -27,15 +30,16 @@ const { NODE_ENV } = process.env
     })
 
     const json = await response.json()
-    const token = json.token
-
-    window.localStorage.setItem('journal-app', token)
+    if(json.status === 200)
+    {
+      const token = json.token
+      window.localStorage.setItem('journal-app', token)
+    }
     return json
   }
 
 export const profile = async () => {
     const token = window.localStorage.getItem('journal-app');
-    console.log(token)
     const response = await fetch(`${BASE_URL}/api/profile`, {
         headers: {
           'Content-Type': 'application/json',

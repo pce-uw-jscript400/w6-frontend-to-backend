@@ -6,6 +6,7 @@ import EditForm from './Form/Edit.Form'
 import NewForm from './Form/New.Form'
 import * as posts from '../../api/posts'
 import {withRouter} from 'react-router'
+import UpdateForm from '../users/Form/UpdateForm';
 
 class Container extends React.Component {
   constructor (props) {
@@ -13,6 +14,7 @@ class Container extends React.Component {
     this.createPost = this.createPost.bind(this)
     this.destroyPost = this.destroyPost.bind(this)
     this.editPost = this.editPost.bind(this)
+    this.updateUser= this.updateUser.bind(this)
   }
 
   createPost (post) {
@@ -30,6 +32,11 @@ class Container extends React.Component {
     console.log('Editting Post:', post)
   }
 
+  updateUser (newName, userId) {
+    console.log(newName);
+    this.props.history.push(`/users/${userId}/posts`)
+  }
+
   render () {
     const { users } = this.props
     return (
@@ -45,6 +52,10 @@ class Container extends React.Component {
           const user = users.find(user => user._id === match.params.userId)
           const post = user.posts.find(user => user._id === match.params.postId)
           return <EditForm onSubmit={this.editPost} post={post} />
+        }} />
+        <Route path='/users/:userId/edit' exact component={({ match }) => {
+          const user = users.find(user => user._id === match.params.userId)
+          return <UpdateForm onSubmit={this.updateUser} user={user}/>
         }} />
       </>
     )

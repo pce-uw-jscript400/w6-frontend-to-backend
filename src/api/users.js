@@ -13,6 +13,5 @@ export const users = async () => {
       method: 'GET'
     })
     const json = await response.json()
-    console.log(json)
     return json.response;
   }

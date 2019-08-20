@@ -6,15 +6,15 @@ import Login from './auth/Login.Form'
 import Signup from './auth/Signup.Form'
 import UsersContainer from './users/Container'
 import * as auth from '../api/auth'
-import { profile } from './../api/auth';
-
 
 class App extends React.Component {
   constructor () {
     super()
     this.state = {
       currentUserId: null,
-      loading : true
+      username : null,  // (Q3) Create a new state to store the username, so that this can be passed on to the navigation links
+      loading : true,
+      invalidCreds : false
     }
 
     this.loginUser = this.loginUser.bind(this)
@@ -26,28 +26,38 @@ class App extends React.Component {
     const token = window.localStorage.getItem('journal-app')
     if (token) {
       const profile = await auth.profile()
-      this.setState({ currentUserId: profile.user._id})
+      this.setState({ currentUserId: profile.user._id, username: profile.user.username })
     }
     this.setState({loading : false})
   }
 
 
- async loginUser(user)
+  async loginUser(user)
   {
     await auth.login(user);
     const profile = await auth.profile();
-    this.setState({currentUserId : profile.user._id})
+    if (profile.status === 200)
+    {
+      this.setState({currentUserId : profile.user._id, username: profile.user.username, invalidCreds : false})
+    }
+    else
+    {
+      this.setState({invalidCreds : true})
+    }
   }
 
   async signupUser (user) {
     await auth.signup(user)
     const profile = await auth.profile()
-    this.setState({currentUserId : profile.user._id})
+    if (profile.status === 200)
+    {
+      this.setState({currentUserId : profile.user._id, username: profile.user.username})
+    }
   }
 
   logoutUser() {
     window.localStorage.removeItem('journal-app')
-    this.setState({currentUserId : null})
+    this.setState({currentUserId : null, username : null})
   }
 
   render () {
@@ -56,11 +66,12 @@ class App extends React.Component {
       <Router>
         <Header />
         <Navigation
-          currentUserId={this.state.currentUserId}
+          currentUserId = {this.state.currentUserId}
+          username = {this.state.username} //(Q3) Pass the user name to Navigation component
           logoutUser = {this.logoutUser} />
         <Switch>
           <Route path='/login' exact component={() => {
-            return this.state.currentUserId ? <Redirect to='/users' /> : <Login onSubmit={this.loginUser} />
+            return this.state.currentUserId ? <Redirect to='/users' /> : <Login onSubmit={this.loginUser} invalidCreds={this.state.invalidCreds}/>
           }} />
           <Route path='/signup' exact component={() => {
             return this.state.currentUserId ? <Redirect to='/users' /> : <Signup onSubmit={this.signupUser} />

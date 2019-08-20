@@ -6,7 +6,7 @@ class Form extends React.Component {
     super(props)
     this.state = {
       username: '',
-      password: ''
+      password: '',
     }
 
     this.handleChange = this.handleChange.bind(this)
@@ -21,6 +21,8 @@ class Form extends React.Component {
     e.preventDefault()
     this.props.onSubmit(this.state);
     this.props.history.push('/users');
+
+
   }
 
   render () {
@@ -34,7 +36,8 @@ class Form extends React.Component {
             onChange={this.handleChange}
             name='username'
             type='text'
-            value={this.state.username} />
+            value={this.state.username}
+            required/>
         </div>
         <div className='form-group'>
           <label htmlFor='password'>Password</label>
@@ -44,8 +47,10 @@ class Form extends React.Component {
             onChange={this.handleChange}
             name='password'
             type='password'
-            value={this.state.password} />
+            value={this.state.password}
+            required/>
         </div>
+        {this.props.invalidCreds ? <p>Invalid Credentials</p> : <div></div>}
         <button type='submit' className='btn btn-primary'>Submit</button>
       </form>
     )

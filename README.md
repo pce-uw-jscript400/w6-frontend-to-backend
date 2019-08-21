@@ -36,7 +36,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** What error do you get? Why?
 
-* **Your Answer:** 
+* **Your Answer: on the console did not find localhost:3000 (CORS error) and also user not logged in error, on the server terminal there was an error for not logging in as well
 
 ---
 
@@ -44,7 +44,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** Try your request again. What error do you get? Why?
 
-* **Your Answer:**
+* **Your Answer: I did get a not logged in error, but cors worked fine after I changed the port to 3000 on the app.use(cors) expression
 
 ---
 
@@ -65,10 +65,20 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** Why do we need to include the "Content-Type" in the headers?
 
-* **Your Answer:**
+* **Your Answer: Same as when we were using postman, we put the token in the application, this is a know type used by JSON and is where the token is stored 
 
 * **Question:** How could you convert this method to an `async` method?
-
+  await loginUser (user) {
+    const response = await fetch('http://localhost:5000/api/login', {
+      body: JSON.stringify(user),
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      method: 'POST',
+    })
+    const json = await response.json()
+    console.log(json)
+  }
 ---
 
 - [ ] Let's move our requests to a better place. Create a new file at `./src/api/auth.js`. Add the following inside of it:
@@ -96,7 +106,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** What is happening on the first couple of lines of the new file you've created?
 
-* **Your Answer:** 
+* **Your Answer: sets environmental variables allowing us to use a local host when in a deve environment and then the ability to set the actual host once we are in a production environment
 
 ---
 
@@ -104,7 +114,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** Why are we storing the token?
 
-* **Your Answer:**
+* **Your Answer: so it can be used by the application to authorized access or other needs
 
 ---
 
@@ -112,7 +122,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** Where did you write your code to manipulate LocalStorage? Why?
 
-* **Your Answer:** 
+* **Your Answer: In the auth.js.  The react code should be just about react and the auth.js should be just about getting authorization, I think it keeps a cleaner organized code and a separation of concerns.
 
 ---
 
@@ -120,11 +130,11 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** What changes on the page after you successfully login? Why?
 
-* **Your Answer:**
+* **Your Answer: the add a post link became available as a logged in user.
 
 * **Question:** What happens if you enter in the incorrect information? What _should_ happen?
 
-* **Your Answer:**
+* **Your Answer: on the page itself, again, nothing because we have not wired it to do anything.  However a notice that the user entered the wrong credentials or that the credential were not found message should be presented
 
 ---
 
@@ -141,7 +151,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** Describe what is happening in the code above.
 
-* **Your Answer:**
+* **Your Answer:**it is part of the react code, that when the componet mounts it check to see if there is a token in the local storage and if so it sets the state and allows the user to go to authorized pages
 
 ---
 
@@ -149,7 +159,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** When you click "Logout", nothing happens unless you refresh the page. Why not?
 
-* **Your Answer:**
+* **Your Answer: the logout is not wored to anything, the act of refreshing the page clears the local storage, but since there is no action set the page stays the same
 
 ---
 
@@ -157,7 +167,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** What did you have to do to get the `logout()` function to work? Why?
 
-* **Your Answer:**
+* **Your Answer: add logoutUser function to routes, function sets state to null, add to navigation links
 
 ---
 
@@ -173,7 +183,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** What happens? What _should_ happen?
 
-* **Answer:**
+* **Answer: able to go to the user page, but should be redirected to the sign up or login page
 
 ---
 
@@ -186,7 +196,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** Describe what is happening in the code above.
 
-* **Your Answer:**
+* **Your Answer: it is a test to see if currentuser has a value, if it does, goes to the user page, if not it redirects the user to the login page
 
 ---
 
@@ -194,7 +204,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** What happens and why?
 
-* **Your Answer:**
+* **Your Answer: you get redirested to the login page, because the refresh has not finished updating the currentuser before the app hit the redirect code, so as far as the app is concerned you are not logged in
 
 ---
 
@@ -202,7 +212,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** What did you do to solve this problem?
 
-* **Your Answer:**
+* **Your Answer: this stops the currentuser check until the call is finished, allowing the currentuser to get set before a check is made against it
 
 ---
 
@@ -210,7 +220,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** In what component did you add the `loading` property and why?
 
-* **Your Answer:**
+* **Your Answer: 
 
 ---
 
@@ -240,9 +250,9 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** Why did the number of posts not change when you were redirected back to the `/users` route?
 
-* **Your Answer:** Whenever we modify our data with a Create, Update, or Delete, we have a few options on how to make our frontend reflect those changes. What options can you think of?
+* **Your Answer: There was not an action to change the state of the container 
 
-* **Question:**
+* **Question: Whenever we modify our data with a Create, Update, or Delete, we have a few options on how to make our frontend reflect those changes. What options can you think of? - Can refetch the date, remove a post from state and update the front end, 
 
 ---
 

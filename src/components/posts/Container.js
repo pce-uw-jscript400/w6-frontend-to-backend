@@ -5,8 +5,10 @@ import List from './List/List'
 import EditForm from './Form/Edit.Form'
 import NewForm from './Form/New.Form'
 import * as posts from '../../api/posts'
+import * as users from '../../api/users'
 import {withRouter} from 'react-router'
 import UpdateForm from '../users/Form/UpdateForm';
+import { type } from 'os';
 
 class Container extends React.Component {
   constructor (props) {
@@ -32,8 +34,10 @@ class Container extends React.Component {
     console.log('Editting Post:', post)
   }
 
-  updateUser (newName, userId) {
-    console.log(newName);
+  async updateUser (newName, userId) {
+    console.log(newName, typeof(newName), userId);
+    const response = await users.update(newName, userId)
+    console.log(response);
     this.props.history.push(`/users/${userId}/posts`)
   }
 

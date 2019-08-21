@@ -26,7 +26,7 @@ class App extends React.Component {
     const token = window.localStorage.getItem('journal-app')
     if (token) {
       const profile = await auth.profile()
-      this.setState({ currentUserId: profile.user._id, username: profile.user.username })
+      this.setState({ currentUserId: profile.user._id, username: profile.user.name })
     }
     this.setState({loading : false})
   }
@@ -38,7 +38,7 @@ class App extends React.Component {
     const profile = await auth.profile();
     if (profile.status === 200)
     {
-      this.setState({currentUserId : profile.user._id, username: profile.user.username, invalidCreds : false})
+      this.setState({currentUserId : profile.user._id, username: profile.user.name, invalidCreds : false})
     }
     else
     {
@@ -51,7 +51,7 @@ class App extends React.Component {
     const profile = await auth.profile()
     if (profile.status === 200)
     {
-      this.setState({currentUserId : profile.user._id, username: profile.user.username})
+      this.setState({currentUserId : profile.user._id, username: profile.user.name})
     }
   }
 

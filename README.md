@@ -263,7 +263,7 @@ update state or reload from backend
 
 ---
 
-- [ ] Let's get our "Create a New Post" form to work. On the backend, create a `CREATE Post` route with the path of:
+- [X] Let's get our "Create a New Post" form to work. On the backend, create a `CREATE Post` route with the path of:
   ```
   POST /users/:userId/posts
   ```
@@ -285,7 +285,7 @@ We got a lot done but there's still a lot to do to make this app fully functiona
 
 - [e] If there is no emotion for a post, hide the associated message on each post.
 
-- [ ] Show the user's username on the navigation when they are logged in as a link. When clicked, go to a new page: `/users/<userId>/edit`
+- [e] Show the user's username on the navigation when they are logged in as a link. When clicked, go to a new page: `/users/<userId>/edit`
 
 - [ ] Create a page at `/users/<userId>/edit` that allows a user to update their `name`. On save, redirect them to their `/users/<userId>/posts` page.
 
@@ -299,5 +299,5 @@ We got a lot done but there's still a lot to do to make this app fully functiona
 
 - [ ] On the update post page, appropriately handle errors so that the user has a chance to correct their post. Display some kind of helpful message.
 
-- [ ] Create a new frontend route at `/users/<userId>/posts/<postId>` that shows a single post. Update your Create and Edit forms to redirect here instead of to the general `/posts` page.
+- [e] Create a new frontend route at `/users/<userId>/posts/<postId>` that shows a single post. Update your Create and Edit forms to redirect here instead of to the general `/posts` page.
 

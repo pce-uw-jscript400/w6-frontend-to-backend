@@ -25,7 +25,6 @@ class App extends React.Component {
     console.log(token)
     if (token) {
       const profile = await auth.profile()
-      console.log(profile)
       this.setState({ currentUserId: profile.user._id, userName: profile.user.name })
     }
     this.setState({loading: false})
@@ -33,10 +32,8 @@ class App extends React.Component {
 
   async loginUser (user) {
     const response = await auth.login(user)
-    console.log(response)
     if (response.status === 200){
       const userProfile = await auth.profile()
-      console.log({response, userProfile})
       this.setState({ 
         currentUserId: userProfile.user._id, 
         userName: userProfile.user.name
@@ -57,7 +54,6 @@ class App extends React.Component {
   logoutUser = () => {
     window.localStorage.removeItem('journal-app')
     this.setState({ currentUserId: null })
-    //history.push('/login')
   }
 
   render () {

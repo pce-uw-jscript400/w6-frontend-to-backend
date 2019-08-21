@@ -32,7 +32,6 @@ class Form extends React.Component {
             onChange={this.handleChange}
             name='name'
             type='text'
-            //value={this.state.name} 
           />
         </div>
         <button type='submit' className='btn btn-primary'>Submit</button>

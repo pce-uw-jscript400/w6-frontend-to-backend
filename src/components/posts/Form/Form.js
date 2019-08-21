@@ -24,16 +24,15 @@ class Form extends React.Component {
 
   async handleSubmit (e) {
     e.preventDefault()
-    const response = await this.props.onSubmit(this.props.user, {content: this.state.content, emotion: this.state.emotion})
-    if (response.error = true) {
+    let response = await this.props.onSubmit(this.props.user, {content: this.state.content, emotion: this.state.emotion})
+    if (response.status == 201 || response.status == 200) {
+      this.props.history.push(`/users/${this.props.user._id}/posts/${response.response._id}`)
+    } else {
       this.setState({
         error: true,
         errorMsg: response.message
-      })
-      return
+      }) 
     }
-    console.log(this.props.history)
-    this.props.history.push('/users')
   }
 
   render () {

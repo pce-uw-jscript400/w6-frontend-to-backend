@@ -11,7 +11,7 @@ export default ({ post }) => {
           <p className='card-text'>{ post.content }</p>
           <blockquote className='blockquote mb-0'>
           {post.emotion !== '' ?
-              `<footer className='blockquote-footer'> Was feeling: ${post.emotion}</footer>`:''}
+              <footer className='blockquote-footer'> Was feeling: ${post.emotion}</footer> : ''}
           </blockquote>
         </div>
       </div>

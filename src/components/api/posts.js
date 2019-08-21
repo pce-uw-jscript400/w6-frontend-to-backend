@@ -25,6 +25,18 @@ export const createPost = async (user, post) => {
     body: JSON.stringify(post)
   })
   const json = await response.json()
-  console.log(json)
+  return json
+}
+
+export const editPost = async (user, post) => {
+  const response = await fetch(`${BASE_URL}/api/users/${user._id}/posts/${post._id}`, {
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${localStorage.getItem('journal-app')}`
+    },
+    method: 'PUT',
+    body: JSON.stringify(post)
+  })
+  const json = await response.json()
   return json
 }

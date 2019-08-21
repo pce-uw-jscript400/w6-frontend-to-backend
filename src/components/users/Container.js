@@ -1,6 +1,8 @@
 import React from 'react'
 import { Route } from 'react-router-dom'
 
+import * as api from '../../api/users'
+
 import List from './List/List'
 import PostsContainer from '../posts/Container'
 
@@ -9,21 +11,35 @@ export default class Container extends React.Component {
     super(props)
     this.state = {
       users: [
-        {
-          _id: '5de4',
-          username: 'example.user',
-          posts: [
-            {
-              _id: '6cj2',
-              content: 'This is an example post.',
-              emotion: 'joy',
-              created_at: new Date('2019-07-01')
-            }
-          ]
-        }
+        { posts: [] }
       ]
     }
   }
+
+  async componentDidMount () {
+    const token = window.localStorage.getItem('journal-app')
+    if (token) {
+      const users = await api.getAllUsers()
+      this.setState({ users })
+    }
+  }
+  
+  // removePost
+  // -- would remove a single post from the state;
+  // calling set state
+    // removePost(postId){
+    //   const posts = this.state.users.posts.filter(function(post, index, arr){
+    //     return post.id != postId;
+    //   })
+    //   this.setState({"users.posts": posts})
+    // }
+
+  // async removePost(postId) {
+  //     const posts = this.state.users.posts.filter(function(post, index, arr){
+  //       return post.id !== postId;
+  //     })
+  //     this.setState({"users.posts": posts})
+  // }
 
   render () {
     const { users } = this.state

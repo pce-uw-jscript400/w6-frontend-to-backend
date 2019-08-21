@@ -27,7 +27,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 ## Instructions & Guiding Questions
 
-- [ ] Start both your frontend server and your backend server. Then try copying the code below into the web console.
+- [X] Start both your frontend server and your backend server. Then try copying the code below into the web console.
   ```js
   fetch('http://localhost:5000/api/users')
     .then(res => res.json())
@@ -36,23 +36,24 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** What error do you get? Why?
 
-* **Your Answer:** 
+* **Your Answer:** Access to fetch at 'http://localhost:5000/api/profile' from origin 'http://localhost:3000' has been blocked by CORS policy: Response to preflight request doesn't pass access control check: No 'Access-Control-Allow-Origin' header is present on the requested resource. If an opaque response serves your needs, set the request's mode to 'no-cors' to fetch the resource with CORS disabled.
+This is blocked by CORS policy; the backend is not set by default to allow requests from localhost:3000.
 
 ---
 
-- [ ] To get around this issue, we need to explicitly allow for requests to come from `localhost:3000`. To do so, we will use the [cors](https://www.npmjs.com/package/cors) package. Install `cors` on the _backend server_ and whitelist `localhost:5000`.
+- [X] To get around this issue, we need to explicitly allow for requests to come from `localhost:3000`. To do so, we will use the [cors](https://www.npmjs.com/package/cors) package. Install `cors` on the _backend server_ and whitelist `localhost:5000`.
 
 * **Question:** Try your request again. What error do you get? Why?
 
-* **Your Answer:**
+* **Your Answer:** Probably not the answer you are looking for, but I get an expired token error as I do the homework due to having gotten a token during class.
 
 ---
 
-- [ ] In `App.js`, we have created our `loginUser()` method. Try invoking that function through the frontend, inspecting what is outputted.
+- [X] In `App.js`, we have created our `loginUser()` method. Try invoking that function through the frontend, inspecting what is outputted.
 
 ---
 
-- [ ] We now want to try and login the user when they hit submit. Add the following to your `loginUser()` method:
+- [X] We now want to try and login the user when they hit submit. Add the following to your `loginUser()` method:
   ```js
   fetch('http://localhost:5000/api/login', {
     body: JSON.stringify(user),
@@ -65,13 +66,13 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** Why do we need to include the "Content-Type" in the headers?
 
-* **Your Answer:**
+* **Your Answer:**  The default content-type is text, since we are using JSON we need to change it.
 
 * **Question:** How could you convert this method to an `async` method?
 
----
+---  let reponse = await fetch...
 
-- [ ] Let's move our requests to a better place. Create a new file at `./src/api/auth.js`. Add the following inside of it:
+- [X] Let's move our requests to a better place. Create a new file at `./src/api/auth.js`. Add the following inside of it:
   ```js
   const { NODE_ENV } = process.env
   const BASE_URL = NODE_ENV === 'development'
@@ -96,39 +97,40 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** What is happening on the first couple of lines of the new file you've created?
 
-* **Your Answer:** 
+* **Your Answer:** We are hardcoding an environment of Dev and a backend url of localhost:5000.
 
 ---
 
-- [ ] Let's store the token in LocalStorage with a key of `journal-app`.
+- [X] Let's store the token in LocalStorage with a key of `journal-app`.
 
 * **Question:** Why are we storing the token?
 
-* **Your Answer:**
+* **Your Answer:**  Once we are authenticated we can use this to securely access APIs until it expires.  Storing it saves us the overhead of fetching it from the server every time.
 
 ---
 
-- [ ] We now have the token, but we don't have any of the user information. Add a new function to our `./src/api/auth.js` called `profile()` that sends over the token in order to retrieve the user information. Then, log that information.
+- [X] We now have the token, but we don't have any of the user information. Add a new function to our `./src/api/auth.js` called `profile()` that sends over the token in order to retrieve the user information. Then, log that information.
 
 * **Question:** Where did you write your code to manipulate LocalStorage? Why?
 
-* **Your Answer:** 
+* **Your Answer:** in auth.js login().  This is the first opportunity in the middleware chain when the server replies with a token.
 
 ---
 
-- [ ] Now that we have the user's information, let's store the user's ID in state. Set `currentUserId` to the user ID you've retrieved.
+- [X] Now that we have the user's information, let's store the user's ID in state. Set `currentUserId` to the user ID you've retrieved.
 
 * **Question:** What changes on the page after you successfully login? Why?
 
-* **Your Answer:**
+* **Your Answer:** It shows user posts.
 
 * **Question:** What happens if you enter in the incorrect information? What _should_ happen?
 
-* **Your Answer:**
+* **Your Answer:** Unhandled Rejection (TypeError): Cannot read property '_id' of undefined
+You should get a generic error message that your login has failed.
 
 ---
 
-- [ ] Try refreshing the page. You'll notice it _looks_ like you've been logged out, although your token is still stored in LocalStorage. To solve this, we will need to plug in to the component life cycle with `componentDidMount()`. Try adding the following code to `App.js`:
+- [X] Try refreshing the page. You'll notice it _looks_ like you've been logged out, although your token is still stored in LocalStorage. To solve this, we will need to plug in to the component life cycle with `componentDidMount()`. Try adding the following code to `App.js`:
   ```js
   async componentDidMount () {
     const token = window.localStorage.getItem('journal-app')
@@ -141,43 +143,43 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** Describe what is happening in the code above.
 
-* **Your Answer:**
+* **Your Answer:** If we have a token we try to load the user's profile.
 
 ---
 
-- [ ] Now when you refresh the page, it looks as though you are logged in. Next, try clicking the logout button.
+- [X] Now when you refresh the page, it looks as though you are logged in. Next, try clicking the logout button.
 
 * **Question:** When you click "Logout", nothing happens unless you refresh the page. Why not?
 
-* **Your Answer:**
+* **Your Answer:** We still have the currentUserId
 
 ---
 
-- [ ] Update the `logout()` method to appropriately logout the user.
+- [X] Update the `logout()` method to appropriately logout the user.
 
 * **Question:** What did you have to do to get the `logout()` function to work? Why?
 
-* **Your Answer:**
+* **Your Answer:**  We need to remove both the token and the currentUserId
 
 ---
 
-- [ ] Following the patterns we used above, build the Signup feature.
+- [X] Following the patterns we used above, build the Signup feature.
 
 ---
 
-- [ ] When a user logs in or signs up, we should bring them to the `/users` route. Update both features so that the user is moved to that route after a successful login/signup.
+- [X] When a user logs in or signs up, we should bring them to the `/users` route. Update both features so that the user is moved to that route after a successful login/signup.
 
 ---
 
-- [ ] Try logging out and then go directly to the `/users` route.
+- [X] Try logging out and then go directly to the `/users` route.
 
 * **Question:** What happens? What _should_ happen?
 
-* **Answer:**
+* **Answer:** The users page loads with all journal entries.  It should redirect to the login page.
 
 ---
 
-- [ ] Try _replacing_ the `/users` Route in `App.js` with the following:
+- [X] Try _replacing_ the `/users` Route in `App.js` with the following:
   ```jsx
   <Route path='/users' render={() => {
     return this.state.currentUserId ? <UsersContainer /> : <Redirect to='/login' />
@@ -186,45 +188,45 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** Describe what is happening in the code above.
 
-* **Your Answer:**
+* **Your Answer:**  If we have a currentUserId (the user is logged in), we display the correct users page, otherwise we redirect to the login page.
 
 ---
 
-- [ ] Now try logging in. Then, when you're on the `/users` page, refresh the page.
+- [X] Now try logging in. Then, when you're on the `/users` page, refresh the page.
 
 * **Question:** What happens and why?
 
-* **Your Answer:**
+* **Your Answer:**  Now it redirects to the login page, because after componentDidMount refreshes the page before the profile is loaded
 
 ---
 
-- [ ] To solve this problem, let's add a `loading` key to our App's state, with the default value set to `true`. When `componentDidMount()` finishes, set the `loading` key to equal `false`. Using this key, solve the issue of refreshing on the `/users` page. Make sure everyting continues to work whether you are logged in or out.
+- [X] To solve this problem, let's add a `loading` key to our App's state, with the default value set to `true`. When `componentDidMount()` finishes, set the `loading` key to equal `false`. Using this key, solve the issue of refreshing on the `/users` page. Make sure everyting continues to work whether you are logged in or out.
 
 * **Question:** What did you do to solve this problem?
 
-* **Your Answer:**
+* **Your Answer:**  Force the component to show loading the first time through until we get the state set correctly.
 
 ---
 
-- [ ] We will have the same problem on the `/users/<userId>/posts` page. Use the same strategy to have this page load correctly on refresh.
+- [X] We will have the same problem on the `/users/<userId>/posts` page. Use the same strategy to have this page load correctly on refresh.
 
 * **Question:** In what component did you add the `loading` property and why?
 
-* **Your Answer:**
+* **Your Answer:**  We added the loading property in app.js so that it has more of a global scope.
 
 ---
 
-- [ ] Using the same principals as above, make it so that if the user is logged in, they cannot go to the `/login` or `/signup` routes. Instead, forward them to `/users`.
+- [X] Using the same principals as above, make it so that if the user is logged in, they cannot go to the `/login` or `/signup` routes. Instead, forward them to `/users`.
 
 ---
 
-- [ ] Right now, the data inside of `users/Container.js` is static. Using `componentDidMount()`, update this code so that we pull our data from our API.
+- [X] Right now, the data inside of `users/Container.js` is static. Using `componentDidMount()`, update this code so that we pull our data from our API.
 
   _NOTE: You may want to create a new file in `./src/api/` to organize these requests.
 
 ---
 
-- [ ] Let's get our "Delete" link working. On the backend, create a `DELETE Post` route with the path of: 
+- [X] Let's get our "Delete" link working. On the backend, create a `DELETE Post` route with the path of: 
   ```
   DELETE /users/:userId/posts/:postId
   ```
@@ -232,17 +234,19 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 ---
 
-- [ ] On the frontend, create a new function in your `src/api` folder that will delete a post. Use that function inside of the `src/components/posts/Container` file. Upon successful deletion, send the user back to the `/users/<userId>/posts` route.
+- [X] On the frontend, create a new function in your `src/api` folder that will delete a post. Use that function inside of the `src/components/posts/Container` file. Upon successful deletion, send the user back to the `/users/<userId>/posts` route.
 
 ---
 
-- [ ] Try deleting a post using the link.
+- [X] Try deleting a post using the link.
 
 * **Question:** Why did the number of posts not change when you were redirected back to the `/users` route?
 
-* **Your Answer:** Whenever we modify our data with a Create, Update, or Delete, we have a few options on how to make our frontend reflect those changes. What options can you think of?
+* **Your Answer:** We have not refreshed the data already loaded in the front-end.
 
-* **Question:**
+* **Question:** Whenever we modify our data with a Create, Update, or Delete, we have a few options on how to make our frontend reflect those changes. What options can you think of?
+
+* **Your Answer:** We could do a complete refresh of the data in the front-end (could be a costly operation if there is lots of data).  We could do a targetted refresh, for example of a single user.  Or we could wait for confirmation that the operation completed on the back-end, and then do a front-end only replica of the operation, for example, on a delete, send delete to the backend, wait for response, and then manually remove the item from the array on the front-end.
 
 ---
 

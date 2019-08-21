@@ -1,11 +1,12 @@
 import React from 'react'
+import {withRouter} from 'react-router';
 
-export default class Form extends React.Component {
+class Form extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
       username: '',
-      password: ''
+      password: '',
     }
 
     this.handleChange = this.handleChange.bind(this)
@@ -18,7 +19,10 @@ export default class Form extends React.Component {
 
   handleSubmit (e) {
     e.preventDefault()
-    this.props.onSubmit(this.state)
+    this.props.onSubmit(this.state);
+    this.props.history.push('/users');
+
+
   }
 
   render () {
@@ -32,7 +36,8 @@ export default class Form extends React.Component {
             onChange={this.handleChange}
             name='username'
             type='text'
-            value={this.state.username} />
+            value={this.state.username}
+            required/>
         </div>
         <div className='form-group'>
           <label htmlFor='password'>Password</label>
@@ -42,10 +47,14 @@ export default class Form extends React.Component {
             onChange={this.handleChange}
             name='password'
             type='password'
-            value={this.state.password} />
+            value={this.state.password}
+            required/>
         </div>
+        {this.props.invalidCreds ? <p>Invalid Credentials</p> : <div></div>}
         <button type='submit' className='btn btn-primary'>Submit</button>
       </form>
     )
   }
 }
+
+export default withRouter(Form)

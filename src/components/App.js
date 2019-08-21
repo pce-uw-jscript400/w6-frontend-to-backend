@@ -12,26 +12,30 @@ class App extends React.Component {
     super()
     this.state = {
       currentUserId: null,
+      currentUserName: null,
       loading: true
     }
 
     this.loginUser = this.loginUser.bind(this)
     this.signupUser = this.signupUser.bind(this)
     this.logoutUser = this.logoutUser.bind(this)
+    this.updateUserName = this.updateUserName.bind(this)
   }
 
   async loginUser (user) {
     await auth.login(user)
     const profile = await auth.profile()
     this.setState({
-      currentUserId: profile.user._id
+      currentUserId: profile.user._id,
+      currentUserName: profile.user.username
     })
   }
 
   logoutUser() {
     window.localStorage.clear('journal-app')
     this.setState({
-      currentUserId: null
+      currentUserId: null,
+      currentUserName: null
     })
   }
 
@@ -39,19 +43,27 @@ class App extends React.Component {
     await auth.signup(user)
     const profile = await auth.profile()
     this.setState({
-      currentUserId: profile.user._id
+      currentUserId: profile.user._id,
+      currentUserName: profile.user.username
+    })
+  }
+
+  async updateUserName() {
+    const profile = await auth.profile()
+    this.setState({
+      currentUserName: profile.user.username
     })
   }
 
   render () {
-    const { currentUserId, loading } = this.state
+    const { currentUserName, currentUserId, loading } = this.state
 
     if(loading) return <p>loading...</p>
 
     return (
       <Router>
         <Header />
-        <Navigation currentUserId={currentUserId} logoutUser={this.logoutUser} />
+        <Navigation currentUserName={currentUserName} currentUserId={currentUserId} logoutUser={this.logoutUser} />
         <Switch>
           <Route path='/login' exact component={() => {
             return currentUserId ? <Redirect to='/users' /> : <Login onSubmit={this.loginUser} />
@@ -61,7 +73,7 @@ class App extends React.Component {
           }} />
 
           <Route path='/users' render={() => {
-            return currentUserId ? <UsersContainer currentUserId={currentUserId} /> : <Redirect to='/login' />
+            return  currentUserId ? <UsersContainer onUpdateUserName={this.updateUserName} currentUserId={currentUserId} /> : <Redirect to='/login' />
           }} />
           <Redirect to='/login' />
         </Switch>
@@ -74,7 +86,10 @@ class App extends React.Component {
     if (token) {
       const profile = await auth.profile()
       if(profile.user) {
-        this.setState({ currentUserId: profile.user._id })
+        this.setState({ 
+          currentUserId: profile.user._id, 
+          currentUserName: profile.user.username
+        })
       } else {
         this.logoutUser()
       }

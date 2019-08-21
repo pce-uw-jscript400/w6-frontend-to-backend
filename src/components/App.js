@@ -29,6 +29,8 @@ class App extends React.Component {
       const profile = await auth.profile()
       if(profile && profile.user){
         this.setState({ currentUserId: profile.user._id })
+      }else{
+        this.logoutUser()
       }
     }
 

@@ -19,7 +19,7 @@ class App extends React.Component {
     this.loginUser = this.loginUser.bind(this)
     this.signupUser = this.signupUser.bind(this)
     this.logoutUser = this.logoutUser.bind(this)
-    this.updateUserName = this.updateUserName.bind(this)
+    this.updateName = this.updateName.bind(this)
   }
 
   async loginUser (user) {
@@ -27,8 +27,7 @@ class App extends React.Component {
     const profile = await auth.profile()
     this.setState({
       currentUserId: profile.user._id,
-      currentUserName: profile.user.username
-    })
+      currentUserName: profile.user.name ? profile.user.name : profile.user.username    })
   }
 
   logoutUser() {
@@ -44,14 +43,14 @@ class App extends React.Component {
     const profile = await auth.profile()
     this.setState({
       currentUserId: profile.user._id,
-      currentUserName: profile.user.username
+      currentUserName: profile.user.name ? profile.user.name : profile.user.username
     })
   }
 
-  async updateUserName() {
+  async updateName() {
     const profile = await auth.profile()
     this.setState({
-      currentUserName: profile.user.username
+      currentUserName: profile.user.name ? profile.user.name : profile.user.username
     })
   }
 
@@ -73,7 +72,7 @@ class App extends React.Component {
           }} />
 
           <Route path='/users' render={() => {
-            return  currentUserId ? <UsersContainer onUpdateUserName={this.updateUserName} currentUserId={currentUserId} /> : <Redirect to='/login' />
+            return  currentUserId ? <UsersContainer onUpdateName={this.updateName} currentUserId={currentUserId} /> : <Redirect to='/login' />
           }} />
           <Redirect to='/login' />
         </Switch>
@@ -88,7 +87,7 @@ class App extends React.Component {
       if(profile.user) {
         this.setState({ 
           currentUserId: profile.user._id, 
-          currentUserName: profile.user.username
+          currentUserName: profile.user.name ? profile.user.name : profile.user.username
         })
       } else {
         this.logoutUser()

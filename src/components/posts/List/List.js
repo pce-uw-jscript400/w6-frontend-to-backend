@@ -23,7 +23,7 @@ export default ({ currentUserId, destroyPost, user }) => {
 
   return (
     <>
-      <h1 className='mb-4'>{ user.username }'s Posts</h1>
+      <h1 className='mb-4'>{ user.name ? user.name : user.username }'s Posts</h1>
       { posts }
     </>
   )

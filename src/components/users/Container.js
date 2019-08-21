@@ -16,7 +16,7 @@ class Container extends React.Component {
       loading: true
     }
     this.refreshUsers = this.refreshUsers.bind(this)
-    this.updateUserName = this.updateUserName.bind(this)
+    this.updateName = this.updateName.bind(this)
   }
 
   render () {
@@ -29,7 +29,7 @@ class Container extends React.Component {
       <main className='container'>
         <Route path='/users' exact component={() => <List users={users} />} />
         <Route path='/users/:userId/edit' exact component={
-          ({ match }) => <Edit onSubmit={this.updateUserName} userId={match.params.userId} /> 
+          ({ match }) => <Edit onSubmit={this.updateName} userId={match.params.userId} /> 
         } />
         <PostsContainer currentUserId={currentUserId} users={users} refreshUsers={this.refreshUsers} />
       </main>
@@ -52,11 +52,11 @@ class Container extends React.Component {
     this.setState({ users: userList })
   }
 
-  async updateUserName(userId, userName) {
-    const { currentUserId, history, onUpdateUserName } = this.props
+  async updateName(userId, name) {
+    const { currentUserId, history, onUpdateName } = this.props
     console.log('updating name')
-    await users.updateUserName(userId, userName)
-    await onUpdateUserName()
+    await users.updateName(userId, name)
+    await onUpdateName()
     history.push(`/users/${currentUserId}/posts`)
   }
 }

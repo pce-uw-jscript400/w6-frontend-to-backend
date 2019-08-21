@@ -4,7 +4,7 @@ import { withRouter } from 'react-router'
 class Edit extends React.Component {
   constructor (props) {
     super(props)
-    this.state = { username: '' }
+    this.state = { name: '' }
 
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
@@ -17,7 +17,7 @@ class Edit extends React.Component {
   handleSubmit (e) {
     e.preventDefault()
     const { userId, onSubmit } = this.props
-    onSubmit(userId, this.state.username)
+    onSubmit(userId, this.state.name)
   }
 
   render () {
@@ -27,12 +27,12 @@ class Edit extends React.Component {
         <hr />
         <form onSubmit={this.handleSubmit}>
           <div className='form-group'>
-            <label htmlFor='username'>Username</label>
+            <label htmlFor='name'>Name</label>
             <input
               className='form-control'
-              id='username'
+              id='name'
               onChange={this.handleChange}
-              name='username'
+              name='name'
               type='text'
               value={this.state.name} />
           </div>

@@ -17,8 +17,8 @@ export const getUsers = async () => {
   return json.response
 }
 
-export const updateUserName = (userId, username) => {
+export const updateName = (userId, name) => {
   const path = `/api/users/${userId}`
-  const options = { body: { username }, method: 'PUT' }
+  const options = { body: { name }, method: 'PUT' }
   return request(path, options)
 }

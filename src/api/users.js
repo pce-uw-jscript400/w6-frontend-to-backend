@@ -14,7 +14,7 @@ export const users = async() => {
     })
     const json = await response.json()
     const responseUser = json.response
-
+    console.log (responseUser)
     return responseUser
 }
 

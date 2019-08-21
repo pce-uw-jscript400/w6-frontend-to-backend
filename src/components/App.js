@@ -14,7 +14,7 @@ class App extends React.Component {
         super()
         this.state = {
             currentUserId: null,
-            loading: true
+            loading: false
         }
 
         this.loginUser = this.loginUser.bind(this)
@@ -35,9 +35,10 @@ class App extends React.Component {
 
     async componentDidMount() {
         const token = window.localStorage.getItem('journal-app')
-        console.log(profile.user._id)
+
         if (token) {
             const profile = await auth.profile()
+            console.log(profile.user._id)
             this.setState({ 
               currentUserId: profile.user._id, 
               loading: false 
@@ -47,14 +48,16 @@ class App extends React.Component {
 
     async signupUser(user) {
       await auth.signUp(user)
-      const userInfo = await auth.profile()
-      console.log(userInfo)
-      if (userInfo.status == '200') {
-          this.setState({
-              currentUserId: userInfo.user._id
-          })
-        withRouter.history.push('/users')
-      }
+      // const userInfo = await auth.profile()
+      // why does this not work?
+      // console.log(userInfo)
+      // if (userInfo.status == '200') {
+      //     this.setState({
+      //         currentUserId: userInfo.user._id
+      //     })
+      //   withRouter.history.push('/users')
+      // }
+
     }
 
    logoutUser = () => {
@@ -66,36 +69,35 @@ class App extends React.Component {
 
     }
 
-    render() {
-      if (this.state.loading) return <p>Loading...</p>
-        return ( 
-        < Router >
-            <  Header / >
-            < Navigation 
-             currentUserId = { this.state.currentUserId }
-            logoutUser = {this.logoutUser}
-            /> 
-            <Switch >
-            < Route path = '/login'exact component = {() => {
-              
-                    return this.state.currentUserId ? (<Redirect to = '/users'/>)
-                    : (<Login onSubmit = { this.loginUser }/> )
-                  }
-            }/> 
-            <Route path = '/signup'
-            exact component = {() => {
-              return <Signup onSubmit = { this.signupUser }/>
-              }}/>
-
-<Route path='/users' render={() => {
-    return this.state.currentUserId ? <UsersContainer /> : <Redirect to='/login' />
-  }} />
-
-            <Redirect to = '/login'/ >
-            </Switch> 
-            < /Router >
-        )
+    render () {
+      const { currentUserId, loading } = this.state
+      if (loading) return <span />
+  
+      return (
+        <Router>
+          <Header />
+          <Navigation
+            currentUserId={currentUserId}
+            logoutUser={this.logoutUser} />
+          <Switch>
+            <Route path='/login' exact component={() => {
+              return currentUserId ? <Redirect to='/users' /> : <Login onSubmit={this.loginUser} />
+            }} />
+            <Route path='/signup' exact component={() => {
+              return currentUserId ? <Redirect to='/users' /> : <Signup onSubmit={this.signupUser} />
+            }} />
+  
+            <Route path='/users' render={() => {
+              return currentUserId
+                ? <UsersContainer currentUserId={currentUserId} />
+                : <Redirect to='/login' />
+            }} />
+  
+            <Redirect to='/login' />
+          </Switch>
+        </Router>
+      )
     }
-}
+  }
 
 export default App

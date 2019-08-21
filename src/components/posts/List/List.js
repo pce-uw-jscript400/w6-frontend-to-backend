@@ -2,7 +2,8 @@ import React from 'react'
 
 import Actions from './List.Actions'
 
-export default ({ destroyPost, user }) => {
+export default ({ currentUserId, destroyPost, user }) => {
+  console.log(currentUserId)
   const posts = user.posts.map(post => (
     <div key={post._id} className='card'>
       <div className='card-body'>
@@ -11,7 +12,7 @@ export default ({ destroyPost, user }) => {
           <footer className='blockquote-footer'>Was feeling: { post.emotion }</footer>
         </blockquote>
       </div>
-      <Actions destroyPost={destroyPost} post={post} user={user} />
+      <Actions destroyPost={destroyPost} post={post} user={user} currentUserId={currentUserId}/>
     </div>
   ))
 

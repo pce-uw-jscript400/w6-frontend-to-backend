@@ -19,6 +19,7 @@ class Form extends React.Component {
 
   handleSubmit (e) {
     e.preventDefault()
+    console.log(this.state)
     this.props.onSubmit(this.state)
     this.props.history.push('/users')
   }

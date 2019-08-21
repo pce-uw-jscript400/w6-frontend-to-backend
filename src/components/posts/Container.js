@@ -20,10 +20,14 @@ class Container extends React.Component {
 
   async destroyPost (userId, postId) {
     // console.log('Destroying Post:', post)
+    console.log(userId, postId)
     const response = await posts.remove(userId, postId)
     console.log (response)
-    this.props.history.push()
+    await this.props.refreshUsers()
+    this.props.history.push('/users')
   }
+
+
 
   editPost (post) {
     console.log('Editing Post:', post)
@@ -31,14 +35,15 @@ class Container extends React.Component {
 
   render () {
     const { users } = this.props
+    console.log(this.props.currentUserId)
     return (
       <>
         <Route path='/users/:userId/posts' exact component={({ match }) => {
           const user = users.find(user => user._id === match.params.userId)
-          return <List destroyPost={this.destroyPost} user={user} />
+          return <List destroyPost={this.destroyPost} user={user} currentUserId={this.props.currentUserId}/>
         }} />
         <Route path='/users/:userId/posts/new' exact component={() => {
-          return <NewForm onSubmit={this.createPost}/>
+          return <NewForm onSubmit={this.createPost} />
         }} />
         <Route path='/users/:userId/posts/:postId/edit' exact component={({ match }) => {
           const user = users.find(user => user._id === match.params.userId)
@@ -50,4 +55,4 @@ class Container extends React.Component {
   }
 }
 
-export default {withRouter}
+export default withRouter(Container)

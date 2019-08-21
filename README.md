@@ -231,7 +231,7 @@ Delayed the page from rendering until it had fully loaded.
 
 ---
 
-- [ ] Let's get our "Delete" link working. On the backend, create a `DELETE Post` route with the path of: 
+- [x] Let's get our "Delete" link working. On the backend, create a `DELETE Post` route with the path of: 
   ```
   DELETE /users/:userId/posts/:postId
   ```
@@ -239,25 +239,27 @@ Delayed the page from rendering until it had fully loaded.
 
 ---
 
-- [ ] On the frontend, create a new function in your `src/api` folder that will delete a post. Use that function inside of the `src/components/posts/Container` file. Upon successful deletion, send the user back to the `/users/<userId>/posts` route.
+- [x] On the frontend, create a new function in your `src/api` folder that will delete a post. Use that function inside of the `src/components/posts/Container` file. Upon successful deletion, send the user back to the `/users/<userId>/posts` route.
 
 ---
 
-- [ ] Try deleting a post using the link.
+- [x] Try deleting a post using the link.
 
 * **Question:** Why did the number of posts not change when you were redirected back to the `/users` route?
 
-* **Your Answer:** Whenever we modify our data with a Create, Update, or Delete, we have a few options on how to make our frontend reflect those changes. What options can you think of?
+* **Your Answer:** 
+It was not removed from the frontend
+Whenever we modify our data with a Create, Update, or Delete, we have a few options on how to make our frontend reflect those changes. What options can you think of?
 
 * **Question:**
+update state or reload from backend
+---
+
+- [X] Using your preferred method, update your code so that the frontend will reflect the changes made to the backend.
 
 ---
 
-- [ ] Using your preferred method, update your code so that the frontend will reflect the changes made to the backend.
-
----
-
-- [ ] Right now it looks like we can Edit and Delete posts for other users. Hide/display those actions to only be available on a post if it's the user's post.
+- [X] Right now it looks like we can Edit and Delete posts for other users. Hide/display those actions to only be available on a post if it's the user's post.
 
 ---
 
@@ -281,7 +283,7 @@ We got a lot done but there's still a lot to do to make this app fully functiona
 
 - [ ] If there are no posts for a user, show a message on their `/users/<userId>/posts` page that encourages them to create a new post.
 
-- [ ] If there is no emotion for a post, hide the associated message on each post.
+- [e] If there is no emotion for a post, hide the associated message on each post.
 
 - [ ] Show the user's username on the navigation when they are logged in as a link. When clicked, go to a new page: `/users/<userId>/edit`
 

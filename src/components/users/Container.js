@@ -1,4 +1,5 @@
 import React from 'react'
+import { withRouter } from 'react-router'
 import { Route } from 'react-router-dom'
 
 // Helpers
@@ -9,7 +10,7 @@ import List from './List/List'
 import PostsContainer from '../posts/Container'
 import EditName from './Form/Edit.Name'
 
-export default class Container extends React.Component {
+class Container extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
@@ -18,6 +19,8 @@ export default class Container extends React.Component {
     }
 
     this.refreshUsers = this.refreshUsers.bind(this)
+    this.editUser = this.editUser.bind(this)
+
   }
 
   async componentDidMount () {
@@ -31,10 +34,9 @@ export default class Container extends React.Component {
   }
 
   async editUser (user) {
-    const { currentUserId, history, refreshUsers } = this.props
-
+    const { currentUserId, history } = this.props
     await users.updateUser({ user: { _id: currentUserId }, user })
-    await refreshUsers()
+    await this.refreshUsers()
 
     history.push(`/users/${currentUserId}/posts`)
   }
@@ -47,15 +49,16 @@ export default class Container extends React.Component {
     return (
       <main className='container'>
         <Route path='/users' exact component={() => <List users={users} />} />
-        <Route path='/users/:userId/edit' exact component={({ match }) => {
-          const user = users.find(user => user._id === match.params.userId)
-          console.log(user)
-          return <EditName user={user}/>}} />
         <PostsContainer
           currentUserId={currentUserId}
           refreshUsers={this.refreshUsers}
           users={users} />
+        <Route path='/users/:userId/edit' exact component={({ match }) => {
+          const user = users.find(user => user._id === match.params.userId)
+          return <EditName onSubmit={this.editUser} user={user}/>}} />
       </main>
     )
   }
 }
+
+export default withRouter(Container)

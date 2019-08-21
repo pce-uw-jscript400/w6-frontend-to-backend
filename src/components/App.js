@@ -16,6 +16,7 @@ class App extends React.Component {
   constructor () {
     super()
     this.state = {
+      showAlert: false,
       currentUserId: null,
       currentUserName: null,
       loading: true

@@ -320,7 +320,7 @@ We got a lot done but there's still a lot to do to make this app fully functiona
 
 - [X] Show the user's username on the navigation when they are logged in as a link. When clicked, go to a new page: `/users/<userId>/edit`
 
-- [ ] Create a page at `/users/<userId>/edit` that allows a user to update their `name`. On save, redirect them to their `/users/<userId>/posts` page.
+- [X] Create a page at `/users/<userId>/edit` that allows a user to update their `name`. On save, redirect them to their `/users/<userId>/posts` page.
 
 - [X] If the user has a name, show that on the Navigation, `/users` page, and `/users/<userId>/posts` page instead.
 

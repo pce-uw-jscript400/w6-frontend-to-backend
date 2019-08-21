@@ -38,7 +38,6 @@ class Container extends React.Component {
 
   async editPost (post) {
     const { currentUserId, history, refreshUsers } = this.props
-
     await posts.updatePost({ user: { _id: currentUserId }, post })
     await refreshUsers()
 

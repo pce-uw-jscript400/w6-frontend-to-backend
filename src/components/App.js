@@ -30,18 +30,23 @@ class App extends React.Component {
   async componentDidMount () {
     if (token.getToken()) {
       const { user } = await auth.profile();
-      this.setState({ currentUserId: user._id, currentUserName: user.name, loading: false });
-    } else {
-      this.setState({ loading: false })
+        this.setState({ currentUserId: user._id, currentUserName: user.name, loading: false });
+      } else {
+      this.setState({ currentUserId: null, loading: false })
     }
   }
+
 
   async loginUser (user) {
     const response = await auth.login(user)
     await token.setToken(response)
     
     const profile = await auth.profile()
-    this.setState({ currentUserId: profile.user._id })
+    if (profile.status === 401) {
+      alert('Username or password is incorrect!')
+    } else {
+      this.setState({ currentUserId: profile.user._id })
+    } 
   }
 
   logoutUser () {
@@ -54,7 +59,13 @@ class App extends React.Component {
     await token.setToken(response)
     
     const profile = await auth.profile()
-    this.setState({ currentUserId: profile.user._id })
+    console.log(profile)
+    if (profile.status === 401) {
+      console.log(profile.message)
+      alert('Username already exists!')
+    } else {
+      this.setState({ currentUserId: profile.user._id })
+    }
   }
 
   render () {

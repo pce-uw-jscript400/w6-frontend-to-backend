@@ -36,7 +36,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** What error do you get? Why?
 
-* **Your Answer:** 
+* **Your Answer:**  Access has been blocked by CORS policy. The front-end and back-end have different origins. Basically, they're hosted by different servers.
 
 ---
 
@@ -44,7 +44,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** Try your request again. What error do you get? Why?
 
-* **Your Answer:**
+* **Your Answer:** 401 Unauthorized. We did not pass in a JWT in the Authorization header.
 
 ---
 
@@ -65,9 +65,24 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** Why do we need to include the "Content-Type" in the headers?
 
-* **Your Answer:**
+* **Your Answer:** So that body-parser will know the request body is json and parse it.
 
 * **Question:** How could you convert this method to an `async` method?
+
+* **Your Answer:** 
+```js
+  const request = async () => {
+    const res = await fetch('http://localhost:5000/api/login', {
+      body: JSON.stringify(user),
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      method: 'POST',
+    })
+    console.log(await res.json())
+  }
+  request()
+```
 
 ---
 
@@ -96,7 +111,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** What is happening on the first couple of lines of the new file you've created?
 
-* **Your Answer:** 
+* **Your Answer:** We're setting the URL for the back-end to http://localhost:5000 if the environment is development.
 
 ---
 
@@ -104,7 +119,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** Why are we storing the token?
 
-* **Your Answer:**
+* **Your Answer:** We're storing the token, so the front-end can send it to the back-end to show we're still logged in.
 
 ---
 
@@ -112,7 +127,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** Where did you write your code to manipulate LocalStorage? Why?
 
-* **Your Answer:** 
+* **Your Answer:** In the profile() function in auth.js. I put the other localStorage stuff in auth.js, too.
 
 ---
 
@@ -120,11 +135,11 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** What changes on the page after you successfully login? Why?
 
-* **Your Answer:**
+* **Your Answer:** The menu bar has different options. You can now see 'All Users', 'Create new post', and 'Logout'. The React App uses the `currentUserId` state to determine if a user is logged on.
 
 * **Question:** What happens if you enter in the incorrect information? What _should_ happen?
 
-* **Your Answer:**
+* **Your Answer:** The text fields are cleared and an error message appears in the console. A message should be shown to user about the failed login. Or, if there is no token stored, we get a `Cannot read property 'username' of undefined` since there is no user.
 
 ---
 
@@ -141,7 +156,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** Describe what is happening in the code above.
 
-* **Your Answer:**
+* **Your Answer:** The React app is setting the currentUserId whenever the component is mounted, like when the page is refreshed.
 
 ---
 
@@ -149,7 +164,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** When you click "Logout", nothing happens unless you refresh the page. Why not?
 
-* **Your Answer:**
+* **Your Answer:** logout doesn't call setState to trigger the React component lifecycle.
 
 ---
 
@@ -157,7 +172,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** What did you have to do to get the `logout()` function to work? Why?
 
-* **Your Answer:**
+* **Your Answer:** I moved `logout()` to `App`. App's state is where we set `currentUserId`
 
 ---
 
@@ -173,7 +188,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** What happens? What _should_ happen?
 
-* **Answer:**
+* **Answer:** We still see the users page. It should not show the users page when we are not logged in.
 
 ---
 
@@ -186,7 +201,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** Describe what is happening in the code above.
 
-* **Your Answer:**
+* **Your Answer:** If `this.state.currentUserId` is falsy, redirect to the login page.
 
 ---
 
@@ -194,7 +209,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** What happens and why?
 
-* **Your Answer:**
+* **Your Answer:** I am redirected back to the login page because currentUserId isn't set yet.
 
 ---
 
@@ -202,7 +217,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** What did you do to solve this problem?
 
-* **Your Answer:**
+* **Your Answer:** Show a loading page while the page is loading the currentUserId, then update the state to trigger a render.
 
 ---
 
@@ -210,7 +225,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** In what component did you add the `loading` property and why?
 
-* **Your Answer:**
+* **Your Answer:** I added to `components/users/Container.js` because Posts are subdocuments of Users and Users are loaded in this container.
 
 ---
 
@@ -240,9 +255,11 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** Why did the number of posts not change when you were redirected back to the `/users` route?
 
-* **Your Answer:** Whenever we modify our data with a Create, Update, or Delete, we have a few options on how to make our frontend reflect those changes. What options can you think of?
+* **Your Answer:** We didn't update the state of the Users Container
 
-* **Question:**
+* **Question:** Whenever we modify our data with a Create, Update, or Delete, we have a few options on how to make our frontend reflect those changes. What options can you think of?
+
+* **Your Answer:** Update the state with refeshed data from the backend.
 
 ---
 

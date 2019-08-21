@@ -1,10 +1,12 @@
 import React from 'react'
+// History comes from withRouter
 import { withRouter } from 'react-router'
 import { Link } from 'react-router-dom'
 
-const AuthenticatedLinks = ({ currentUserId, history }) => {
+// Props component class/const smart/ stateful
+const AuthenticatedLinks = ({ currentUserId, logoutUser, history }) => {
   const logout = () => {
-    window.localStorage.clear('journal-app')
+    logoutUser()
     history.push('/login')
   }
   return (

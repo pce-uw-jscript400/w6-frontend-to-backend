@@ -78,6 +78,7 @@ To tell the server the type that is being sent, in this case json, otherwise it 
 * **Your Answer:**
 
 Add await to fetch.
+
 ---
 
 - [ ] Let's move our requests to a better place. Create a new file at `./src/api/auth.js`. Add the following inside of it:
@@ -108,6 +109,7 @@ Add await to fetch.
 * **Your Answer:** 
 
 The first few lines are assigning localhost to development and it looks like they will need to be updated for deployment.
+
 
 ---
 

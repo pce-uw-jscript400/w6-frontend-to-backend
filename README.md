@@ -38,7 +38,8 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Your Answer:** 
 
----
+--- Error recieved, `"Access to fetch at 'http://localhost:5000/api/users' from origin 'http://localhost:3000' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. If an opaque response serves your needs, set the request's mode to 'no-cors' to fetch the resource with CORS disabled."` CORS enables/disables resource sharing from a web page across domains, enabling "access" for requests from outside domains. In this case, we need to enable resource sharing between our frontend and backend.
+
 
 - [ ] To get around this issue, we need to explicitly allow for requests to come from `localhost:3000`. To do so, we will use the [cors](https://www.npmjs.com/package/cors) package. Install `cors` on the _backend server_ and whitelist `localhost:5000`.
 
@@ -46,7 +47,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Your Answer:**
 
----
+---`{status: 401, message: "You are not logged in."}` is returned. This is because our request did not include the expected token.
 
 - [ ] In `App.js`, we have created our `loginUser()` method. Try invoking that function through the frontend, inspecting what is outputted.
 
@@ -67,9 +68,11 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Your Answer:**
 
+--- Content type is included in the headers to ensure that the front end and the backend can communicate using the same "language". Content type informs on the format of the incoming headers data
+
 * **Question:** How could you convert this method to an `async` method?
 
----
+---Attach/insert `async` before the method name itself, and attach/insert `await` on the subsequent fetch request and response
 
 - [ ] Let's move our requests to a better place. Create a new file at `./src/api/auth.js`. Add the following inside of it:
   ```js
@@ -98,7 +101,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Your Answer:** 
 
----
+--- We're establishing the environment variable, assigning BASE URL as our local dev environment path if NODE_ENV is `development`, assuming we would otherwise be pointing to a production environment path following deployment of our project.
 
 - [ ] Let's store the token in LocalStorage with a key of `journal-app`.
 
@@ -106,7 +109,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Your Answer:**
 
----
+--- We are storing the token in order to maintain authentication, 
 
 - [ ] We now have the token, but we don't have any of the user information. Add a new function to our `./src/api/auth.js` called `profile()` that sends over the token in order to retrieve the user information. Then, log that information.
 
@@ -114,7 +117,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Your Answer:** 
 
----
+--- I included the statements in the backend `/src/api/auth.js` file as you suggested because i agree with the idea that it makes more sense to include these statements in the backend file as this happens "behind the scenes", and isn't component or UI impacting like the react statements in the front end `app.js` file for example.
 
 - [ ] Now that we have the user's information, let's store the user's ID in state. Set `currentUserId` to the user ID you've retrieved.
 
@@ -122,11 +125,13 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Your Answer:**
 
+--- The navigation component displays authenticated links when currentUserID is not null. Because we've set `currentUserId` with an `_id`, the application sees the user as authenticated.
+
 * **Question:** What happens if you enter in the incorrect information? What _should_ happen?
 
 * **Your Answer:**
 
----
+---An error is displayed on the page and in console. A better user experience could be defined using a try/catch statement.
 
 - [ ] Try refreshing the page. You'll notice it _looks_ like you've been logged out, although your token is still stored in LocalStorage. To solve this, we will need to plug in to the component life cycle with `componentDidMount()`. Try adding the following code to `App.js`:
   ```js
@@ -143,7 +148,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Your Answer:**
 
----
+---This function is checking for a token in local storage of the browser window, and if present, makes a request to profile route to get the profile information. Then, the function is setting the state of App with currentUserId: profile.user._id, where user._id is the _id of the profile associated to the token. 
 
 - [ ] Now when you refresh the page, it looks as though you are logged in. Next, try clicking the logout button.
 
@@ -151,7 +156,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Your Answer:**
 
----
+---The navigation is still showing as though i am authenticated. My browser's local storage still contains the `journal-app` token and the app component's `currentUserId` in state has not been reset/set to null.
 
 - [ ] Update the `logout()` method to appropriately logout the user.
 
@@ -159,7 +164,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Your Answer:**
 
----
+--- I had to create the function in App.js and then pass it through each component so that when the logout component is clicked, the logout function is called and the token data is removed and the app component state's currentuserid is set to null
 
 - [ ] Following the patterns we used above, build the Signup feature.
 
@@ -175,7 +180,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Answer:**
 
----
+---I see the `/users` page as if i was authenticated. Because i am not authenticated, i should not be authorized to see this page.
 
 - [ ] Try _replacing_ the `/users` Route in `App.js` with the following:
   ```jsx
@@ -188,7 +193,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Your Answer:**
 
----
+---Upon accessing `/users` route, the App component's state is checked for currentUserId. If currentUserID is present,  the app will render the UsersContainer component. If it is not present, the login component is instead rendered as the user is not authenticated, and thus not authorized to view the page.
 
 - [ ] Now try logging in. Then, when you're on the `/users` page, refresh the page.
 
@@ -196,7 +201,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Your Answer:**
 
----
+--- I am not sure i fully grasp this quite yet, but i believe it is because the page is refreshed on the `/users` route before the app component is mounted and currentUserID is not yet set into state. because of this, the users page cannot be shown to the user as per the route, we are redirecting to login page when no currentUserID is found. it seems that the `/users` route execution precedes `componentDidMount()`. Is this correct?
 
 - [ ] To solve this problem, let's add a `loading` key to our App's state, with the default value set to `true`. When `componentDidMount()` finishes, set the `loading` key to equal `false`. Using this key, solve the issue of refreshing on the `/users` page. Make sure everyting continues to work whether you are logged in or out.
 
@@ -204,7 +209,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Your Answer:**
 
----
+---After setting `loading: true` in app component's state, i added a statement in `componentDidMount()` to set `loading: false` in the component's state once mount has completed.
 
 - [ ] We will have the same problem on the `/users/<userId>/posts` page. Use the same strategy to have this page load correctly on refresh.
 
@@ -212,7 +217,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Your Answer:**
 
----
+---I am a little confused on this question as we skipped past this step in the in-class exercise, and now after our other changes made i am not able to reproduce a similar experience to that of the above scenario with `/users`. Would this need to be added in a similar fashion via `componentDidMount()` on the posts component?
 
 - [ ] Using the same principals as above, make it so that if the user is logged in, they cannot go to the `/login` or `/signup` routes. Instead, forward them to `/users`.
 
@@ -240,11 +245,15 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** Why did the number of posts not change when you were redirected back to the `/users` route?
 
-* **Your Answer:** Whenever we modify our data with a Create, Update, or Delete, we have a few options on how to make our frontend reflect those changes. What options can you think of?
+* **Your Answer:** 
 
-* **Question:**
+--- We did not refresh our state, and in turn, refresh the posts count for the user(s).
 
----
+* **Question:** Whenever we modify our data with a Create, Update, or Delete, we have a few options on how to make our frontend reflect those changes. What options can you think of?
+
+* **Your Answer:** 
+
+--- I thought the suggestion to refresh state entirely seemed most appropriate. This would ensure any additional edits, adds, etc. are returned to the user in real-time.
 
 - [ ] Using your preferred method, update your code so that the frontend will reflect the changes made to the backend.
 
@@ -272,23 +281,23 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 We got a lot done but there's still a lot to do to make this app fully functional. Complete the following features on this application. 
 
-- [ ] If there are no posts for a user, show a message on their `/users/<userId>/posts` page that encourages them to create a new post.
+- [x] If there are no posts for a user, show a message on their `/users/<userId>/posts` page that encourages them to create a new post.
 
-- [ ] If there is no emotion for a post, hide the associated message on each post.
+- [x] If there is no emotion for a post, hide the associated message on each post.
 
-- [ ] Show the user's username on the navigation when they are logged in as a link. When clicked, go to a new page: `/users/<userId>/edit`
+- [x] Show the user's username on the navigation when they are logged in as a link. When clicked, go to a new page: `/users/<userId>/edit`
 
 - [ ] Create a page at `/users/<userId>/edit` that allows a user to update their `name`. On save, redirect them to their `/users/<userId>/posts` page.
 
 - [ ] If the user has a name, show that on the Navigation, `/users` page, and `/users/<userId>/posts` page instead.
 
-- [ ] On the login page, appropriately handle errors so that the user has a chance to correct their username/password combination. Display some kind of helpful message.
+- [x] On the login page, appropriately handle errors so that the user has a chance to correct their username/password combination. Display some kind of helpful message.
 
-- [ ] On the signup page, appropriately handle errors so that the user has a chance to correct their username/password combination. Display some kind of helpful message.
+- [x] On the signup page, appropriately handle errors so that the user has a chance to correct their username/password combination. Display some kind of helpful message.
 
-- [ ] On the create post page, appropriately handle errors so that the user has a chance to correct their post. Display some kind of helpful message.
+- [] On the create post page, appropriately handle errors so that the user has a chance to correct their post. Display some kind of helpful message.
 
-- [ ] On the update post page, appropriately handle errors so that the user has a chance to correct their post. Display some kind of helpful message.
+- [] On the update post page, appropriately handle errors so that the user has a chance to correct their post. Display some kind of helpful message.
 
 - [ ] Create a new frontend route at `/users/<userId>/posts/<postId>` that shows a single post. Update your Create and Edit forms to redirect here instead of to the general `/posts` page.
 

@@ -8,9 +8,8 @@ export default ({ currentUserId, destroyPost, user }) => {
       <div className="card-body">
         <p className="card-text">{post.content}</p>
         <blockquote className="blockquote mb-0">
-          if (post.emotion){" "}
           <footer className="blockquote-footer">
-            Was feeling: {post.emotion}
+            {user.username} Was feeling: {post.emotion}
           </footer>
         </blockquote>
       </div>

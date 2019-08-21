@@ -1,21 +1,13 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
-import AuthenticatedLinks from './Navigation.AuthenticatedLinks'
-import UnauthenticatedLinks from './Navigation.UnauthenticatedLinks'
-
-export default ({ currentUserId, logoutUser }) => (
-  <section className='bg-light border-bottom mb-4'>
-    <div className='container'>
-      {
-        currentUserId
-        ? (
-          <AuthenticatedLinks
-            currentUserId={currentUserId}
-            logoutUser={logoutUser}
-          />
-        )
-        : <UnauthenticatedLinks />
-      }
-    </div>
-  </section>
+export default () => (
+  <ul className='nav justify-content-end'>
+    <li className='nav-item'>
+      <Link className='nav-link' to='/login'>Login</Link>
+    </li>
+    <li className='nav-item'>
+      <Link className='nav-link' to='/signup'>Signup</Link>
+    </li>
+  </ul>
 )

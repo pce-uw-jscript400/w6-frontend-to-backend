@@ -1,11 +1,12 @@
 import React from 'react'
+import { withRouter } from 'react-router'
 
-export default class Form extends React.Component {
+class Form extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
       username: '',
-      password: ''
+      password: '',
     }
 
     this.handleChange = this.handleChange.bind(this)
@@ -19,6 +20,7 @@ export default class Form extends React.Component {
   handleSubmit (e) {
     e.preventDefault()
     this.props.onSubmit(this.state)
+      .then(() => this.props.history.push('/users'))
   }
 
   render () {
@@ -49,3 +51,5 @@ export default class Form extends React.Component {
     )
   }
 }
+
+export default withRouter(Form)

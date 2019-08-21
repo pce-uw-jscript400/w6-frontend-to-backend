@@ -3,9 +3,9 @@ import React from "react";
 export default class Form extends React.Component {
   constructor(props) {
     super(props);
-    const { post = {} } = this.props;
-    const { content = "", emotion = "" } = post;
-    this.state = { content, emotion };
+    const { user = {} } = this.props;
+    const { name = "", _id = "" } = user;
+    this.state = { name, _id };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -17,10 +17,10 @@ export default class Form extends React.Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    const { post } = this.props;
+    const { user } = this.props;
 
-    if (post && post._id) {
-      const body = Object.assign({}, this.state, { _id: post._id });
+    if (user && user.name) {
+      const body = Object.assign({}, this.state, { name: user.name });
       this.props.onSubmit(body);
     } else {
       this.props.onSubmit(this.state);
@@ -31,27 +31,17 @@ export default class Form extends React.Component {
     return (
       <form onSubmit={this.handleSubmit}>
         <div className="form-group">
-          <label htmlFor="emotion">Emotion</label>
+          <label htmlFor="name">Name</label>
           <input
             className="form-control"
-            id="emotion"
+            id="name"
             onChange={this.handleChange}
-            name="emotion"
+            name="name"
             type="text"
-            value={this.state.emotion}
+            value={this.state.name}
           />
         </div>
-        <div className="form-group">
-          <label htmlFor="content">Content</label>
-          <textarea
-            className="form-control"
-            id="content"
-            onChange={this.handleChange}
-            name="content"
-            type="text"
-            value={this.state.content}
-          />
-        </div>
+
         <button type="submit" className="btn btn-primary">
           Submit
         </button>

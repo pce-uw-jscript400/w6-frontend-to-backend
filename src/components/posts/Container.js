@@ -36,7 +36,7 @@ class Container extends React.Component {
   async editPost (post) {
     const { currentUserId, refreshUsers, history } = this.props
     console.log('Editting Post:', post)
-    await api.editPost({user: {_id: currentUserId}, post})
+    await api.updatePost({user: {_id: currentUserId}, post})
     await refreshUsers()
     history.push(`/users/${currentUserId}/posts`)
   }

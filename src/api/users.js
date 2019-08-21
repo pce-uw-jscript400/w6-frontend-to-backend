@@ -1,17 +1,9 @@
-const { NODE_ENV } = process.env
-const BASE_URL = NODE_ENV === 'development'
-  ? 'http://localhost:5000'
-  : 'tbd' // Once we deploy, we need to change this
+import request from './request'
 
-export const getAllUsers = async () => {
-  const token = window.localStorage.getItem('journal-app')
-  const response = await fetch(`${BASE_URL}/api/users`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-      'Content-Type': 'application/json'
-    },
-    method: 'GET'
-  })
-  const json = await response.json()
-  return json.response
-}
+export const updateUser = ({ user }) => {
+    const path = `/api/users/${user._id}/edit`
+    const options = { body: user, method: 'PUT' }
+    return request(path, options)
+  }
+  
+export const fetchUsers = () => request('/api/users')

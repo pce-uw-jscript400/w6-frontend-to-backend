@@ -16,30 +16,38 @@ class App extends React.Component {
   constructor () {
     super()
     this.state = {
+      showAlert: false,
       currentUserId: null,
+      currentUserName: null,
       loading: true
     }
 
     this.loginUser = this.loginUser.bind(this)
-    this.signupUser = this.signupUser.bind(this)
     this.logoutUser = this.logoutUser.bind(this)
+    this.signupUser = this.signupUser.bind(this)
   }
 
   async componentDidMount () {
     if (token.getToken()) {
       const { user } = await auth.profile();
-      this.setState({ currentUserId: user._id, loading: false });
-    } else {
-      this.setState({ loading: false })
+        this.setState({ currentUserId: user._id, currentUserName: user.name, loading: false });
+      } else {
+      this.setState({ currentUserId: null, loading: false })
     }
   }
+
 
   async loginUser (user) {
     const response = await auth.login(user)
     await token.setToken(response)
     
     const profile = await auth.profile()
-    this.setState({ currentUserId: profile.user._id })
+    if (profile.status === 401) {
+      alert('Username or password is incorrect!')
+      this.setState({ showAlert: true })
+    } else {
+      this.setState({ currentUserId: profile.user._id })
+    } 
   }
 
   logoutUser () {
@@ -52,37 +60,38 @@ class App extends React.Component {
     await token.setToken(response)
     
     const profile = await auth.profile()
-    this.setState({ currentUserId: profile.user._id })
+    console.log(profile)
+    if (profile.status === 401) {
+      alert('Username already exists!')
+      this.setState({ showAlert: true })
+    } else {
+      this.setState({ currentUserId: profile.user._id })
+    }
   }
 
   render () {
-    if (this.state.loading) return <p>Loading...</p>
+    const { currentUserId, currentUserName, loading } = this.state
+    if (loading) return <span />
 
     return (
       <Router>
         <Header />
-        <Navigation 
-          currentUserId={this.state.currentUserId} 
-          logoutUser={this.logoutUser}
-          />
+        <Navigation
+          currentUserId={currentUserId}
+          currentUserName={currentUserName}
+          logoutUser={this.logoutUser} />
         <Switch>
           <Route path='/login' exact component={() => {
-            return this.state.currentUserId ? (
-              <Redirect to='/users' />
-            ) : (
-              <Login onSubmit={this.loginUser} />
-            )
+            return currentUserId ? <Redirect to='/users' /> : <Login onSubmit={this.loginUser} />
           }} />
           <Route path='/signup' exact component={() => {
-            return this.state.currentUserId ? (
-              <Redirect to='/users' />
-            ) : (
-              <Signup onSubmit={this.signupUser} />
-            )
+            return currentUserId ? <Redirect to='/users' /> : <Signup onSubmit={this.signupUser} />
           }} />
 
           <Route path='/users' render={() => {
-            return this.state.currentUserId ? <UsersContainer /> : <Redirect to='/login' />
+            return currentUserId
+              ? <UsersContainer currentUserId={currentUserId} />
+              : <Redirect to='/login' />
           }} />
 
           <Redirect to='/login' />

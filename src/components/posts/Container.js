@@ -1,9 +1,14 @@
 import React from 'react'
+import { withRouter } from 'react-router'
 import { Route } from 'react-router-dom'
 import { withRouter } from 'react-router'
 
 import * as api from '../../api/posts'
 
+// Helpers
+import * as posts from '../../api/posts'
+
+// Components
 import List from './List/List'
 import EditForm from './Form/Edit.Form'
 import NewForm from './Form/New.Form'
@@ -16,27 +21,44 @@ class Container extends React.Component {
     this.editPost = this.editPost.bind(this)
   }
 
-  createPost (post) {
-    console.log('Submitting Post:', post)
+  async createPost (post) {
+    const { currentUserId, history, refreshUsers } = this.props
+
+    await posts.createPost({ user: { _id: currentUserId }, post })
+    await refreshUsers()
+
+    history.push(`/users/${currentUserId}/posts`)
+  }
+  
+  async destroyPost (post) {
+    const { currentUserId, history, refreshUsers } = this.props
+    
+    await posts.destroyPost({ user: { _id: currentUserId }, post })
+    await refreshUsers()
+    
+    history.push(`/users/${currentUserId}/posts`)
   }
 
-  async destroyPost (userId, postId) {
-    const response = await api.deletePost(userId, postId)
-    console.log(response)
-    this.props.history.push(`/users/${userId}/posts`)
-  }
+  async editPost (post) {
+    const { currentUserId, history, refreshUsers } = this.props
+    await posts.updatePost({ user: { _id: currentUserId }, post })
+    await refreshUsers()
 
-  editPost (post) {
-    console.log('Editting Post:', post)
+    history.push(`/users/${currentUserId}/posts`)
   }
 
   render () {
-    const { users } = this.props
+    const { currentUserId, users } = this.props
     return (
       <>
         <Route path='/users/:userId/posts' exact component={({ match }) => {
           const user = users.find(user => user._id === match.params.userId)
-          return <List destroyPost={this.destroyPost} user={user} />
+          return (
+            <List
+              currentUserId={currentUserId}
+              destroyPost={this.destroyPost}
+              user={user} />
+          )
         }} />
         <Route path='/users/:userId/posts/new' exact component={() => {
           return <NewForm onSubmit={this.createPost} />

@@ -77,8 +77,7 @@ To tell the server the type that is being sent, in this case json, otherwise it 
 
 * **Your Answer:**
 
-
-
+Add await to fetch.
 
 ---
 
@@ -109,6 +108,7 @@ To tell the server the type that is being sent, in this case json, otherwise it 
 
 * **Your Answer:** 
 
+The first few lines are assigning localhost to development and it looks like they will need to be updated for deployment.
 
 
 ---
@@ -185,6 +185,8 @@ There's no current API route for logout, but once the page is refreshed the toke
 
 * **Your Answer:**
 
+Needed to remove the journal-app from local storage and update currentUserId to null.
+
 ---
 
 - [ ] Following the patterns we used above, build the Signup feature.
@@ -246,6 +248,8 @@ In the state set `loading: true` and then in render added an if statement to sho
 
 * **Your Answer:**
 
+`loading: true` was added to `App.js` and it was added to that component so the user will stay logged in regardless of the route they're on.
+
 ---
 
 - [ ] Using the same principals as above, make it so that if the user is logged in, they cannot go to the `/login` or `/signup` routes. Instead, forward them to `/users`.
@@ -274,9 +278,15 @@ In the state set `loading: true` and then in render added an if statement to sho
 
 * **Question:** Why did the number of posts not change when you were redirected back to the `/users` route?
 
-* **Your Answer:** Whenever we modify our data with a Create, Update, or Delete, we have a few options on how to make our frontend reflect those changes. What options can you think of?
+* **Your Answer:**
 
-* **Question:**
+Because state was not updated.
+
+* **Question:** Whenever we modify our data with a Create, Update, or Delete, we have a few options on how to make our frontend reflect those changes. What options can you think of?
+
+* **Your Answer:**
+
+refresh state so the app reflects the most recent changes made.
 
 ---
 
@@ -306,19 +316,19 @@ In the state set `loading: true` and then in render added an if statement to sho
 
 We got a lot done but there's still a lot to do to make this app fully functional. Complete the following features on this application. 
 
-- [ ] If there are no posts for a user, show a message on their `/users/<userId>/posts` page that encourages them to create a new post.
+- [X] If there are no posts for a user, show a message on their `/users/<userId>/posts` page that encourages them to create a new post.
 
-- [ ] If there is no emotion for a post, hide the associated message on each post.
+- [X] If there is no emotion for a post, hide the associated message on each post.
 
-- [ ] Show the user's username on the navigation when they are logged in as a link. When clicked, go to a new page: `/users/<userId>/edit`
+- [X] Show the user's username on the navigation when they are logged in as a link. When clicked, go to a new page: `/users/<userId>/edit`
 
-- [ ] Create a page at `/users/<userId>/edit` that allows a user to update their `name`. On save, redirect them to their `/users/<userId>/posts` page.
+- [X] Create a page at `/users/<userId>/edit` that allows a user to update their `name`. On save, redirect them to their `/users/<userId>/posts` page.
 
-- [ ] If the user has a name, show that on the Navigation, `/users` page, and `/users/<userId>/posts` page instead.
+- [X] If the user has a name, show that on the Navigation, `/users` page, and `/users/<userId>/posts` page instead.
 
-- [ ] On the login page, appropriately handle errors so that the user has a chance to correct their username/password combination. Display some kind of helpful message.
+- [X] On the login page, appropriately handle errors so that the user has a chance to correct their username/password combination. Display some kind of helpful message.
 
-- [ ] On the signup page, appropriately handle errors so that the user has a chance to correct their username/password combination. Display some kind of helpful message.
+- [X] On the signup page, appropriately handle errors so that the user has a chance to correct their username/password combination. Display some kind of helpful message.
 
 - [ ] On the create post page, appropriately handle errors so that the user has a chance to correct their post. Display some kind of helpful message.
 

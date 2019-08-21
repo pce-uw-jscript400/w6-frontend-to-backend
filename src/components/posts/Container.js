@@ -10,6 +10,7 @@ import * as posts from '../../api/posts'
 import List from './List/List'
 import EditForm from './Form/Edit.Form'
 import NewForm from './Form/New.Form'
+import Single from './List/Single'
 
 class Container extends React.Component {
   constructor (props) {
@@ -43,7 +44,7 @@ class Container extends React.Component {
     await posts.updatePost({ user: { _id: currentUserId }, post })
     await refreshUsers()
 
-    history.push(`/users/${currentUserId}/posts`)
+    history.push(`/users/${currentUserId}/posts/`)
   }
 
   render () {
@@ -59,6 +60,8 @@ class Container extends React.Component {
               user={user} />
           )
         }} />
+
+
         <Route path='/users/:userId/posts/new' exact component={() => {
           return <NewForm onSubmit={this.createPost} />
         }} />
@@ -67,6 +70,15 @@ class Container extends React.Component {
           const user = users.find(user => user._id === match.params.userId)
           const post = user.posts.find(user => user._id === match.params.postId)
           return <EditForm onSubmit={this.editPost} post={post} />
+        }} />
+
+      <Route path='/users/:userId/posts/:postId/' exact component={({ match }) => {
+          const user = users.find(user => user._id === match.params.userId)
+          const post = user.posts.find(user => user._id === match.params.postId)
+          return<Single currentUserId={currentUserId}
+          destroyPost={this.destroyPost}
+          user={user}
+          post={post} />
         }} />
       </>
     )

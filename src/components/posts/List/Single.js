@@ -2,9 +2,14 @@ import React from 'react'
 
 import Actions from './List.Actions'
 
-export default ({ currentUserId, destroyPost, user}) => {
-  const posts = user.posts.map(post => (
-    <div key={post._id} className='card'>
+export default ({ currentUserId, destroyPost, user, post}) => {
+
+
+  return (
+    <>
+      <h1 className='mb-4'>Post ID: {post._id}</h1>
+      <h2>Created by: {user.name}</h2>
+      <div key={post._id} className='card'>
       <div className='card-body'>
       <p className='card-text'>{ post.content }</p>
         <blockquote className='blockquote mb-0'>
@@ -23,12 +28,7 @@ export default ({ currentUserId, destroyPost, user}) => {
         post={post}
         user={user} />
     </div>
-  ))
 
-  return (
-    <>
-      <h1 className='mb-4'>{ user.name ? user.name : user.username }'s Posts</h1>
-      { !posts.length ? `You should create a new post` : posts}
     </>
   )
 }

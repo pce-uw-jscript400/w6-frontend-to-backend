@@ -1,6 +1,9 @@
 import React from 'react'
+import { withRouter } from 'react-router'
 
-export default class Form extends React.Component {
+// connect withRouter with this class
+
+class Form extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
@@ -19,6 +22,7 @@ export default class Form extends React.Component {
   handleSubmit (e) {
     e.preventDefault()
     this.props.onSubmit(this.state)
+    this.props.history.push('/users')
   }
 
   render () {
@@ -49,3 +53,5 @@ export default class Form extends React.Component {
     )
   }
 }
+
+export default withRouter(Form)

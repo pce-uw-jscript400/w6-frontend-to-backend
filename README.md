@@ -38,6 +38,21 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Your Answer:** 
 
+Got error 401 (Unauthorized), because there is cross-site scripting between the frontend and backend. Code obtained from the front-end server is protected from accessing code on the back-end server.
+
+CORS = Cross-origin resource sharing.  
+
+The full error output:
+
+```
+VM28:1 GET http://localhost:5000/api/users net::ERR_ABORTED 401 (Unauthorized)
+(anonymous) @ VM28:1
+login:1 Access to fetch at 'http://localhost:5000/api/users' from origin 'http://localhost:3000' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. If an opaque response serves your needs, set the request's mode to 'no-cors' to fetch the resource with CORS disabled.
+login:1 Uncaught (in promise) TypeError: Failed to fetch
+Promise.then (async)
+(anonymous) @ VM28:3
+```
+
 ---
 
 - [ ] To get around this issue, we need to explicitly allow for requests to come from `localhost:3000`. To do so, we will use the [cors](https://www.npmjs.com/package/cors) package. Install `cors` on the _backend server_ and whitelist `localhost:5000`.
@@ -46,9 +61,18 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Your Answer:**
 
+status: 401, message: "You are not logged in."
+
+In auth.js, req.token - there's no token, so you get the messsage.  The users route is protected this way.
+
 ---
 
 - [ ] In `App.js`, we have created our `loginUser()` method. Try invoking that function through the frontend, inspecting what is outputted.
+
+output:
+
+Logging In User: {username: "mikehoff", password: "xxxx"}
+
 
 ---
 
@@ -67,7 +91,28 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Your Answer:**
 
+Need to tell the server's body parser what format of data to use (JSON rather than text or XML).
+
+
 * **Question:** How could you convert this method to an `async` method?
+
+* **Your Answer:**
+
+Add await and async keywords:
+
+  ```js
+  async loginUser (user){
+    const response = await fetch('http://localhost:5000/api/login', {
+    body: JSON.stringify(user),
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    method: 'POST',
+  })
+  const json = await response.json()
+  console.log(json))
+  }
+  ```
 
 ---
 
@@ -98,6 +143,10 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Your Answer:** 
 
+If we're in development, set the base url to localhost 5000, in an environment variable.
+
+(lecture 7:00 pm)
+
 ---
 
 - [ ] Let's store the token in LocalStorage with a key of `journal-app`.
@@ -105,6 +154,21 @@ By the end of this lesson. You should be able to set up two separate servers tha
 * **Question:** Why are we storing the token?
 
 * **Your Answer:**
+
+We need to store the token locally, for future logins.
+
+web search: localstorage mdn
+
+https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage
+
+So, in auth.js, add:
+
+```
+    const token = json.token
+    window.localStorage.setItem('journal-app', token)
+    
+    return json
+```
 
 ---
 
@@ -114,6 +178,8 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Your Answer:** 
 
+In `auth.js` in the `login` function.  I could have put it in `App.js`.
+
 ---
 
 - [ ] Now that we have the user's information, let's store the user's ID in state. Set `currentUserId` to the user ID you've retrieved.
@@ -122,9 +188,14 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Your Answer:**
 
+All Users, Create a New Post, and Logout links appear in upper right.
+
+
 * **Question:** What happens if you enter in the incorrect information? What _should_ happen?
 
 * **Your Answer:**
+
+The token is "undefined".
 
 ---
 
@@ -143,6 +214,10 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Your Answer:**
 
+This lifecycle method is a good place to make external API calls.  We're pulling the token locally.  If the token exists, make a request to profile route to get user information, then update state.
+
+If there's a token in local storage, the app attempts to automatically log you in.
+
 ---
 
 - [ ] Now when you refresh the page, it looks as though you are logged in. Next, try clicking the logout button.
@@ -151,6 +226,8 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Your Answer:**
 
+The token still exists, so we are still automatically logged in.
+
 ---
 
 - [ ] Update the `logout()` method to appropriately logout the user.
@@ -158,6 +235,13 @@ By the end of this lesson. You should be able to set up two separate servers tha
 * **Question:** What did you have to do to get the `logout()` function to work? Why?
 
 * **Your Answer:**
+
+Changed it to remove the local storage item:
+
+```
+  const logout = () => {
+    window.localStorage.removeItem('journal-app')
+```
 
 ---
 
@@ -175,6 +259,8 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Answer:**
 
+Automatically logs in and gets access to the page.  No authorization is done; we have full unrestricted access.
+
 ---
 
 - [ ] Try _replacing_ the `/users` Route in `App.js` with the following:
@@ -188,6 +274,8 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Your Answer:**
 
+If there's a current user ID in state, it shows the UsersContainer route; else it goes to login page.  This switches which component to show.
+
 ---
 
 - [ ] Now try logging in. Then, when you're on the `/users` page, refresh the page.
@@ -195,6 +283,9 @@ By the end of this lesson. You should be able to set up two separate servers tha
 * **Question:** What happens and why?
 
 * **Your Answer:**
+
+We are taken to the login page, but we are still logged in.
+That's because in App.js, when page is first loaded, we go Home, React is loaded, then mount the App component with all its routes.  current User ID isn't defined yet; the currentUserId is added only during componentDidMount().  Then when we're in login, too late to get currentUserId.
 
 ---
 
@@ -204,6 +295,21 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Your Answer:**
 
+In `App.js` state, added `loading: true`, and in render, added:
+
+```
+  render () {
+    if (this.state.loading) return <p>Loading...</p>
+```
+
+In componentDidMount() set loading to false:
+
+```
+ {
+      this.setState({ currentUserId: profile.user._id, loading: false })
+    }
+  }
+```
 ---
 
 - [ ] We will have the same problem on the `/users/<userId>/posts` page. Use the same strategy to have this page load correctly on refresh.
@@ -212,15 +318,85 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Your Answer:**
 
+This problem actually happens later, not now.
+
+
 ---
 
 - [ ] Using the same principals as above, make it so that if the user is logged in, they cannot go to the `/login` or `/signup` routes. Instead, forward them to `/users`.
+
+Solution:
+```
+<Route path='/login' exact component={() => {
+  return this.state.currentUserId ? (
+    <Redirect to="/users"/>
+  ) :
+  (
+    <Login onSubmit={this.loginUser} />
+  )
+}} />
+
+<Route path='/signup' exact component={() => {
+  return this.state.currentUserId ? (
+    <Redirect to="/users"/>
+  ) :
+  (
+    <Signup onSubmit={this.signupUser} />
+  )
+}} />
+```
 
 ---
 
 - [ ] Right now, the data inside of `users/Container.js` is static. Using `componentDidMount()`, update this code so that we pull our data from our API.
 
   _NOTE: You may want to create a new file in `./src/api/` to organize these requests.
+
+Created `users.js` containing `getAllUsers()`:
+
+```
+const { NODE_ENV } = process.env
+const BASE_URL = NODE_ENV === 'development'
+  ? 'http://localhost:5000'
+  : 'tbd' // Once we deploy, we need to change this
+
+export const getAllUsers = async () => {
+  const token = window.localStorage.getItem('journal-app')
+  const response = await fetch(`${BASE_URL}/api/users`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    },
+    method: 'GET'
+  })
+  const json = await response.json()
+  return json.response
+}
+```
+
+In Container.js, emptied the `users` array:
+```
+    this.state = {
+      users: []
+    }
+```
+
+and imported the api: 
+
+```
+import * as api from '../../api/users'
+```
+
+and added a `componentDidMount`:
+```
+  async componentDidMount () {
+    const token = window.localStorage.getItem('journal-app')
+    if (token) {
+      const users = await api.getAllUsers()
+      this.setState({users})
+    }
+  }
+```
 
 ---
 
@@ -229,6 +405,22 @@ By the end of this lesson. You should be able to set up two separate servers tha
   DELETE /users/:userId/posts/:postId
   ```
   This request should only be able to be made if the user is logged in and it's the user's post.
+
+Solution something like: in backend `Users.js`, add route:
+
+```
+router.delete('/:userId/posts/:postId', isLoggedIn, isSameUser, async (req, res, next) => {
+  const status = 200
+  const query = { _id: req.params.userId }
+  const user = await User.findOne(query)
+  const post = user.posts.find(post => post.id(req.params.postId))
+
+  post.remove()
+  await user.save()
+  // comment out?
+  res.json({ status, response: post })
+})
+```
 
 ---
 
@@ -241,6 +433,14 @@ By the end of this lesson. You should be able to set up two separate servers tha
 * **Question:** Why did the number of posts not change when you were redirected back to the `/users` route?
 
 * **Your Answer:** Whenever we modify our data with a Create, Update, or Delete, we have a few options on how to make our frontend reflect those changes. What options can you think of?
+
+Option 1: Build a method `removePost` in `users/Container.js`. Remove a single post from state, calling set state.  This is "surgical" removal; find a single post in the database and delete it.
+
+Option 2: In that file, define `refetchState`, to pull all the posts from the database, remove one post,then re-fetch state, and refresh the entire state (a resource) in the database. Set that state, overwriting the previous state.
+
+Option 3: Refetch only the posts for this user, not requesting all the data.  How much data?  If only 3 users, less of an issue; can get all data.
+
+Option 2 is easier, we'll use that.
 
 * **Question:**
 
@@ -291,4 +491,3 @@ We got a lot done but there's still a lot to do to make this app fully functiona
 - [ ] On the update post page, appropriately handle errors so that the user has a chance to correct their post. Display some kind of helpful message.
 
 - [ ] Create a new frontend route at `/users/<userId>/posts/<postId>` that shows a single post. Update your Create and Edit forms to redirect here instead of to the general `/posts` page.
-

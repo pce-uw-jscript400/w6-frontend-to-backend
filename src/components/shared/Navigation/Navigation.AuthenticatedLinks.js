@@ -2,9 +2,9 @@ import React from 'react'
 import { withRouter } from 'react-router'
 import { Link } from 'react-router-dom'
 
-const AuthenticatedLinks = ({ currentUserId, history }) => {
+const AuthenticatedLinks = ({ currentUserId, logoutUser, history }) => {
   const logout = () => {
-    window.localStorage.clear('journal-app')
+    logoutUser()
     history.push('/login')
   }
   return (
@@ -28,4 +28,5 @@ const AuthenticatedLinks = ({ currentUserId, history }) => {
   )
 }
 
+// allows AL to access history
 export default withRouter(AuthenticatedLinks)

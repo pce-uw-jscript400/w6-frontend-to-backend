@@ -1,11 +1,18 @@
 import React from 'react'
+import {withRouter} from 'react-router-dom'
+import ErrorMessage from '../../shared/ErrorMsg';
 
-export default class Form extends React.Component {
+class Form extends React.Component {
   constructor (props) {
     super(props)
     const { post = {} } = this.props
     const { content = '', emotion = '' } = post
-    this.state = { content, emotion }
+    this.state = { 
+      content, 
+      emotion,
+      error: false,
+      errorMsg: null
+    } 
 
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
@@ -15,12 +22,25 @@ export default class Form extends React.Component {
     this.setState({ [name]: value })
   }
 
-  handleSubmit (e) {
+  async handleSubmit (e) {
     e.preventDefault()
-    this.props.onSubmit(this.state)
+    let response = await this.props.onSubmit(this.props.user, {content: this.state.content, emotion: this.state.emotion})
+    if (response.status == 201 || response.status == 200) {
+      this.props.history.push(`/users/${this.props.user._id}/posts/${response.response._id}`)
+    } else {
+      this.setState({
+        error: true,
+        errorMsg: response.message
+      }) 
+    }
   }
 
   render () {
+    let error;
+    if(this.state.error) {
+      error = <ErrorMessage message={this.state.errorMsg}/>
+    } 
+    
     return (
       <form onSubmit={this.handleSubmit}>
         <div className='form-group'>
@@ -43,8 +63,11 @@ export default class Form extends React.Component {
             type='text'
             value={this.state.content} />
         </div>
+        {error}
         <button type='submit' className='btn btn-primary'>Submit</button>
       </form>
     )
   }
 }
+
+export default withRouter(Form)

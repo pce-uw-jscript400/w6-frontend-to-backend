@@ -35,8 +35,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
   ```
 
 * **Question:** What error do you get? Why?
-
-* **Your Answer:** 
+* **Your Answer:** it is a 401 (unauthorized) error. "_Access to fetch at 'http://localhost:5000/api/users' from origin 'http://localhost:3000' has been blocked by CORS policy_". The reason is because these applications are technically running on seperate domains. While both are running on localhost, they are running on different ports which is the equivalent of a cross-origin request. Generally browsers will block this type of request as it could result in malicious attack. 
 
 ---
 
@@ -44,7 +43,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** Try your request again. What error do you get? Why?
 
-* **Your Answer:**
+* **Your Answer:** 401 again, but this is the unauthorized error warning let us know that we are not logged in. The fetch actually completes successfully. We get this error because the middleware to check for the request token finds no token.
 
 ---
 
@@ -65,10 +64,11 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** Why do we need to include the "Content-Type" in the headers?
 
-* **Your Answer:**
+* **Your Answer:** This communicates to the backend server what format of data we are sending to it. 
 
 * **Question:** How could you convert this method to an `async` method?
 
+* **Your Answer:** Add async in front of the function declaration and change the response to `await fetch`
 ---
 
 - [ ] Let's move our requests to a better place. Create a new file at `./src/api/auth.js`. Add the following inside of it:
@@ -96,7 +96,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** What is happening on the first couple of lines of the new file you've created?
 
-* **Your Answer:** 
+* **Your Answer:** We are using the nodemon `env` variable for node environment to determine what base url the request should hit for the route (as they will most likely differ between local and production)
 
 ---
 
@@ -104,7 +104,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** Why are we storing the token?
 
-* **Your Answer:**
+* **Your Answer:** It contains information that can be used for accessing additional routes without the need to get the token each time. It makes for easier access and relatively safe access by only storing this token locally and not a reliance on explicitly passing the token in every request we make. 
 
 ---
 
@@ -112,7 +112,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** Where did you write your code to manipulate LocalStorage? Why?
 
-* **Your Answer:** 
+* **Your Answer:** In the auth.js since this is route based functionality. Separation of concerns would see App.js deal primarily with the React portion of the UI, not necessarily the routing and login functions. 
 
 ---
 
@@ -120,11 +120,11 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** What changes on the page after you successfully login? Why?
 
-* **Your Answer:**
+* **Your Answer:** The nav bar changed from `Login | Signup`  to  `All Users | Create a New Post | Logout`
 
 * **Question:** What happens if you enter in the incorrect information? What _should_ happen?
 
-* **Your Answer:**
+* **Your Answer:** We get a React error when trying to set state that it cannot read an undefined property. We should handle this error as part of the login route where if no user info returned, this code does not run. Perhaps we should show visual feedback that the signin was unsuccessful as well. 
 
 ---
 
@@ -141,7 +141,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** Describe what is happening in the code above.
 
-* **Your Answer:**
+* **Your Answer:** `componentDidMount` allows us to manipulate DOM nodes once they have been added to the DOM tree. In this code we are checking if there is a local auth token stored once the component is mounted and if it exists, retrieving the profile of the signed in user and setting state and forcing a rerender with a logged in state before an unauthorized state is rendered to the screen (per the react docs, componentDidMount will trigger the render() method a second time before any intermediate state is shown). 
 
 ---
 
@@ -149,15 +149,14 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** When you click "Logout", nothing happens unless you refresh the page. Why not?
 
-* **Your Answer:**
+* **Your Answer:** The logout function is not altering state. We need to make the front end aware that the token has been removed and is no longer valid and the user should not be entitled to authorized privileges. That is to say, the logout function is removing the auth token from local storage but nothing more. 
 
 ---
 
 - [ ] Update the `logout()` method to appropriately logout the user.
 
 * **Question:** What did you have to do to get the `logout()` function to work? Why?
-
-* **Your Answer:**
+* **Your Answer:** Alter state to remove the currentlyUserId.
 
 ---
 
@@ -173,7 +172,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** What happens? What _should_ happen?
 
-* **Answer:**
+* **Answer:** You are able to access the users page. We've only solved for authentication, but not authorization. Any user, including non-authorized users have the same priveleges as a logged in user. That is to say, the route for `/users` is not protected. We aren't denying users access if they are not logged in.
 
 ---
 
@@ -186,7 +185,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** Describe what is happening in the code above.
 
-* **Your Answer:**
+* **Your Answer:** This code is implementing a function on the `/users` path that will return a different component depending on the presence or absence of a userId in state. 
 
 ---
 
@@ -194,7 +193,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** What happens and why?
 
-* **Your Answer:**
+* **Your Answer:** We are pushed back to the login page. The check for the the currentUserId doesn't run until the components have already rendered. 
 
 ---
 
@@ -202,7 +201,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** What did you do to solve this problem?
 
-* **Your Answer:**
+* **Your Answer:** Wrote a conditional in the render method that checks the state loading key and once that has been set to false, then render the page. Essentially set up an interstatial view of the components until that loading is done. 
 
 ---
 
@@ -210,7 +209,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** In what component did you add the `loading` property and why?
 
-* **Your Answer:**
+* **Your Answer:** I added it to the `UsersContainer` component. After tracing this route back through the component hierarchy, I was able to identify that the the issue with this reload state is a reliance on the UsersContainer to load a users array into state that the list component uses to then render the users posts. We must make sure we halt rendering of that component until the users array has been populated. 
 
 ---
 
@@ -240,9 +239,11 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** Why did the number of posts not change when you were redirected back to the `/users` route?
 
-* **Your Answer:** Whenever we modify our data with a Create, Update, or Delete, we have a few options on how to make our frontend reflect those changes. What options can you think of?
+* **Your Answer:** The change was not bubbled back up to state for the users list component. It is still operating with the assumption no change to the users array has happened.
 
-* **Question:**
+* **Question:** Whenever we modify our data with a Create, Update, or Delete, we have a few options on how to make our frontend reflect those changes. What options can you think of?
+
+* **Your Answer:** A change in state is what triggers the frontend to rerender. In this case, we need the deleted post to be reflected in state in order to force that rerender of the component.
 
 ---
 
@@ -272,23 +273,23 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 We got a lot done but there's still a lot to do to make this app fully functional. Complete the following features on this application. 
 
-- [ ] If there are no posts for a user, show a message on their `/users/<userId>/posts` page that encourages them to create a new post.
+- [X] If there are no posts for a user, show a message on their `/users/<userId>/posts` page that encourages them to create a new post.
 
-- [ ] If there is no emotion for a post, hide the associated message on each post.
+- [X] If there is no emotion for a post, hide the associated message on each post.
 
-- [ ] Show the user's username on the navigation when they are logged in as a link. When clicked, go to a new page: `/users/<userId>/edit`
+- [X] Show the user's username on the navigation when they are logged in as a link. When clicked, go to a new page: `/users/<userId>/edit`
 
-- [ ] Create a page at `/users/<userId>/edit` that allows a user to update their `name`. On save, redirect them to their `/users/<userId>/posts` page.
+- [X] Create a page at `/users/<userId>/edit` that allows a user to update their `name`. On save, redirect them to their `/users/<userId>/posts` page.
 
-- [ ] If the user has a name, show that on the Navigation, `/users` page, and `/users/<userId>/posts` page instead.
+- [X] If the user has a name, show that on the Navigation, `/users` page, and `/users/<userId>/posts` page instead.
 
-- [ ] On the login page, appropriately handle errors so that the user has a chance to correct their username/password combination. Display some kind of helpful message.
+- [X] On the login page, appropriately handle errors so that the user has a chance to correct their username/password combination. Display some kind of helpful message.
 
-- [ ] On the signup page, appropriately handle errors so that the user has a chance to correct their username/password combination. Display some kind of helpful message.
+- [X] On the signup page, appropriately handle errors so that the user has a chance to correct their username/password combination. Display some kind of helpful message.
 
-- [ ] On the create post page, appropriately handle errors so that the user has a chance to correct their post. Display some kind of helpful message.
+- [X] On the create post page, appropriately handle errors so that the user has a chance to correct their post. Display some kind of helpful message.
 
 - [ ] On the update post page, appropriately handle errors so that the user has a chance to correct their post. Display some kind of helpful message.
 
-- [ ] Create a new frontend route at `/users/<userId>/posts/<postId>` that shows a single post. Update your Create and Edit forms to redirect here instead of to the general `/posts` page.
+- [X] Create a new frontend route at `/users/<userId>/posts/<postId>` that shows a single post. Update your Create and Edit forms to redirect here instead of to the general `/posts` page.
 

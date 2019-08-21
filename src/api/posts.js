@@ -13,9 +13,6 @@ export const deletePost = async (userId, postId) => {
     method: 'GET'
   })
   const json = await response.json()
-  return json.response
-}
-
-export const deletePost = async () => {
+  console.log(json)
   return json.response
 }

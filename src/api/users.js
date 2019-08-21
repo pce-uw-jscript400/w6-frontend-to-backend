@@ -15,7 +15,3 @@ export const getAllUsers = async () => {
   const json = await response.json()
   return json.response
 }
-
-export const deletePost = async () => {
-  return json.response
-}

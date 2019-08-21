@@ -249,10 +249,10 @@ By the end of this lesson. You should be able to set up two separate servers tha
 - [ ] Try deleting a post using the link.
 
 * **Question:** Why did the number of posts not change when you were redirected back to the `/users` route?
+  Whenever we modify our data with a Create, Update, or Delete, we have a few options on how to make our frontend reflect those changes. What options can you think of?
 
-* **Your Answer:** Whenever we modify our data with a Create, Update, or Delete, we have a few options on how to make our frontend reflect those changes. What options can you think of?
+* **Your Answer:** Because our backend did apply the changes but on frontend we need to somehow update your page to reflect the changes in backend. re-fetching is on of out options.
 
-* **Question:** Because our backend did apply the changes but on frontend we need to somehow update your page to reflect the changes in backend. re-fetching is on of out options.
 ---
 
 - [ ] Using your preferred method, update your code so that the frontend will reflect the changes made to the backend.

@@ -176,19 +176,20 @@ move it to the App.js and pass down the function as a prop so that we have acces
 
 ---
 
-- [ ] When a user logs in or signs up, we should bring them to the `/users` route. Update both features so that the user is moved to that route after a successful login/signup.
+- [X] When a user logs in or signs up, we should bring them to the `/users` route. Update both features so that the user is moved to that route after a successful login/signup.
 
 ---
 
-- [ ] Try logging out and then go directly to the `/users` route.
+- [X] Try logging out and then go directly to the `/users` route.
 
 * **Question:** What happens? What _should_ happen?
 
 * **Answer:**
+It allows you access to that page. It should not allow access to this page if you are not logged in and there should be an error message.
 
 ---
 
-- [ ] Try _replacing_ the `/users` Route in `App.js` with the following:
+- [X] Try _replacing_ the `/users` Route in `App.js` with the following:
   ```jsx
   <Route path='/users' render={() => {
     return this.state.currentUserId ? <UsersContainer /> : <Redirect to='/login' />
@@ -198,22 +199,25 @@ move it to the App.js and pass down the function as a prop so that we have acces
 * **Question:** Describe what is happening in the code above.
 
 * **Your Answer:**
+Before rendering the users page when a user goes to this route, this Route checks to see if there is a currentUserId in the state. If there is, the user is logged in and has access to that page and the UsersContainer appears. If they are not logged in, then the user is redirected to the login page.
 
 ---
 
-- [ ] Now try logging in. Then, when you're on the `/users` page, refresh the page.
+- [X] Now try logging in. Then, when you're on the `/users` page, refresh the page.
 
 * **Question:** What happens and why?
 
 * **Your Answer:**
+ It redirects to the /login page. Because when componentDidMount is called the currentUserId is not set yet (this call happens a split second later), but by that point already been redirected to the /login page
 
 ---
 
-- [ ] To solve this problem, let's add a `loading` key to our App's state, with the default value set to `true`. When `componentDidMount()` finishes, set the `loading` key to equal `false`. Using this key, solve the issue of refreshing on the `/users` page. Make sure everyting continues to work whether you are logged in or out.
+- [ X] To solve this problem, let's add a `loading` key to our App's state, with the default value set to `true`. When `componentDidMount()` finishes, set the `loading` key to equal `false`. Using this key, solve the issue of refreshing on the `/users` page. Make sure everyting continues to work whether you are logged in or out.
 
 * **Question:** What did you do to solve this problem?
 
 * **Your Answer:**
+Added a loading state which will render the loading component if loading true and not enter into the loading of the rest of the App (where the decision to show login or /users is shown). Then when componentDidMount, the loading is set to false and able to get to either the /login or /users page
 
 ---
 
@@ -225,17 +229,17 @@ move it to the App.js and pass down the function as a prop so that we have acces
 
 ---
 
-- [ ] Using the same principals as above, make it so that if the user is logged in, they cannot go to the `/login` or `/signup` routes. Instead, forward them to `/users`.
+- [X] Using the same principals as above, make it so that if the user is logged in, they cannot go to the `/login` or `/signup` routes. Instead, forward them to `/users`.
 
 ---
 
-- [ ] Right now, the data inside of `users/Container.js` is static. Using `componentDidMount()`, update this code so that we pull our data from our API.
+- [X] Right now, the data inside of `users/Container.js` is static. Using `componentDidMount()`, update this code so that we pull our data from our API.
 
   _NOTE: You may want to create a new file in `./src/api/` to organize these requests.
 
 ---
 
-- [ ] Let's get our "Delete" link working. On the backend, create a `DELETE Post` route with the path of: 
+- [X] Let's get our "Delete" link working. On the backend, create a `DELETE Post` route with the path of:
   ```
   DELETE /users/:userId/posts/:postId
   ```
@@ -243,7 +247,7 @@ move it to the App.js and pass down the function as a prop so that we have acces
 
 ---
 
-- [ ] On the frontend, create a new function in your `src/api` folder that will delete a post. Use that function inside of the `src/components/posts/Container` file. Upon successful deletion, send the user back to the `/users/<userId>/posts` route.
+- [X] On the frontend, create a new function in your `src/api` folder that will delete a post. Use that function inside of the `src/components/posts/Container` file. Upon successful deletion, send the user back to the `/users/<userId>/posts` route.
 
 ---
 

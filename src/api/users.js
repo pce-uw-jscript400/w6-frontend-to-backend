@@ -1,7 +1,5 @@
-const { NODE_ENV } = process.env
-const BASE_URL = NODE_ENV === 'development'
-  ? 'http://localhost:5000'
-  : 'tbd' // Once we deploy, we need to change this
+const { REACT_APP_API_DOMAIN } = process.env
+const BASE_URL = REACT_APP_API_DOMAIN
 
 export const getUsers = async () => {
   const token = localStorage.getItem('journal-app')
@@ -12,6 +10,7 @@ export const getUsers = async () => {
     },
       method: 'GET'
     })
+
   const json = await response.json()
 
   return json.response

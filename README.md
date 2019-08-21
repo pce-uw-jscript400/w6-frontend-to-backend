@@ -225,7 +225,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** In what component did you add the `loading` property and why?
 
-* **Your Answer:**
+* **Your Answer:** I added to `components/users/Container.js` because Posts are subdocuments of Users and Users are loaded in this container.
 
 ---
 
@@ -255,9 +255,11 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** Why did the number of posts not change when you were redirected back to the `/users` route?
 
-* **Your Answer:** Whenever we modify our data with a Create, Update, or Delete, we have a few options on how to make our frontend reflect those changes. What options can you think of?
+* **Your Answer:** We didn't update the state of the Users Container
 
-* **Question:**
+* **Question:** Whenever we modify our data with a Create, Update, or Delete, we have a few options on how to make our frontend reflect those changes. What options can you think of?
+
+* **Your Answer:** Update the state with refeshed data from the backend.
 
 ---
 

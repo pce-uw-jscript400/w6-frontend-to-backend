@@ -1,13 +1,12 @@
-const { NODE_ENV } = process.env
-const BASE_URL = NODE_ENV === 'development'
-  ? 'http://localhost:5000'
-  : 'tbd' // Once we deploy, we need to change this
+const { REACT_APP_API_DOMAIN } = process.env
+const BASE_URL = REACT_APP_API_DOMAIN
 
 export const signup = async (user) => {
   const response = await fetch(`${BASE_URL}/api/signup`, {
     body: JSON.stringify(user),
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
     },
     method: 'POST'
   })
@@ -24,7 +23,8 @@ export const login = async (user) => {
   const response = await fetch(`${BASE_URL}/api/login`, {
     body: JSON.stringify(user),
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
     },
     method: 'POST'
   })
@@ -42,7 +42,7 @@ export const profile = async () => {
   const response = await fetch(`${BASE_URL}/api/profile`, {
     headers: {
       'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json'
+      'Accept': 'application/json'
     },
     method: 'GET'
   })

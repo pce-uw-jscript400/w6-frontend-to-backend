@@ -1,11 +1,14 @@
 import React from 'react'
 import { Route } from 'react-router-dom'
+import { withRouter } from 'react-router'
 
 import List from './List/List'
 import EditForm from './Form/Edit.Form'
 import NewForm from './Form/New.Form'
 
-export default class Container extends React.Component {
+import * as postsApi from '../../api/posts'
+
+class Container extends React.Component {
   constructor (props) {
     super(props)
     this.createPost = this.createPost.bind(this)
@@ -13,25 +16,37 @@ export default class Container extends React.Component {
     this.editPost = this.editPost.bind(this)
   }
 
-  createPost (post) {
+  async createPost (post) {
+    const { currentUserId, history, refreshUsers } = this.props
     console.log('Submitting Post:', post)
+    await postsApi.createPost(currentUserId, post)
+    await refreshUsers()
+    history.push(`/users/${currentUserId}/posts`)
   }
 
-  destroyPost (post) {
+  async destroyPost (post) {
+    const { currentUserId, history, refreshUsers } = this.props
     console.log('Destroying Post:', post)
+    await postsApi.deletePost(currentUserId, post)
+    await refreshUsers()
+    history.push(`/users/${currentUserId}/posts`)
   }
 
-  editPost (post) {
+  async editPost (post) {
+    const { currentUserId, history, refreshUsers } = this.props
     console.log('Editting Post:', post)
+    await postsApi.updatePost(currentUserId, post)
+    await refreshUsers()
+    history.push(`/users/${currentUserId}/posts`)
   }
 
   render () {
-    const { users } = this.props
+    const { currentUserId, users } = this.props
     return (
       <>
         <Route path='/users/:userId/posts' exact component={({ match }) => {
           const user = users.find(user => user._id === match.params.userId)
-          return <List destroyPost={this.destroyPost} user={user} />
+          return <List currentUserId={currentUserId} destroyPost={this.destroyPost} user={user} />
         }} />
         <Route path='/users/:userId/posts/new' exact component={() => {
           return <NewForm onSubmit={this.createPost} />
@@ -45,3 +60,5 @@ export default class Container extends React.Component {
     )
   }
 }
+
+export default withRouter(Container)

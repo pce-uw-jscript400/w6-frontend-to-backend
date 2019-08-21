@@ -1,3 +1,5 @@
+import request from './request'
+
 const { NODE_ENV } = process.env
 const BASE_URL = NODE_ENV === 'development'
   ? 'http://localhost:5000'
@@ -12,35 +14,20 @@ export const login = async (user) => {
     method: 'POST'
   })
   const json = await response.json()
-  localStorage.setItem('journal-app', json.token);
   return json
 }
 
-export const profile = async () => {
-    const token = localStorage.getItem('journal-app')
-    console.log(token)
-    const response = await fetch(`${BASE_URL}/api/profile`, {
-        headers: {
-            'Content-Type': 'application/json',
-            Authorization : `Bearer ${token}`
-        },
-        method: 'GET'
-    })
-    const json = response.json()
-    return json
-}
-
 export const signup = async (user) => {
-    const response = await fetch(`${BASE_URL}/api/signup`, {
-        body: JSON.stringify(user),
-        headers:{
-            'Content-Type': 'application/json'
-        },
-        method: 'POST'
-    })
-    const json = await response.json()
-    const token = json.token
+  const response = await fetch(`${BASE_URL}/api/signup`, {
+      body: JSON.stringify(user),
+      headers:{
+          'Content-Type': 'application/json'
+      },
+      method: 'POST'
+  })
+  const json = await response.json()
 
-    window.localStorage.setItem('journal-app', token);
-    return json
+  return json
 }
+
+export const profile = () => request('/api/profile')

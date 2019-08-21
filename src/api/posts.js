@@ -1,19 +1,21 @@
-const { NODE_ENV } = process.env
-const BASE_URL = NODE_ENV === 'development'
-  ? 'http://localhost:5000'
-  : 'tbd' // Once we deploy, we need to change this
+import request from './request'
 
-export const deletePost = async (userId, postId) => {
-    const token = localStorage.getItem('journal-app')
-    //get userId from token
+//why this syntax for ({user, post})?
 
-    const response = await fetch(`${BASE_URL}/api/users/${userId}/posts/${postId}`, {
-        headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`
-        },
-        method: 'DELETE'
-    }) 
-    const json = await response.json()
-    return json.response
+export const destroyPost = ({user, post}) => {
+    const path = `/api/users/${user._id}/posts/${post._id}`
+    const options = { method: 'DELETE' }
+    return request(path, options)
+}
+
+export const createPost = ({user, post}) => {
+    const path = `/api/users/${user._id}/posts`
+    const options = { method: 'POST '}
+    return request(path, options)
+}
+
+export const updatePost = ({user, post}) => {
+    const path = `/api/users/${user._id}/posts/${post._id}`
+    const options = { method: 'PUT' }
+    return request(path, options)
 }

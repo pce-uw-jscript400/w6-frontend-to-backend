@@ -2,11 +2,11 @@ import React from 'react'
 import { Route } from 'react-router-dom'
 import { withRouter } from 'react-router'
 
+import * as api from '../../api/posts'
+
 import List from './List/List'
 import EditForm from './Form/Edit.Form'
 import NewForm from './Form/New.Form'
-
-import * as api from '../../api/posts'
 
 class Container extends React.Component {
   constructor (props) {
@@ -16,29 +16,38 @@ class Container extends React.Component {
     this.editPost = this.editPost.bind(this)
   }
 
-  createPost (post) {
+  async createPost (post) {
+    const { currentUserId, refreshUsers, history } = this.props
     console.log('Submitting Post:', post)
-  }
-
-  async destroyPost (userId, postId) {
-    //make our api call here!
-    const response = await api.deletePost(userId, postId)
+    await api.createPost({user: {_id: currentUserId}, post})
+    await refreshUsers()
+    history.push(`/users/${currentUserId}/posts`)
     
-    console.log(response)
-    this.props.history.push('/users/${userId}/posts')
   }
 
-  editPost (post) {
+  async destroyPost (post) {
+    const { currentUserId, refreshUsers, history } = this.props
+    console.log('Deleting post:', post)
+    await api.destroyPost({user: { _id: currentUserId }, post})
+    await refreshUsers()
+    history.push(`/users/${currentUserId}/posts`)
+  }
+
+  async editPost (post) {
+    const { currentUserId, refreshUsers, history } = this.props
     console.log('Editting Post:', post)
+    await api.editPost({user: {_id: currentUserId}, post})
+    await refreshUsers()
+    history.push(`/users/${currentUserId}/posts`)
   }
 
   render () {
-    const { users } = this.props
+    const { currentUserId, users } = this.props
     return (
       <>
         <Route path='/users/:userId/posts' exact component={({ match }) => {
           const user = users.find(user => user._id === match.params.userId)
-          return <List destroyPost={this.destroyPost} user={user} />
+          return <List currentUserId={currentUserId} destroyPost={this.destroyPost} user={user} />
         }} />
         <Route path='/users/:userId/posts/new' exact component={() => {
           return <NewForm onSubmit={this.createPost} />

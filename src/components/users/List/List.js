@@ -2,7 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 
 export default ({ users }) => {
-  const lis = users.map(user => (
+  const list = users.map(user => (
     <li key={user._id}>
       <Link to={`/users/${user._id}/posts`}>
         {user.username}: {user.posts.length} Posts
@@ -14,7 +14,7 @@ export default ({ users }) => {
     <>
       <h1>All Journals</h1>
       <ul>
-        { lis }
+        { list }
       </ul>
     </>
   )

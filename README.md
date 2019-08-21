@@ -224,7 +224,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** In what component did you add the `loading` property and why?
 
-* **Your Answer:**
+* **Your Answer:** I put the `loading` property in the users container because that container displays the users posts, etc.
 
 ---
 
@@ -256,7 +256,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Your Answer:** Whenever we modify our data with a Create, Update, or Delete, we have a few options on how to make our frontend reflect those changes. What options can you think of?
 
-* **Question:**
+* **Question:** Make a new request to get the existing data, or perhaps send the updated data back when deleting/updating. I think I like the first option because it "separates" the two actions. After getting the data, setState to that data.
 
 ---
 

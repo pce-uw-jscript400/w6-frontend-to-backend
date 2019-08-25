@@ -29,7 +29,7 @@ export default class Container extends React.Component {
   render () {
     const { currentUserId } = this.props
     const { users, loading } = this.state
-    if (loading) return <span/>
+    if (loading) return <span>Loading...</span>
 
     return (
       <main className='container'>

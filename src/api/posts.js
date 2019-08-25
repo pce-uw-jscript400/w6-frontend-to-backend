@@ -4,7 +4,7 @@ import request from './request'
 
 export const destroyPost = ({user, post}) => {
     const path = `/api/users/${user._id}/posts/${post._id}`
-    const options = { method: 'DELETE' }
+    const options = {body: post,  method: 'DELETE' }
     return request(path, options)
 }
 
@@ -16,6 +16,6 @@ export const createPost = ({user, post}) => {
 
 export const updatePost = ({user, post}) => {
     const path = `/api/users/${user._id}/posts/${post._id}`
-    const options = { method: 'PUT' }
+    const options = {body: post, method: 'PUT' }
     return request(path, options)
 }

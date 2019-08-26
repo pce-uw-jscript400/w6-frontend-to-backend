@@ -60,7 +60,6 @@ class App extends React.Component {
     await token.setToken(response)
     
     const profile = await auth.profile()
-    console.log(profile)
     if (profile.status === 401) {
       alert('Username already exists!')
       this.setState({ showAlert: true })

@@ -1,7 +1,6 @@
 import React from 'react'
 import { withRouter } from 'react-router'
 import { Route } from 'react-router-dom'
-import { withRouter } from 'react-router'
 
 import * as api from '../../api/posts'
 

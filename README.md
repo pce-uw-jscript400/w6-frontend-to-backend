@@ -4,18 +4,18 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 ## Core Learning Objective
 
-* Communicate with an application server using a front-end client
+- Communicate with an application server using a front-end client
 
 ## Sub-Objectives
 
-* Login a user via an external API and store a token in LocalStorage
-* Logout a user locally
-* Signup a user via an external API and store a token in LocalStorage
-* Authorize routes on the frontend
-* Populate information from an external API
-* Delete records through an external API
-* Create new records through an external API
-* Update existing records through an external API
+- Login a user via an external API and store a token in LocalStorage
+- Logout a user locally
+- Signup a user via an external API and store a token in LocalStorage
+- Authorize routes on the frontend
+- Populate information from an external API
+- Delete records through an external API
+- Create new records through an external API
+- Update existing records through an external API
 
 ## Installation
 
@@ -29,14 +29,16 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 - [ ] Start both your frontend server and your backend server. Then try copying the code below into the web console.
   ```js
-  fetch('http://localhost:5000/api/users')
+  fetch("http://localhost:5000/api/users")
     .then(res => res.json())
-    .then(console.log)
+    .then(console.log);
   ```
 
 * **Question:** What error do you get? Why?
 
-* **Your Answer:** 
+* **Your Answer:** Getting an CORS error, or Cross-Origin-Resource-Sharing, which is a web industry standard for accessing web resources on different domains. We get this error because we are currently only configured to make requests on on port 3000. Making a request to port 5000 for the api has not been setup yet and so CORS prevents the servers from sharing resources.
+
+We're also getting a 401 error, because are aren't authorized to make the above request. Looks like there is also an issue with the Promise being made on the `.fetch()`.
 
 ---
 
@@ -44,7 +46,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** Try your request again. What error do you get? Why?
 
-* **Your Answer:**
+* **Your Answer:** The CORS and Promises errors are gone. The only one that remains is the 401, which makes sense because I haven't logged in yet.
 
 ---
 
@@ -54,49 +56,52 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 - [ ] We now want to try and login the user when they hit submit. Add the following to your `loginUser()` method:
   ```js
-  fetch('http://localhost:5000/api/login', {
+  fetch("http://localhost:5000/api/login", {
     body: JSON.stringify(user),
     headers: {
-      'Content-Type': 'application/json'
+      "Content-Type": "application/json"
     },
-    method: 'POST',
-  }).then(res => res.json()).then(console.log)
+    method: "POST"
+  })
+    .then(res => res.json())
+    .then(console.log);
   ```
 
 * **Question:** Why do we need to include the "Content-Type" in the headers?
 
-* **Your Answer:**
+* **Your Answer:** I think it's because we have to identify the web resource type or data type for the client, in this case, JSON.
 
 * **Question:** How could you convert this method to an `async` method?
+
+* **Your Answer:** We could do a async/await and place the aysnc before the method name.
 
 ---
 
 - [ ] Let's move our requests to a better place. Create a new file at `./src/api/auth.js`. Add the following inside of it:
-  ```js
-  const { NODE_ENV } = process.env
-  const BASE_URL = NODE_ENV === 'development'
-    ? 'http://localhost:5000'
-    : 'tbd' // Once we deploy, we need to change this
 
-  export const login = async (user) => {
+  ```js
+  const { NODE_ENV } = process.env;
+  const BASE_URL = NODE_ENV === "development" ? "http://localhost:5000" : "tbd"; // Once we deploy, we need to change this
+
+  export const login = async user => {
     const response = await fetch(`${BASE_URL}/api/login`, {
       body: JSON.stringify(user),
       headers: {
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json"
       },
-      method: 'POST'
-    })
-    const json = await response.json()
-    
-    return json
-  }
+      method: "POST"
+    });
+    const json = await response.json();
+
+    return json;
+  };
   ```
 
   Update `App.js` to use the `login()` function, logging out the response from it.
 
 * **Question:** What is happening on the first couple of lines of the new file you've created?
 
-* **Your Answer:** 
+* **Your Answer:** We are using the global `process.env` variable and setting it to `NODE_ENV`. We then use this to help the app determine the correct environment URL to use. If it is "development" then we will use "http://localhost:5000", otherwise we will use a production URL later for when we are ready to deploy the app.
 
 ---
 
@@ -104,7 +109,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** Why are we storing the token?
 
-* **Your Answer:**
+* **Your Answer:** We are storing the token so that if the user refreshes the page, they will still be logged into the app.
 
 ---
 
@@ -112,7 +117,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** Where did you write your code to manipulate LocalStorage? Why?
 
-* **Your Answer:** 
+* **Your Answer:** We assigned the current user's token available in `localStorage` to a constant variable. This is then used in the fetch response headers authorization.
 
 ---
 
@@ -120,11 +125,11 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** What changes on the page after you successfully login? Why?
 
-* **Your Answer:**
+* **Your Answer:** After the user has successfully logged in, the navigation links update with the authenticated content. This is the because the user has successfully logged in and has the right permissions to view the new UI content.
 
 * **Question:** What happens if you enter in the incorrect information? What _should_ happen?
 
-* **Your Answer:**
+* **Your Answer:** We get an unhandled rejection error. What should happen is that we gracefully handle authentication errors and provide the user some sort of feedback via the UI that something went wrong.
 
 ---
 
@@ -141,7 +146,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** Describe what is happening in the code above.
 
-* **Your Answer:**
+* **Your Answer:** We are getting the value of `journal-app` that is currently available in `localStorage` and assigning it to a constant variable. We then have some conditional logic to handle whether or not the toke is avaialble. If there is a token, then we have React `this.setState()` for the current user's profile via `currentUserId: profile.user._id`.
 
 ---
 
@@ -149,7 +154,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** When you click "Logout", nothing happens unless you refresh the page. Why not?
 
-* **Your Answer:**
+* **Your Answer:** Because we are not currently using `this.setState()` to set `null` for the `currentUserID` and also we are not removing the token from `localStorage()`.
 
 ---
 
@@ -157,7 +162,14 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** What did you have to do to get the `logout()` function to work? Why?
 
-* **Your Answer:**
+* **Your Answer:** I did the following solution. This grabs the current token and removes it when the `logoutUser()` function is called and then used `this.setState()` to set the currentUserId to be `null`.
+
+```js
+logoutUser = () => {
+  window.localStorage.removeItem("journal-app");
+  this.setState({ currentUserId: null });
+};
+```
 
 ---
 
@@ -173,20 +185,27 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** What happens? What _should_ happen?
 
-* **Answer:**
+* **Answer:** I'm able to access the `/users` route when I shouldn't because I've logged out of the app.
 
 ---
 
 - [ ] Try _replacing_ the `/users` Route in `App.js` with the following:
   ```jsx
-  <Route path='/users' render={() => {
-    return this.state.currentUserId ? <UsersContainer /> : <Redirect to='/login' />
-  }} />
+  <Route
+    path="/users"
+    render={() => {
+      return this.state.currentUserId ? (
+        <UsersContainer />
+      ) : (
+        <Redirect to="/login" />
+      );
+    }}
+  />
   ```
 
 * **Question:** Describe what is happening in the code above.
 
-* **Your Answer:**
+* **Your Answer:** It's checking `state` via a ternary to make sure there is a valid `currentUserId`. If there is, then it will direct the user to the `/users` route and display the `<UsersContainer />`, otherwise, it will redirect the user to the `/login` route.
 
 ---
 
@@ -194,7 +213,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** What happens and why?
 
-* **Your Answer:**
+* **Your Answer:** It is redirecting the user to the `/login` route. I think this is happening because we need to setup something to handle a page refresh in `componentDidMount`. Might be able to solve this also by adding some conditional check in react router, but not sure if that's best practice or not.
 
 ---
 
@@ -202,7 +221,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** What did you do to solve this problem?
 
-* **Your Answer:**
+* **Your Answer:** I was able to solve this by adding some conditional logic to the React Router setup. This probably isn't the best way to handle the fix because it would mean applying that to each route.
 
 ---
 
@@ -220,11 +239,11 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 - [ ] Right now, the data inside of `users/Container.js` is static. Using `componentDidMount()`, update this code so that we pull our data from our API.
 
-  _NOTE: You may want to create a new file in `./src/api/` to organize these requests.
+  \_NOTE: You may want to create a new file in `./src/api/` to organize these requests.
 
 ---
 
-- [ ] Let's get our "Delete" link working. On the backend, create a `DELETE Post` route with the path of: 
+- [ ] Let's get our "Delete" link working. On the backend, create a `DELETE Post` route with the path of:
   ```
   DELETE /users/:userId/posts/:postId
   ```
@@ -270,7 +289,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 ## Exercise
 
-We got a lot done but there's still a lot to do to make this app fully functional. Complete the following features on this application. 
+We got a lot done but there's still a lot to do to make this app fully functional. Complete the following features on this application.
 
 - [ ] If there are no posts for a user, show a message on their `/users/<userId>/posts` page that encourages them to create a new post.
 
@@ -291,4 +310,3 @@ We got a lot done but there's still a lot to do to make this app fully functiona
 - [ ] On the update post page, appropriately handle errors so that the user has a chance to correct their post. Display some kind of helpful message.
 
 - [ ] Create a new frontend route at `/users/<userId>/posts/<postId>` that shows a single post. Update your Create and Edit forms to redirect here instead of to the general `/posts` page.
-

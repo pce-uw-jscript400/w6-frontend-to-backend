@@ -21,29 +21,32 @@ class Container extends React.Component {
   }
 
   async createPost (post) {
-    const { currentUserId, history, refreshUsers } = this.props
-
-    await posts.createPost({ user: { _id: currentUserId }, post })
-    await refreshUsers()
-
-    history.push(`/users/${currentUserId}/posts`)
+    if (post.content.length === 0) {
+      alert('Please include content in your post!')
+    } else {
+      const { currentUserId, history, refreshUsers } = this.props
+      await posts.createPost({ user: { _id: currentUserId }, post })
+      await refreshUsers()
+      history.push(`/users/${currentUserId}/posts`)
+    }
   }
   
   async destroyPost (post) {
     const { currentUserId, history, refreshUsers } = this.props
-    
     await posts.destroyPost({ user: { _id: currentUserId }, post })
     await refreshUsers()
-    
     history.push(`/users/${currentUserId}/posts`)
   }
 
   async editPost (post) {
-    const { currentUserId, history, refreshUsers } = this.props
-    await posts.updatePost({ user: { _id: currentUserId }, post })
-    await refreshUsers()
-
-    history.push(`/users/${currentUserId}/posts`)
+    if (post.content.length === 0) {
+      alert('Please include content in your post!')
+    } else {
+      const { currentUserId, history, refreshUsers } = this.props
+      await posts.updatePost({ user: { _id: currentUserId }, post })
+      await refreshUsers()
+      history.push(`/users/${currentUserId}/posts`)
+    }
   }
 
   render () {

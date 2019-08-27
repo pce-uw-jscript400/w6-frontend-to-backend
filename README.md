@@ -36,7 +36,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** What error do you get? Why?
 
-* **Your Answer:** 
+* **Your Answer:** `Refused to connect to 'http://localhost:5000/api/users' because it violates the document's Content Security Policy.` We get a cross origin resource sharing error because we have not whitelisted the URL from which we're requesting.
 
 ---
 
@@ -44,7 +44,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** Try your request again. What error do you get? Why?
 
-* **Your Answer:**
+* **Your Answer:** `GET http://localhost:5000/api/users 401 (Unauthorized)` because we are not logged in. This is coming from the middleware function `isLoggedIn` in the `api/routes/users.js` from the `auth.js` file
 
 ---
 
@@ -65,9 +65,23 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** Why do we need to include the "Content-Type" in the headers?
 
-* **Your Answer:**
+* **Your Answer:** So that we know what kind of content we're sending along, I believe the default is plaintext.
 
 * **Question:** How could you convert this method to an `async` method?
+
+* **Your Answer:** 
+
+```async loginUser (user) {
+    const res = await fetch('http://localhost:5000/api/login', {
+      body: JSON.stringify(user),
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      method: 'POST',
+    })
+    const json = await res.json
+    console.log(json)
+  }```
 
 ---
 
@@ -96,7 +110,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** What is happening on the first couple of lines of the new file you've created?
 
-* **Your Answer:** 
+* **Your Answer:** We're setting a variable equal to `NODE_ENV`, this is similar to what we've done before. If the variable is development, we'll set `BASE_URL` to localhost, if not we'll set it to a different, yet unknown variable.
 
 ---
 
@@ -104,7 +118,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** Why are we storing the token?
 
-* **Your Answer:**
+* **Your Answer:** We're storing the token because it has information we want to send on subsequent requests, that way we don't need it every time.
 
 ---
 
@@ -112,7 +126,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** Where did you write your code to manipulate LocalStorage? Why?
 
-* **Your Answer:** 
+* **Your Answer:**  I wrote my code to manipulate LocalStorage in the profile function, just before we make our request so we can grab that token from LocalStorage.
 
 ---
 
@@ -120,11 +134,11 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** What changes on the page after you successfully login? Why?
 
-* **Your Answer:**
+* **Your Answer:** The navigation component changes to a different set of links because we've set our application state's user id.
 
 * **Question:** What happens if you enter in the incorrect information? What _should_ happen?
 
-* **Your Answer:**
+* **Your Answer:** We get a horrible error but we should probably fail in a more graceful way.
 
 ---
 
@@ -141,7 +155,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** Describe what is happening in the code above.
 
-* **Your Answer:**
+* **Your Answer:** We add our logic to the componentDidMount lifecycle method, grab the token and if it exists, grab the profile and get the id, setting it to react state.
 
 ---
 
@@ -149,7 +163,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** When you click "Logout", nothing happens unless you refresh the page. Why not?
 
-* **Your Answer:**
+* **Your Answer:** Because we aren't re-setting the state in addition to removing the token from localstorage
 
 ---
 
@@ -157,7 +171,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** What did you have to do to get the `logout()` function to work? Why?
 
-* **Your Answer:**
+* **Your Answer:** We had to move the logout function up the `app.js` level, then pass that down as a prop the navigation authenticated links component.
 
 ---
 
@@ -173,7 +187,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** What happens? What _should_ happen?
 
-* **Answer:**
+* **Answer:** We are still allowed to go to the `/users` route, but in theory we shouldn't be allowed to do that because we logged out!
 
 ---
 
@@ -186,7 +200,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** Describe what is happening in the code above.
 
-* **Your Answer:**
+* **Your Answer:** For the `/users` route, if our existing state has a `currentUserId`, show the users container, otherwise redirect the user to the `/login` route.
 
 ---
 
@@ -194,7 +208,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** What happens and why?
 
-* **Your Answer:**
+* **Your Answer:** We get redirected to the login route because our currentUserId is in componentDidMount and it doesn't exist.
 
 ---
 
@@ -202,7 +216,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** What did you do to solve this problem?
 
-* **Your Answer:**
+* **Your Answer:** Added a variable `loading: true`  to our state, then when applicable, set that variable equal to false. In our render function, account for state variable and render accordingly.
 
 ---
 
@@ -210,7 +224,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** In what component did you add the `loading` property and why?
 
-* **Your Answer:**
+* **Your Answer:** I put the `loading` property in the users container because that container displays the users posts, etc.
 
 ---
 
@@ -242,7 +256,7 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Your Answer:** Whenever we modify our data with a Create, Update, or Delete, we have a few options on how to make our frontend reflect those changes. What options can you think of?
 
-* **Question:**
+* **Question:** Make a new request to get the existing data, or perhaps send the updated data back when deleting/updating. I think I like the first option because it "separates" the two actions. After getting the data, setState to that data.
 
 ---
 

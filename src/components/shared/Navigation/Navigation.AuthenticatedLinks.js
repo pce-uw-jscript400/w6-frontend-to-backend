@@ -2,13 +2,25 @@ import React from 'react'
 import { withRouter } from 'react-router'
 import { Link } from 'react-router-dom'
 
-const AuthenticatedLinks = ({ currentUserId, history }) => {
+const AuthenticatedLinks = ({ currentUserId, logoutUser, history, user }) => {
   const logout = () => {
-    window.localStorage.clear('journal-app')
+    logoutUser() 
     history.push('/login')
   }
+  
   return (
     <ul className='nav justify-content-end'>
+      {currentUserId ? (
+        <li className='nav-item'>
+          <Link className='nav-link' 
+            user={user} 
+            to={`/users/${currentUserId}/edit`}
+          >
+              User's Page
+          </Link>
+        </li>
+      ) : (<li />
+      )}
       <li className='nav-item'>
         <Link className='nav-link' to='/users'>All Users</Link>
       </li>

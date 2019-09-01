@@ -38,6 +38,8 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Your Answer:** 
 
+I get a 401 (unauthorized error). I am guessing because I am not currently logged in. Also CORS policy error that means the page needs to be more secure. Prevents browsers from accessing a server unless they're allowed to.
+
 ---
 
 - [ ] To get around this issue, we need to explicitly allow for requests to come from `localhost:3000`. To do so, we will use the [cors](https://www.npmjs.com/package/cors) package. Install `cors` on the _backend server_ and whitelist `localhost:5000`.
@@ -45,6 +47,8 @@ By the end of this lesson. You should be able to set up two separate servers tha
 * **Question:** Try your request again. What error do you get? Why?
 
 * **Your Answer:**
+
+Now it is just the 401 error because we are not currently logged in. Need to update the middleware in auth.js
 
 ---
 
@@ -67,7 +71,13 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Your Answer:**
 
+To tell the server the type that is being sent, in this case json, otherwise it would come through as plain text.
+
 * **Question:** How could you convert this method to an `async` method?
+
+* **Your Answer:**
+
+Add await to fetch.
 
 ---
 
@@ -98,6 +108,9 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Your Answer:** 
 
+The first few lines are assigning localhost to development and it looks like they will need to be updated for deployment.
+
+
 ---
 
 - [ ] Let's store the token in LocalStorage with a key of `journal-app`.
@@ -105,6 +118,8 @@ By the end of this lesson. You should be able to set up two separate servers tha
 * **Question:** Why are we storing the token?
 
 * **Your Answer:**
+
+The token is being stored so that page recognizes that the user is logged in.
 
 ---
 
@@ -114,6 +129,8 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Your Answer:** 
 
+In auth.js. It could have been added in App.js but the instructor suggested that we leave mostly react components there.
+
 ---
 
 - [ ] Now that we have the user's information, let's store the user's ID in state. Set `currentUserId` to the user ID you've retrieved.
@@ -122,9 +139,13 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Your Answer:**
 
+We are now shown the routes that are available to a user who is logged in
+
 * **Question:** What happens if you enter in the incorrect information? What _should_ happen?
 
 * **Your Answer:**
+
+If the login information is incorrect, the new routes should not be shown.
 
 ---
 
@@ -143,6 +164,9 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Your Answer:**
 
+Getting token from local storage
+checking if the token exists and if it does updating the react state.
+
 ---
 
 - [ ] Now when you refresh the page, it looks as though you are logged in. Next, try clicking the logout button.
@@ -151,6 +175,8 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Your Answer:**
 
+There's no current API route for logout, but once the page is refreshed the token is removed. 
+
 ---
 
 - [ ] Update the `logout()` method to appropriately logout the user.
@@ -158,6 +184,8 @@ By the end of this lesson. You should be able to set up two separate servers tha
 * **Question:** What did you have to do to get the `logout()` function to work? Why?
 
 * **Your Answer:**
+
+Needed to remove the journal-app from local storage and update currentUserId to null.
 
 ---
 
@@ -175,6 +203,8 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Answer:**
 
+I am still able to access the user route. However, I should be blocked from the route since I am no longer logged in.
+
 ---
 
 - [ ] Try _replacing_ the `/users` Route in `App.js` with the following:
@@ -188,6 +218,8 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Your Answer:**
 
+Only allows `/users` route to be shown if the use is currently logged in otherwise it redirects to the `/login` route.
+
 ---
 
 - [ ] Now try logging in. Then, when you're on the `/users` page, refresh the page.
@@ -195,6 +227,8 @@ By the end of this lesson. You should be able to set up two separate servers tha
 * **Question:** What happens and why?
 
 * **Your Answer:**
+
+When I refresh, it sends me back to the the `/login` route. When the page is reloaded I no longer have access to currentUserId.
 
 ---
 
@@ -204,6 +238,8 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Your Answer:**
 
+In the state set `loading: true` and then in render added an if statement to show a loading message if true and lastly added `loading: false` to `this.setState` in `componentDidMount()`.
+
 ---
 
 - [ ] We will have the same problem on the `/users/<userId>/posts` page. Use the same strategy to have this page load correctly on refresh.
@@ -211,6 +247,8 @@ By the end of this lesson. You should be able to set up two separate servers tha
 * **Question:** In what component did you add the `loading` property and why?
 
 * **Your Answer:**
+
+`loading: true` was added to `App.js` and it was added to that component so the user will stay logged in regardless of the route they're on.
 
 ---
 
@@ -240,9 +278,15 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 * **Question:** Why did the number of posts not change when you were redirected back to the `/users` route?
 
-* **Your Answer:** Whenever we modify our data with a Create, Update, or Delete, we have a few options on how to make our frontend reflect those changes. What options can you think of?
+* **Your Answer:**
 
-* **Question:**
+Because state was not updated.
+
+* **Question:** Whenever we modify our data with a Create, Update, or Delete, we have a few options on how to make our frontend reflect those changes. What options can you think of?
+
+* **Your Answer:**
+
+refresh state so the app reflects the most recent changes made.
 
 ---
 
@@ -272,23 +316,23 @@ By the end of this lesson. You should be able to set up two separate servers tha
 
 We got a lot done but there's still a lot to do to make this app fully functional. Complete the following features on this application. 
 
-- [ ] If there are no posts for a user, show a message on their `/users/<userId>/posts` page that encourages them to create a new post.
+- [X] If there are no posts for a user, show a message on their `/users/<userId>/posts` page that encourages them to create a new post.
 
-- [ ] If there is no emotion for a post, hide the associated message on each post.
+- [X] If there is no emotion for a post, hide the associated message on each post.
 
-- [ ] Show the user's username on the navigation when they are logged in as a link. When clicked, go to a new page: `/users/<userId>/edit`
+- [X] Show the user's username on the navigation when they are logged in as a link. When clicked, go to a new page: `/users/<userId>/edit`
 
-- [ ] Create a page at `/users/<userId>/edit` that allows a user to update their `name`. On save, redirect them to their `/users/<userId>/posts` page.
+- [X] Create a page at `/users/<userId>/edit` that allows a user to update their `name`. On save, redirect them to their `/users/<userId>/posts` page.
 
-- [ ] If the user has a name, show that on the Navigation, `/users` page, and `/users/<userId>/posts` page instead.
+- [X] If the user has a name, show that on the Navigation, `/users` page, and `/users/<userId>/posts` page instead.
 
-- [ ] On the login page, appropriately handle errors so that the user has a chance to correct their username/password combination. Display some kind of helpful message.
+- [X] On the login page, appropriately handle errors so that the user has a chance to correct their username/password combination. Display some kind of helpful message.
 
-- [ ] On the signup page, appropriately handle errors so that the user has a chance to correct their username/password combination. Display some kind of helpful message.
+- [X] On the signup page, appropriately handle errors so that the user has a chance to correct their username/password combination. Display some kind of helpful message.
 
-- [ ] On the create post page, appropriately handle errors so that the user has a chance to correct their post. Display some kind of helpful message.
+- [X] On the create post page, appropriately handle errors so that the user has a chance to correct their post. Display some kind of helpful message.
 
-- [ ] On the update post page, appropriately handle errors so that the user has a chance to correct their post. Display some kind of helpful message.
+- [X] On the update post page, appropriately handle errors so that the user has a chance to correct their post. Display some kind of helpful message.
 
 - [ ] Create a new frontend route at `/users/<userId>/posts/<postId>` that shows a single post. Update your Create and Edit forms to redirect here instead of to the general `/posts` page.
 

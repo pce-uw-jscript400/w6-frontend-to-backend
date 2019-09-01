@@ -17,7 +17,14 @@ export default class Form extends React.Component {
 
   handleSubmit (e) {
     e.preventDefault()
-    this.props.onSubmit(this.state)
+    const { post } = this.props
+
+    if (post && post._id) {
+      const body = Object.assign({}, this.state, { _id: post._id })
+      this.props.onSubmit(body)
+    } else {
+      this.props.onSubmit(this.state)
+    }
   }
 
   render () {

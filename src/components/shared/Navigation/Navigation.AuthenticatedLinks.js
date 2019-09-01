@@ -2,19 +2,27 @@ import React from 'react'
 import { withRouter } from 'react-router'
 import { Link } from 'react-router-dom'
 
-const AuthenticatedLinks = ({ currentUserId, history }) => {
+const AuthenticatedLinks = ({ currentUserId, currentUserName, history, logoutUser }) => {
   const logout = () => {
-    window.localStorage.clear('journal-app')
+    logoutUser()
     history.push('/login')
   }
+
   return (
     <ul className='nav justify-content-end'>
       <li className='nav-item'>
-        <Link className='nav-link' to='/users'>All Users</Link>
+        <Link className='nav-link' to='/users'>
+          All Users
+        </Link>
+      </li>
+      <li className='nav-item'>
+        <Link className='nav-link' to={`/users/${currentUserId}/edit`}>
+          {currentUserName || 'Please update your name'}
+        </Link>
       </li>
       <li className='nav-item'>
         <Link className='nav-link' to={`/users/${currentUserId}/posts/new`}>
-          Create a New Post
+            Create a New Post
         </Link>
       </li>
       <li className='nav-item'>
